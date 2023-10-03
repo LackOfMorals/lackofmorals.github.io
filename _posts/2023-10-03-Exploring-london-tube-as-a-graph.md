@@ -26,22 +26,24 @@ Postman
 - Great tool for working with APIs.  If it's not for you, try Insomnia https://insomnia.rest/
 
 
-To begin, figure out TFL APIs
+## To begin, figure out TFL APIs
 
-I used postman extensively for this as it made examing the response payloads much more straight forward. 
+I used postman extensively for this as it made examining the response payloads much more straightforward. 
 
 We'll need a list of all of the Tube lines and the stations on them in sequence.  This will allow us to create the graph. 
 
-In general the TFL API returns a lot of information - and I mean a lot - most of which is not needed for our purposes.  There's a number of endpoints that look like they return what is needed; you can get all of the lines from https://api.tfl.gov.uk/line/mode/tube/status and then call https://api.tfl.gov.uk/line/{line id}/stoppoints for each line.  
+In general, the TFL API returns a lot of information - and I mean a lot - most of which is not needed for our purposes.  There are a number of endpoints that look like they return what is needed; you can get all of the lines from https://api.tfl.gov.uk/line/mode/tube/status and then call https://api.tfl.gov.uk/line/{line id}/stoppoints for each line.  
 This gets us all of the stations on a line but they are not in sequence :(
 
 All is not lost
 
 - We get a list of tube lines from https://api.tfl.gov.uk/line/mode/tube/status
 
-- Then, for each line we can call https://api.tfl.gov.uk/{line id}/Route/Sequence/line_direction.  This returns a JSON document of which we find a list of stations, in sequence, in ["orderedLineRoutes"] for each route.  
+- Then, for each line we can call https://api.tfl.gov.uk/{line id}/Route/Sequence/line_direction.  This returns a JSON document in which we find a list of stations, in sequence, in ["orderedLineRoutes"] for each route.  
 
-Watch out for a line can contain more than one route and we'll need to take that into account. 
+Watch out for lines that can contain more than one route; we'll need to take that into account. 
 
 
-In the next update, we'll go write some code
+In the next update, we'll go write some code. 
+
+
