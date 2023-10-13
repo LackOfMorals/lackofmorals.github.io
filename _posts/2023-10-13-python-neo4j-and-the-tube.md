@@ -13,7 +13,7 @@ For the spike, I want to know more about
 ## Install Neo4j locally.
 I'm going to use Neo4j Desktop for this exercise.  It's a local install with a nice UI attached that makes it easy to use and work with.  
 
-Download Neo4j Desktop here:- https://neo4j.com/download/ and install it.  
+Download Neo4j Desktop here:- [https://neo4j.com/download/]([https://neo4j.com/download) and install it.  
 
 After the install has completed, launch Desktop and create a new project.  Then click on the 'Add' button to , err, add a local DBMS.  Give the DBSM a name, a password ( remember this as we will need it shortly ), choose the latest version of Neo4j, then select 'Create'  and wait for the process to finish.
 
@@ -23,7 +23,7 @@ You now have a running Neo4j graphdatabase.
 
 
 ## Get the list of tube lines from Tfl
-I've already created an account and obtained an API key to access Tfl API. If you haven't , go here https://api-portal.tfl.gov.uk/  and then come back. 
+I've already created an account and obtained an API key to access Tfl API. If you haven't , go here [https://api-portal.tfl.gov.uk/](https://api-portal.tfl.gov.uk/)  and then come back. 
 
 Lets use some Python code that's going to connect to Tfl API and get the list of Tube lines. 
 
@@ -43,7 +43,7 @@ from neo4j import GraphDatabase
 tfl_session = Session()
 
 # TLR uses an api key for auth
-app_key = '5ce9b22b22f94d0c86000079879baabe'
+app_key = '<YOUR TFL API KEY>'
 
 # This goes in the request header and we'll set the content type to json
 headers = { "Content-Type": "application/json", "app_key": app_key}
@@ -185,7 +185,7 @@ We're going to take each station and create an entry in Neo4j - a node - which w
 
 To make the connection to Neo4j, we'll need the address, user and password.  As we're using the local Desktop version, this is straight forward. You can recall the password you created earlier ? 
 
-Once we have established the connection we will use Cypher to create the entry.  Cypher is the query language used by Neo4j and there's lots of materials to educate yourselve about it.  Take one of the free courses at the Neo4j Graph Academy here:- https://graphacademy.neo4j.com/ and read the docs here:- https://neo4j.com/developer/cypher/ 
+Once we have established the connection we will use Cypher to create the entry.  Cypher is the query language used by Neo4j and there's lots of materials to educate yourselve about it.  Take one of the free courses at the Neo4j Graph Academy here:- [https://graphacademy.neo4j.com/](https://graphacademy.neo4j.com/) and read the docs here:- [https://neo4j.com/developer/cypher/](https://neo4j.com/developer/cypher/)
 
 We'll use MERGE as it will only create an entry if it doesn't already exists.  This will avoid duplicates which is handy if there's an error and we need to run the code again. 
 
@@ -205,7 +205,7 @@ As this is Python - think indents !
                 # Detail to connect to our Neo4j database
                 neo4_uri = 'bolt://127.0.0.1:7687'
                 neo4j_user = 'neo4j'
-                neo4j_password = 'Password123!'
+                neo4j_password = '<YOUR NEO4J PASSWORD>'
 
                 # Build the Cypher statement we will use to create the station entry as a node
                 # We're using MERGE rather than CREATE to avoid creating duplicate stations.
