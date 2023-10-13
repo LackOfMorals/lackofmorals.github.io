@@ -13,7 +13,7 @@ For the spike, I want to know more about
 ## Install Neo4j locally.
 I'm going to use Neo4j Desktop for this exercise.  It's a local install with a nice UI attached that makes it easy to use and work with.  
 
-Download Neo4j Desktop here:- [https://neo4j.com/download/]([https://neo4j.com/download) and install it.  
+Download Neo4j Desktop here:- [https://neo4j.com/download/](https://neo4j.com/download) and install it.  
 
 After the install has completed, launch Desktop and create a new project.  Then click on the 'Add' button to , err, add a local DBMS.  Give the DBSM a name, a password ( remember this as we will need it shortly ), choose the latest version of Neo4j, then select 'Create'  and wait for the process to finish.
 
