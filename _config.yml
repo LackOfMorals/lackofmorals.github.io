@@ -1,4 +1,4 @@
-title: "Random musings"
+title: "[WIP]"
 author: "Jonathan Giffard"
 description: "Experiences and memories of my career in tech" # This will show up in places like twitter, linkedin, etc, if you share your sites url as a post.
 
@@ -20,7 +20,7 @@ linkedin_username: "jgiffard"
 #########################################################################################
 theme: "minima"
 
-rss: rss
+#rss: rss
 
 kramdown:
   syntax_highlighter_opts:

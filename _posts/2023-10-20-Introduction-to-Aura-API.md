@@ -1,6 +1,6 @@
 # It all about the REST
 
-![My sleeping cat](/images/mySleepingCat.png)
+![My sleeping cat](/img/mySleepingCat.png)
 
 Neo4j DB as a Service ( DBaaS ) , Aura, now has a RESTful like API for provisioning.   The full details of the API in long form are in the  [documentation](https://neo4j.com/docs/aura/platform/api/specification/); in short it's a set of endpoints that provide for CRUD operations. You can try the Aura API from the documentation.  Here we're going to dig in and write code to do the needful.
 
@@ -16,7 +16,7 @@ To get started with the API you'll need to obtain a client id and client secret.
 
 After you have logged in , drive the mouse pointer to the top right of the Aura of the console and click on your account name
 
-![Aura Account](/images/auraConsoleAcccount.png)
+![Aura Account](/img/aura/auraConsoleAcccount.png)
 
 Then choose 'Account Details' and then 'Create'.  This will bring up the dialog for a new client id and client secret.  Make sure you copy these down and store them securely.
 
