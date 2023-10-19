@@ -4,7 +4,7 @@
 
 Neo4j DB as a Service ( DBaaS ) , Aura, now has a RESTful like API for provisioning.   The full details of the API in long form are in the  [documentation](https://neo4j.com/docs/aura/platform/api/specification/); in short it's a set of endpoints that provide for CRUD operations. You can try the Aura API from the documentation.  Here we're going to dig in and write code to do the needful.
 
-At the time of writing ( Wednesday 18th October ) the API is for Aura Enterprise customers and I'm reliably informed that the audience will be expanded in the next couple of months.
+At the time of writing ( Friday 20th October ) the API is for Aura Enterprise customers and I'm reliably informed that the audience will be expanded in the next couple of months.
 
 To show how the Aura API can be used, we'll create a Python application that creates a new Aura instance. 
 
