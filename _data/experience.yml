@@ -19,12 +19,12 @@
     enddate: 2022-06-31
     summary: ""
     projects:
-      - "MFA, leveraging AWS Cognito, to improve security by enabling the use of OTP"
-      - "Capella Public API that enables customers to incorporate Capella operations into their CI / CD pipelines as well as enabling the use of scripts. The API underpinned other items such as a Terraform client and command line tools."
-      - "Initial Self-service sign-up that enables trials and conversion to paying customers. 2nd iteration built on analytics that simplified deployment and increased the number of users doing so. This came from close working with UX and Engineering to achieve."
-      - "Working with UX Designers, re-imagined deployment for paying customers that enabled a fully hosted buying option for customers. This reduced sales time and significantly increased the revenue."
-      - "Collaborated closely with sales teams leading to closing the largest ever deal for Capella ( > $1 million total contact value )"
-      - "Provided input into a number of PM processes leading to introduction of lean PRDs & lean canvas to help make investment decisions and Level of Effort vs Customer Value matrix to assist with prioritization. Evangelised working closely with Engineering / UX Designers during early phases - 'Sprint 0' for discovery , goals, and help establish alignment on what we are and why.""
+    - "Improved login security with MFA enabling the use of OTP from an authenticator app like that from Okta or similar"
+    - "Capella Public API that enables customers to incorporate Capella operations into their CI / CD pipelines as well as enabling the use of scripts. The API underpinned other items such as a Terraform client and command line tools." 
+    - "Initial Self-service sign-up that enables trials and conversion to paying customers. 2nd iteration was built on analytics that simplified deployment and increased the number of users doing so. This came from close working with UX and Engineering to achieve."
+    - "Working with UX Designers, re-imagined deployment for paying customers that enabled a fully hosted buying option for customers. This reduced sales time and significantly increased the revenue."
+    - "Collaborated closely with sales teams leading to closing the largest ever deal for Capella ( > $1 million total contract value )"
+    - "Provided input into several PM processes leading to the introduction of lean PRDs & lean canvas to help make investment decisions and Level of Effort vs Customer Value matrix to assist with prioritization. Evangelised working closely with Engineering / UX Designers during early phases - 'Sprint 0' for discovery , goals, and help establish alignment on what we are and why.""
 
 
 # - company: "Webroot"
