@@ -17,7 +17,7 @@
   - title: "Principal Product Manager"
     startdate: 2020-08-31
     enddate: 2022-06-31
-    summary: ""
+    summary:
     projects:
     - "Improved login security with MFA enabling the use of OTP from an authenticator app like that from Okta or similar"
     - "Capella Public API that enables customers to incorporate Capella operations into their CI / CD pipelines as well as enabling the use of scripts. The API underpinned other items such as a Terraform client and command line tools." 
