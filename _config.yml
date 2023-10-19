@@ -45,6 +45,8 @@ titles_from_headings:
 header_pages:
   - resume.html
 
+google_analytics:
+  - GTM-5TPXDR4X # New GA4 property
 
 code_block_max_height: 500px
 
