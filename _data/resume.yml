@@ -1,12 +1,12 @@
 theme: default
 header:
   name: Jonathan Giffard
-  suffix: MCSA
+  suffix: 
   display_contact_info: true
   current_title: Product Manager
   intro: > 
-    Commercially aware product manager with wide range of experience and exposure across a wide range of disciplines. 
-    Comfortable working across a broad range of areas - technical , commercial , sales , marketing & CxO level for national and global organisations as a single contributor or in leadership roles.
+    Commercially aware product manager with a wide range of experience and exposure across a wide range of disciplines. 
+    Comfortable working across a broad range of areas - technical, commercial, sales, marketing & CxO levels for national and global organisations as a single contributor or in leadership roles.
      
 contact:
   #address: 123 Main St, Test, CA 91234
