@@ -42,6 +42,12 @@ titles_from_headings:
   strip_title: true
   collections: true
 
+header_pages:
+  - resume.html
+
+
+code_block_max_height: 500px
+
 defaults:
   - scope:
       path: ""
