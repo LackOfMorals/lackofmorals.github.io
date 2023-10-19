@@ -1,0 +1,33 @@
+theme: default
+header:
+  name: Jonathan Giffard
+  suffix: MCSA
+  display_contact_info: true
+  current_title: Product Manager
+  intro: > 
+    Commercially aware product manager with wide range of experience and exposure across a wide range of disciplines. 
+    Comfortable working across a broad range of areas - technical , commercial , sales , marketing & CxO level for national and global organisations as a single contributor or in leadership roles.
+     
+contact:
+  #address: 123 Main St, Test, CA 91234
+  #phone: (123) 456-7890
+  email: jgiffard@giffardfamily.com
+sections:
+  experience:   true
+  education:    true
+  projects:     false
+  skills:       false
+  recognition:  false
+  associations: false
+  interests:    false
+  links:        false
+  social_links: false
+social:
+  #Website:    http://chadbaldwin.net
+  #Twitter:    https://twitter.com/chad_baldwin
+  #GitHub:     https://github.com/chadbaldwin
+  #Dribbble:  https://dribbble.com/chadbaldwin
+  #FaceBook:  https://facebook.com/iamchadbaldwin
+  #LinkedIn:   https://linkedin.com/in/chadbaldwin
+  #Instagram: https://instagram.com/chad_baldwin
+  #Medium:    https://medium.com/@chad-baldwin
