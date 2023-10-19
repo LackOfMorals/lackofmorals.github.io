@@ -16,7 +16,7 @@ contact:
 sections:
   experience:   true
   education:    true
-  projects:     false
+  projects:     true
   skills:       false
   recognition:  false
   associations: false

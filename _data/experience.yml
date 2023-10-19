@@ -29,30 +29,72 @@
     - "Collaborated closely with sales teams leading to closing the largest ever deal for Capella ( > $1 million total contract value )"
     - "Provided input into several PM processes leading to the introduction of lean PRDs & lean canvas to help make investment decisions and Level of Effort vs Customer Value matrix to assist with prioritization. Evangelised working closely with Engineering / UX Designers during early phases - Sprint 0 for discovery , goals, and help establish alignment on what we are and why."
 
+- company: "Webroot"
+  summary: ""
+  logo: "/img/company/sophos.png"
+  url: "https://www.webroot.com/"
+  positions:
+  - title: "Senior Product Manager"
+    startdate: 2018-09-01
+    enddate: 2022-05-31
+    summary: "Responsible for communicating and executing against the vision and strategy for Webroot cloud technologies across the companies various channels globally"
+    projects: 
+    - "New threat management system for Analysts"
+    - "Internal and External APIs used by various systems to provide endpoint security"
+    - "Cloud Cost optimisations"
+  - title: "Senior Product Manager"
+    startdate: 2017-01-01
+    enddate: 2018-08-31
+    summary: "Endpoint security"
+    projects: 
+    - "Migration to use SHA256 hashes from MD5" 
+    - "Extend detection to cover Linux subsystem on Windows"
+    - "Detection of script based malware"
 
-#- company: "Webroot"
-#  summary: ""
-#  logo: "/img/companylogos/aa.jpg"
-#  url: "https://www.couchbase.com/"
-#  positions:
-#  - title: "Principal Product Manager"
-#    startdate: 2015-10-01
-#    enddate: 2022-05-13
-#    summary: "Primarily working with SQL, C# and PowerShell; improved products by working with development and product teams to engineer back-end services, build databases and design schemas. Implemented ETL processes for importing, cleansing and normalizing automotive dealership data to be processed by our proprietary calculation engine."
-#    projects:
-#      - "Collaborated with 3rd party data providers to build integrations for tasks such as SalesForce data syncing, email/address sanitization, data appends and ETL processes"
-#      - "Helped maintain and improve an elaborate calculation engine written in SQL to support new features and settings"
-#      - "Tuned existing SQL code to run faster and more efficiently reducing both runtime and resource usage through query and index tuning by analyzing execution plans, server statistics, dynamic management views (DMV's), SQL Server First Responder Kit and SentryOne Plan Explorer"
-#      - "Worked on many ETL projects using SQL, C#, PowerShell and batch scripting, and SSIS packages"
-#      - "Contributed to complex back-end services written in C# utilizing technologies such as Elasticsearch, RabbitMQ, Redis, Amazon SNS, Amazon SES, Amazon S3, Docker, Selenium web scraping, and handling files via FTP"
-#      - "Experience with using collaboration and CI/CD tools including Jenkins, Slack, Upsource, Jira and Confluence"
-#      - "Worked primarily with SQL Server versions 2008, 2012, 2014 practicing good HA/DR policies, using replication and Always On availability groups"
-#      - "Used AWS tools for troubleshooting, logging and deployment such as CloudWatch, CodeDeploy, and managing/monitoring servers through EC2"
-#  - title: "Senior IT Support Analyst"
-#    startdate: 2012-06-04
-#    enddate: 2015-10-01
-#    summary: "As an IT Support Analyst I was responsible for quickly triaging and troubleshooting issues in client data. Worked directly with clients over the phone to assist fixing data delivery issues. Built systems and tools to automate detection of bad data quality and reduce the work needed to fix."
-#    projects:
-#      - "Worked heavily with SSRS to write custom reports for all business needs ranging from simple tablix reports to intricate reports with benchmarks, charts, and complex expressions"
-#      - "Established a reporting data warehouse to ensure consistent metrics across all reports"
+- company: "Sophos"
+  summary: ""
+  logo: "/img/company/sophos.png"
+  url: "https://www.sophos.com/"
+  positions:
+  - title: "Senior Product Manager"
+    startdate: 2015-06-01
+    enddate: 2016-12-31
+    summary: "Product Manager in Endpoint security group"
+    projects: 
+    - "Following the acquistion of Surfright, tasked by SVP to take their HitMan Pro product, rebrand and launch as Sophos Clean"
+    - "PM lead for Intercept X that enables Sophos customers to increase their protection against exploits and ransomware. Sold to 8,000 customers in first year. Intercept-X went onto win CRNs Tech Innovator 2017 award."
 
+- company: "Novell"
+  summary: ""
+  logo: "/img/company/novell.png"
+  url: "https://www.novell.com/"
+  positions:
+  - title: "Senior Product Manager"
+    startdate: 2012-06-01
+    enddate: 2015-05-31
+    summary: "Product Manager for security products in Novell ZENWorks portfolio"
+    projects:
+    - "Senior Product Manager for ZENworks Configuration Management end user security products; Patch Management, Endpoint Security and Full Disc Encryption"
+    - "Moved Full Disc Encryption from OEM to IP purchase"
+    - "Worked with multiple development teams in Utah and Bangalore using Agile Scrum techniques"
+    - "Analyst relation work with Gartner and Forrester. Lead role for Magic Quadrant and Wave reports"
+    - "Drive solution awareness using press reviews, social media and blogging"
+  - title: "Product Manager"
+    startdate: 2008-09-01
+    enddate: 2012-05-30
+    summary: "Product Manager in team for Novell ZENWorks"
+    projects:
+    - "PM for Novell Service Desk, taking it from feasibility all the way to launch. Included building Go To Market plans and execution thereof. Novell Service Desk ramped to $1 million ARR"
+    - "Took Novell Service Desk through independant certification process for ITIL processes"
+    - "Started feasibility study into production of Novell ZENworks Configuraiton Management physical appliance with the evidence causing a pivot to launching Virtual Machine offering. This became the de facto deployment choice."
+    - "Authored - Why Choose Novell ZENworks? - competitive document which became the baseline for all future competitive content"
+  - title: "Product Marketing Manager"
+    startdate: 2007-07-01
+    enddate: 2008-08-31
+    summary: "EMEA Product Marketing Manager for Novell ZENworks Configuration Management"
+    projects:
+    - "Recognized for successful presence at InfoSecurity Show in 2008 and European campaign for software asset management"
+    - "Launched ZENworks social media presence on Twitter and Facebook"
+    - "Led competitive workshops for NA / EMEA partners"
+    - "Created and presented content for sales enablement"
+    - "Authored whitepapers and blogs"

@@ -1,17 +1,12 @@
-#- project: chadbaldwin.net
-#  duration: Dec, 2020 &mdash; Present
-#  role: Writer
-#  url: "https://chadbaldwin.net"
-#  description: >
-#    I've always enjoyed teaching, and I love learning new technologies and sharing tips and tricks
-#    I've picked up over the years. So back in Dec 2020 I decided to build my own blog.
-
-#- project: Schema Search, utility stored procedure
-#  role: Developer
-#  duration: 2015 &mdash; Present
-#  url: "https://github.com/chadbaldwin/SQL"
-#  description: >
-#    "Schema Search" as I've been calling it, is a stored procedure that focuses on searching the
-#    contents of system objects in order to help my understanding of the SQL Server system tables.
-#    Eventually, it turned into a tool that I use, at minimum, on a daily basis. The project is
-#    hosted on GitHub and is licensed for anyone to use or contribute!
+- project: Patent Application
+  duration: 2018 &mdash; 2021
+  role: Inventor
+  url: "https://patents.google.com/patent/US20190319978A1/en"
+  description: >
+    Examples of the present disclosure describe systems and methods for determining exploit prevention software settings using machine learning. 
+    In aspects, exploit prevention software may be used to identify processes executing on a computing device. 
+    Metadata for the identified processes may be determined and transmitted to a machine learning system. 
+    The machine learning system may use an exploit prevention model to determine exploit prevention configuration settings for each of the processes, and may transmit the configuration setting to the computing device. The computing device may implement the configuration settings to protect the processes and monitor the stability of the protected processes as they execute. 
+    The computing device may transmit the stability data to the machine-learning system. 
+    The machine-learning system may then modify the exploit prevention model based on the stability data.
+    
