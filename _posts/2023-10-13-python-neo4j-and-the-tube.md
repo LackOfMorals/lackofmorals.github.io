@@ -29,7 +29,7 @@ I've already created an account and obtained an API key to access Tfl API. If yo
 Lets use some Python code that's going to connect to Tfl API and get the list of Tube lines. 
 
 
-```
+```python
 # Use python requests libary for our comms with Tfl
 from requests import Request, Session
 
@@ -74,7 +74,7 @@ if tfl_tube_lines.json():
 
 Assuming everything works, you will get output like from this from Tfl
 
-```
+```python
 [
   {
     "$type": "Tfl.Api.Presentation.Entities.Line, Tfl.Api.Presentation.Entities",
@@ -117,7 +117,7 @@ Lets expand the code to go get those stations on a Tube line.
 
 Rather than print the response after the check to see if we got json back, we will iterate our way through each Tube line entry to obtain the Tube line id.  This is used with the Tfl endpoint that returns stop points, or stations, for a line.  We'll then print the output again to see what we have.
 
-```
+```python
 # If we got JSON back
 if tfl_tube_lines.json():
     for entry in tfl_tube_lines.json():
@@ -142,7 +142,7 @@ if tfl_tube_lines.json():
 
 If all goes ok, and watch for those Python indents, our output will look similar to this
 
-```
+```python
 "status": true,
     "id": "940GZZLUHSC",
     "commonName": "Hammersmith (H&C Line) Underground Station",
@@ -173,7 +173,7 @@ If you look at the station list a bit more closely, we find two problems.
 
 The first  is a tube line can have several  routes - you can see this on the map where the Northen Line splits.
 
-![London Tube Stations](/images/tubeMap.png)
+![London Tube Stations](/img/tflTube/tubeMap.png)
 
 Our second is the stations are not in sequence for a route on a line. This will make connecting them together tricky.  
 
@@ -194,7 +194,7 @@ Change the code starting at the line 'if tfl_tube_line_stations.json():'
 
 As this is Python - think indents !
 
-```
+```python
         if tfl_tube_line_stations.json():
             for station_entry in tfl_tube_line_stations.json():
 
