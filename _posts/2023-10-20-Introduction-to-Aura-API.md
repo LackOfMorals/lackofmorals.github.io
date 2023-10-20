@@ -6,32 +6,31 @@ Neo4j DB as a Service ( DBaaS ) , Aura, now has a RESTful like API for provision
 
 At the time of writing ( Friday 20th October ) the API is for Aura Enterprise customers and I'm reliably informed that the audience will be expanded in the next couple of months.
 
-To show how the Aura API can be used, we'll create a Python application that creates a new Aura instance. 
+To show how the Aura API can be used, we'll create a basic Python application that creates a new Aura instance. 
 
-This is not a short read so go get a hot beverage and strap in for some rough and ready Python coding.
+We'll walk through the various bits of Python code before putting it together.  If you just want the code, jump to the bottom of this post where you can download it. 
+
+This is not a short read and you would be advised to have a bio break, get a hot beverage and settle in for some rough and ready coding. 
 
 
 ## To the Aura Console
-To get started with the API you'll need to obtain a client id and client secret.  I'm assuming that you already have an Aura Enterprise account.
+To get started with the Aura API you'll need to obtain a client id and client secret.  BTW - I'm assuming that you already have an Aura Enterprise account.
 
 After you have logged in , drive the mouse pointer to the top right of the Aura of the console and click on your account name
 
 ![Aura Account](/img/aura/auraConsoleAcccount.png)
 
-Then choose 'Account Details' and then 'Create'.  This will bring up the dialog for a new client id and client secret.  Make sure you copy these down and store them securely.
+Then choose _Account Details_ and then _Create_.  This will bring up the dialog for a new client id and client secret.  Make sure you copy these down and store them securely.
 
 Armed with these two pieces of information we can now move onto the Aura API.
 
-And now for some Python
 
 ## Let me see some ID
-Aura API is protected against people with flexbile morals by an OAuth token which is obtained by using the client id and client secret.  OAuth is a well documented mechanism to use for this and covering that is beyond the confines of this blog post.  Go Google it if you're interested. 
+Aura API is protected against people with flexbile morals by a time limited OAuth token which is obtained by using the client id and client secret.  OAuth is a well documented mechanism to use for this and covering that is beyond the confines of this blog post.  Go Google it if you're interested. 
 
-Once we have an OAuth token, and it's only valid for a limited time, we can go ahead and do provisioning.  Important to note that you must send the OAuth token with _every_ request that you make.
+Once we have an OAuth token, and it's only valid for a limited time, we can go ahead and use the Aura API.  
 
-We need get our magic ticket before anything can be done.  
-
-Hold off for now to run this - we'll put everything together at the end
+**Important** You must send the OAuth token with _every_ request that you make.
 
 ```
 def get_oauth_token(aura_client_id,aura_client_secret):
@@ -67,13 +66,18 @@ def get_oauth_token(aura_client_id,aura_client_secret):
     return response.json()["access_token"]
 ```
 
+Now we can get the OAuth token, what's next?
+
+
 ## Endpoints , oh the endpoints
- If you did take a look at the Aura documentation, you'll notice that there's several endpoints that can be used for various operations. For our purposes, we'll need to use two 
+ If you did take a look at the Aura documentation, you'll notice that there's several endpoints that available for various operations. For our purposes, we'll need to use just two:-
 
  -  /tenants
  -  /instances
 
- We'll write a function that takes an Aura endpoint URL, the HTTP method, oauth token and then return the response as a Python dictionary. 
+As we have two endpoints to use, it will be helpful to have a function that takes care of network communication otherwise we'll be duplicating code.  Also you can use this yourself , although you may want to make some improvements.
+ 
+ We'll write a function that takes the Aura endpoint URL we want to talk to, the HTTP method, our oauth token and then return the response as a Python dictionary. 
 
 ```
 def call_endpoint(aura_endpoint, method, aura_token):
@@ -96,10 +100,12 @@ def call_endpoint(aura_endpoint, method, aura_token):
     return response.json()
 ```
 
-## Tenants
-Creating an instance requires a number of items to be given , one of which is the ID of the tenant for the instance.  We'll use the /tenants endpoint which returns all of the tenants and look up the tenant ID based on the tenant name we want to use.  To find the tenant name , just look in the Aura console at top.  Using the screenshot earlier, this would be 'MyTenant' 
+## You can't park there
+Creating an instance requires a number of items to be given , one of which is the ID of the tenant for the instance. This makes sure we create the Aura instance in the right place. Could be awkward if they started turning up in random tenants within our Aura organisation;  the explaining would be needed. 
 
-Lets write a function to get the tenant list and return the id based on the supplied name
+We'll use the /tenants endpoint which returns all tenants with ID.  With that we can look up the tenant ID based on the tenant name that we want to use. To find the tenant name , just look in the Aura console at top.  Using the screenshot in this post, this would be 'MyTenant' 
+
+Lets write a function to get the tenant list and return the id based on the tenant name.
 
 ```
 def get_tenant_id(tenant_name,token):
@@ -121,14 +127,14 @@ def get_tenant_id(tenant_name,token):
 ```
 Notice that we're passing the token , something that we'll need to do for every endpoint that we use
 
-With the ID, we can create the instance. 
+With the ID, we can now create the Aura instance. 
 
 You can guess what's coming next
 
 ## Yet another function
-This will create an Aura instance to a set specification.  We'll just need to pass the tenant name, oauth token and the name we want for our new instance. 
+This will create an Aura instance to a pre-determined specification.  We'll  need to pass the tenant name, oauth token and the name we want for our new instance. 
 
-To use the endpoint for creating an instancem, we will need
+To use the endpoint for creating an instance, we will need
 
 - Instance name
 - The cloud provider
@@ -220,4 +226,4 @@ main()
 
 If you've kept going to the end, I hope this has been useful to you
 
-To demonstrate what can be done with the Aura API, we've create a CLI tool. You can download the Aura CLI from [Neo4j Labs](https://neo4j.com/labs/aura-cli/)
+To demonstrate what can be done with the Aura API, we've built a CLI tool for Aura on top of it. You can download the Aura CLI from [Neo4j Labs](https://neo4j.com/labs/aura-cli/)
