@@ -2,7 +2,7 @@
 
 ![Layer Cake](/img/tflTube/layered-cake.png)
 
-[In Epsode 1](https://www.pm50plus.com/2023/10/13/python-neo4j-and-the-tube.html) I walked you through getting information from Tfl API ( transport for london ) and using that to start building a graph in Neo4j.  Before we go much furhter in this endeavour, it's time to look at how we're approaching the architecture of this code and look at a couple ( there's more I know ) of items that need looking at.
+[In Epsode 1](https://www.pm50plus.com/2023/10/13/python-neo4j-and-the-tube.html) I walked you through getting information from Tfl API ( transport for london ) and using that to start building a graph in Neo4j.  Before we go much further in this endeavour, it's time to look at how we're approaching the architecture of this code and look at a couple ( there's more I know ) of items that need looking at.
 
 Lets start with the high level structure of the code which I going to do in layers, rather like a cake.  And who doesn't like Layer Cake or the [film](https://en.wikipedia.org/wiki/Layer_Cake_(film)) of the same name?
 
