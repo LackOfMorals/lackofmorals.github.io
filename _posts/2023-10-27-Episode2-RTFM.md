@@ -186,7 +186,7 @@ Success - it's even quicker now.
 
 ## Yes, and I'll make it all worthwhile
 
-The completed code with speed up changes is here:- [Episode3](/code/2023-10-27_code.py )
+The completed code with speed up changes is here:- [Episode2](/code/2023-10-27_code.py )
 
 It was a long read this week - thanks for hangin in - and I still have not got to writing the Request & response layer but I've learnt something new resulting in a speed up.  Turns out the manuals are useful !
 
