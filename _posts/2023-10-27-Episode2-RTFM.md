@@ -95,7 +95,7 @@ The dictionary will look like this  [{ "id":""", "name": ""}]
 
 To illustrate, lets look at this example which creates two stations in a single request
 
-```
+```python
 
 #  Define the dictionary with the two stations 
 list_of_stations = [ {"id":"1", "name":"station1"}, {"id":"2", "name":"station2"}]
