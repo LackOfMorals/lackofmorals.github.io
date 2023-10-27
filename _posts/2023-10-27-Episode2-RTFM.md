@@ -8,6 +8,7 @@ Lets start with the high level structure of the code which I going to do in laye
 
 
 ## Because you have to make this life livable
+
 The top layer of our cake is the Frontend.  This is what a user will interact with;  maybe it's a browser, a CLI or something else. Underneath that will be, what I'm calling, an outcomes layer.  Outcomes execute the functionality that has been exposed in the Frontend  e.g Find a station, get the shortest route between two stations, update station information, update line information  etc... This where we will find the business logic.  To deliver outcomes, we'll need to use data and that's the responsibility of the Data Acccess layer which will be moving data out of TfL API and also to / from Neo4j. To serve the needs of the outcome layer, we'll need data from Tfl and Neo4j graph database via a series of CRUD type interfaces.  Finally, at the bottom, we find our low level communications that is making requests and receiving responses with TfL API and Neo4j. 
 
 ![Code cake](/img/tflTube/CodeCake.png)
