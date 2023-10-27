@@ -76,33 +76,41 @@ if tfl_tube_lines.json():
         # Send the request to Tfl
         tfl_tube_line_stations = tfl_session.send(tfl_request)
 
+
         if tfl_tube_line_stations.json():
+            list_of_stations = []
             for station_entry in tfl_tube_line_stations.json():
                 # These are the properties to add to our node entry in Neo4j
-                station_name = station_entry['commonName']
-                station_id = station_entry['id']
+                # Which we need in the dictionary that will be sent
+                # with the Cypher statement
 
-                # Detail to connect to our Neo4j database
-                neo4_uri = 'bolt://127.0.0.1:7687'
-                neo4j_user = 'neo4j'
-                neo4j_password = '<YOUR NEO4J DB PASSWORD>'
+                station_data = { "id":station_entry['id'], "name":station_entry['commonName']  }
 
-                # Build the Cypher statement we will use to create the station entry as a node
-                # We're using MERGE rather than CREATE to avoid creating duplicate stations.
-                # I've split it across several lines to try and make it easier to read
-                cypher_statement = 'MERGE ( `' + station_id + '`:Station' + \
-                                   ' { id:' + '"' + station_id + '"' + \
-                                   ', name:' + '"' + station_name + '"' + \
-                                   '})'
+                # Add to the list
+                list_of_stations.append(station_data)
 
-                # Connect to Neo4j
-                neo4jDB_connection = GraphDatabase.driver(neo4_uri, keep_alive=True, auth=(neo4j_user, neo4j_password))
+            # Now ready to send to Neo4j
+            # Detail to connect to our Neo4j database
+            neo4_uri = '<YOUR NEO4J CONNECTION URL>'
+            neo4j_user = '<YOUR NEO4J USERNAME>'
+            neo4j_password = '<YOUR NEO4J PASSWORD>'
 
-                # Send the Cypher statement
-                neo4j_response = neo4jDB_connection.execute_query(cypher_statement)
+            # Build the Cypher statement we will use to create the station entry as a node
+            # We're using MERGE rather than CREATE to avoid creating duplicate stations
+            # and using a batch
+            cypher_statement = 'WITH $stations as batch UNWIND batch as station MERGE ( s:Station {id: station.id, name: station.name})'
 
-                # Check the response
-                print(neo4j_response.summary.metadata)
+            # Connect to Neo4j
+            neo4jDB_connection = GraphDatabase.driver(neo4_uri, keep_alive=True, auth=(neo4j_user, neo4j_password))
 
+            # We'll explicitly set the database to 
+            neo4jDB_connection.session(database="Neo4j")
+    
+            # Send the Cypher statement
+            neo4j_response = neo4jDB_connection.execute_query(cypher_statement, stations=list_of_stations)
 
+            # Check the response
+            print(neo4j_response.summary.metadata)
+
+                
 
