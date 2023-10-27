@@ -1,26 +1,24 @@
-# Everything counts in large amounts
+# Episode 2: I'm always willing to learn
 
 ![Layer Cake](/img/tflTube/layered-cake.png)
 
-Last time out I walked you through getting information from Tfl API ( transport for london ) and using that to start building a graph in Neo4j.  Before we go much further with this endeavour, it's time to look at how we're approaching the architecture of this code.
+[In Epsode 1](https://www.pm50plus.com/2023/10/13/python-neo4j-and-the-tube.html) I walked you through getting information from Tfl API ( transport for london ) and using that to start building a graph in Neo4j.  Before we go much furhter in this endeavour, it's time to look at how we're approaching the architecture of this code and look at a couple ( there's more I know ) of items that need looking at.
 
-I'm going to structure the code in layers rather like a cake,  and who doesn't like Layer Cake or the [film](https://en.wikipedia.org/wiki/Layer_Cake_(film)) of the same name?
+Lets start with the high level structure of the code which I going to do in layers, rather like a cake.  And who doesn't like Layer Cake or the [film](https://en.wikipedia.org/wiki/Layer_Cake_(film)) of the same name?
+
+
+## Because you have to make this life livable
+The top layer of our cake is the Frontend.  This is what a user will interact with;  maybe it's a browser, a CLI or something else. Underneath that will be, what I'm calling, an outcomes layer.  Outcomes execute the functionality that has been exposed in the Frontend  e.g Find a station, get the shortest route between two stations, update station information, update line information  etc... This where we will find the business logic.  To deliver outcomes, we'll need to use data and that's the responsibility of the Data Acccess layer which will be moving data out of TfL API and also to / from Neo4j. To serve the needs of the outcome layer, we'll need data from Tfl and Neo4j graph database via a series of CRUD type interfaces.  Finally, at the bottom, we find our low level communications that is making requests and receiving responses with TfL API and Neo4j. 
 
 ![Code cake](/img/tflTube/CodeCake.png)
 
-The top layer of our cake will be the Frontend that a user will interact with.  This could be a web browser based UX , a terminal CLI, a more traditional app or whatever we need. Underneath that will be, what I'm calling, an outcomes layer.  In this case, outcomes are the functionality e.g Find a station, get the shortest route between two stations, update station information, update line informationetc..  that has been exposed to the user in the frontend layer and need to be delivered; there's a lot of business logic here.  To serve the needs of the outcome layer, we'll need data from Tfl and Neo4j graph database and that will be achieved by the next layer which will offer up the data in a series of CRUD interfaces.  Finally, at the bottom, we find a layer who sole purpose is to take care of the requests and responses with Tfl and Neo4j. 
-
-
-
-
-
-
 This structure allows us to code ( and test ) each bit seperately.  We can mockup the interfaces so that we can work on a higher layer without needing the ones below it to be completed.  In summary , its flexible.
 
-Where to start though?  Lets pick the bottom (c)[Finbarr Saunders](https://viz.fandom.com/wiki/Finbarr_Saunders)
+ 
+Recall I mentioned earlier about a couple of issues?  Well some of those are lurking around request / responses with Neo4j and we really should address those before we go any further. 
 
 
-## But before you come to any conclusions
+## When you've got something to teach
 
 Recall this snip of code from Episode 1
 
@@ -55,33 +53,34 @@ for station_entry in tfl_tube_line_stations.json():
                 print(neo4j_response.summary.metadata)
 ```
 
-It loops around the list of stations we obtained from the Tfl API and placess them into Neo4j one at a time.  There's approx 272 tube stations so that's the number of individual requests that will be made. 
+This loops around the list of stations we obtained from the Tfl API and places them into Neo4j, one at a time.  There's approx 272 tube stations which means we are making the same number of requests to Neo4j.
 
-With a locally installed version of Neo4j e.g Desktop then it's unlikely you noticed how inefficient this is; there's no visible slowness and everything speeds along.  Try this with a remove database where the connection has many hops and latency varies, then it is a different matter.  This is also why you always try and colocate an application with it's database. 
+With a locally installed version of Neo4j e.g Desktop then it's unlikely you will notice how inefficient this is; there's no visible slowness and everything speeds along.  But try this with a remote database where the connection has many hops and latency is playing a part , then it is a different matter.  This is also why you should always try and colocate an application with it's database. 
 
 
-## Tonight I'm in the hands of fate
+## Because I like to practice what I preach
 
-We don't need to be the passenger with someone else behind the wheel.  We can  improve the situation ourselves by implementing two of the best practices for performance given in the [Neo4j manual](https://neo4j.com/docs/python-manual/current/performance/) for the Python driver. 
+We can  improve the situation ourselves by implementing two of the best practices for performance given in the [Neo4j manual](https://neo4j.com/docs/python-manual/current/performance/) for the Python driver. 
 
-- Use query parameters
-When the cypher statement is put together, I've concatening values together 
+###Use query parameters
+
+When the Cypher statement is put together, I am concatening values together
 ```python
 cypher_statement = 'MERGE ( `' + station_id + '`:Station' + \
                     ' { id:' + '"' + station_id + '"' + \
                     ', name:' + '"' + station_name + '"' + \
                     '})'
 ```
-This exposes us to Cypher injections ( bad thing ) and does not allow leveraging of the database query cache.  We can re-write this to use parameters like this
+This exposes us to potential Cypher injections ( a bad thing ) and does not allow for leveraging of the database query cache.  We can re-write this to use parameters like this
 
 ```
  cypher_statement = 'MERGE ( s:Station {id: $station_id, name: $station_name} )'
 ```
 
-Which has the added bonus of being more readable. 
+Which has the added bonus of being more readable.
 
 
-- Batch data creation
+### Batch data creation
 
 Moving to use batch queries will provide the biggest performance improvement.  Here we define a Cypher statement that also includes all of the information that we want to place into the database in a single request[^1].
 
@@ -91,25 +90,25 @@ cypher_statement = 'WITH $stations as batch UNWIND batch as station MERGE ( s:St
 ```
 $stations will be set to hold a Python dictionary at the time when we use .execute_query method from the Neo4j Python Driver. 
 
-The dictionary will look like this  [{ id: '', 'name: ''}] 
+The dictionary will look like this  [{ "id":""", "name": ""}]
 
-To illustrate, look at this example which creates two stations
+To illustrate, lets look at this example which creates two stations in a single request
 
 ```
 
 #  Define the dictionary with the two stations 
 list_of_stations = [ {"id":"1", "name":"station1"}, {"id":"2", "name":"station2"}]
 
-}
  # Send the Cypher statement
                 neo4j_response = neo4jDB_connection.execute_query(cypher_statement, stations=list_of_stations)
 ```
 
-Fairly straight forward so far.  
+Ok, lets go apply this to the code from Episode 1 to confirm if we do get a speed up. 
 
-There's always a catch and it comes in the data structure that comes back from Tfl API; it does not match what we need.  So some transformation will be required. 
 
-We'll build the list like this
+##Strange highs and strange lows
+
+The dictionary that will contain the list of stations to put into Neo4j needs creating.  We'll loop our way around the response back from TfL API and build the dictionary out like this.
 
 ```python
         if tfl_tube_line_stations.json():
@@ -125,10 +124,8 @@ We'll build the list like this
                 list_of_stations.append(station_data)
 ```
 
-and then shift the code that talks to Neo4j left.
+and then by shifting the code that talks to Neo4j back one indent ( love Python and it's indents ) which takes it out of the loop, we have
 
-
-We now have
 
 ```python
 if tfl_tube_lines.json():
@@ -185,15 +182,15 @@ if tfl_tube_lines.json():
 
 
 ```
+Success - it's even quicker now. 
 
 ## Yes, and I'll make it all worthwhile
 
 The completed code with speed up changes is here:- [Episode3](/code/2023-10-27_code.py )
 
+It was a long read this week - thanks for hangin in - and I still have not got to writing the Request & response layer but I've learnt something new resulting in a speed up.  Turns out the manuals are useful !
 
-It was a long read this week - thanks for hangin in - and I still have not got to writing the Request & response layer but I've learned something new.  Turns out the manuals are useful !
-
-Until next time, stay safe - bonus for the name of the band whose song lyrics I have used. 
+Until next time, stay safe - bonus for the name of the band and the song title that has been sprinkled in todays post. 
 
 
 [^1]: If you're inserting a lot of information, then break this into multiple requests or use _neo4j-admin database_ import command
