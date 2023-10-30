@@ -1,4 +1,12 @@
-# Episode 2: I'm always willing to learn
+---
+layout: post
+title: "I am always willing to learn"
+description: "Speed up tips with Neo4j Python driver and code structure for Tfl Neo4j app"
+tags: Neo4j Python 
+---
+
+
+# Episode 2: I am always willing to learn
 
 ![Layer Cake](/img/tflTube/layered-cake.png)
 
