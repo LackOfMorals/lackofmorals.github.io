@@ -6,7 +6,7 @@ tags: Neo4j Python REST
 ---
 
 
-# Episode 2: Like what you're done with that rabbit hole
+# Episode 3: Like what you're done with that rabbit hole
 
 
 
@@ -116,7 +116,7 @@ My goal of using fewer tfl calls was complete.
 
 ## The best way to explain it is to do it
 
-Nothing is that straight fowardd though and this new approach required a re-write of our Python code to wrangle the response to get the information we need. The Psuedo code looks like this 
+Nothing is that straight foward though and this new approach required a re-write of our Python code to wrangle the response to get the information we need. The Psuedo code looks like this 
 
 ```Python
 
@@ -146,7 +146,7 @@ There's some basic error handling included when making network calls with tfl an
 ### No, no! Sentence first—verdict afterwards.”
 If you run the code you should have the entire London Tube network in Neo4j.  There's more code work to move further towards the pattern I want to use but the basics are there. 
 
-Thanks for joining me on this journey - it's looking increasingly like it's not going to be the faster trip but we are dealing with the U.K public transport system and nothing happends quickly with that.
+Thanks for joining me on this journey - it's looking increasingly like it's not going to be the fastest trip but we are dealing with the U.K public transport system and nothing happens quickly in that domain.
 
 Until the next time, laters
 
