@@ -3,6 +3,15 @@ hr {
   margin-bottom: 20px;
 }
 
+@font-face {
+  font-family:'Nunito Var';
+  src:url('/static/Nunito.var.v2.woff2') format('woff2-variations');
+  font-display:swap;
+  font-weight: 200 1000;
+  }
+
+
+
 /* Post navigation links */
 .post_navi {
   display: flex;
