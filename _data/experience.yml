@@ -8,9 +8,10 @@
     startdate: 2022-07-01
     summary: 
     projects:
+    - "PM ownership of GraphQL and CLIs at Neo4j."
     - "Working with stakeholders, authored API Design and Style Guide to bring consistent experience across all internal and external APIs at Neo4j."
     - "Authored and drove alignment of PM Charter that establishes the mission, principles, operating practices and measures for the PM group at Neo4j."
-    - "Led aura cli out of hackathon and into adoption by Neo4j Labs to further the experiments around demand for CLI from our customers."
+    - "Led aura cli out of a hackathon and into adoption by Neo4j Labs to further the experiments around demand for CLI from our customers."
    
 - company: "Couchbase"
   summary: ""
