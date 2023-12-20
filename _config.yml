@@ -26,7 +26,8 @@ social-links:
 #########################################################################################
 ######### Nothing below needs to be changed (unless you know what you're doing) #########
 #########################################################################################
-theme: "minima"
+# theme: "minima"
+remote_theme: pages-themes/minimal@v0.2.0
 
 #rss: rss
 
@@ -35,6 +36,7 @@ kramdown:
     disable: true
     
 plugins:
+  - jekyll-remote-theme
   - jekyll-feed
   - jekyll-sitemap
 
