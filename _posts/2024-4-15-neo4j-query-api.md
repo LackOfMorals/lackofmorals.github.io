@@ -7,7 +7,7 @@ tags: React UX PM DevEx
 
 # We built a thing
 
-I've been lucky enough to work with our Neo4j Engineers to create a new API for Neo4j that allows the execution of Cypher statements across the network. As to it's name, there was thought given ( briefly ) to asking the Internet but that doesn't [always turn out well](https://en.wikipedia.org/wiki/Boaty_McBoatface#Naming). In the end we went with the simple approach of naming it after what it does and called it the **Query API**. It's available now with Neo4j 5.19 and will be coming to Aura , our cloud service, in early Summer this year.  For those of you who are using the existing HTTP API, it's not retiring anytime soon and will be kept updated with fixes for critical defects and security vulnerabilities.  You'll be able to choose which one to use.
+I've been lucky enough to work with our Neo4j Engineers to create a new API for Neo4j that allows the execution of Cypher statements in the form of network requests without requiring a driver to be installed. There was thought given ( briefly ) to asking the Internet for a what to call this but that doesn't [always turn out well](https://en.wikipedia.org/wiki/Boaty_McBoatface#Naming). In the end we went with the simple approach of naming it after what it does and called it the **Query API**. It's available now with Neo4j 5.19 and will be coming to Aura , our cloud service, in early Summer this year.  For those of you who are using the existing HTTP API, it's not retiring anytime soon and will be kept updated with fixes for critical defects and security vulnerabilities.  You'll be able to choose which one to use.
 
 ## Say hello to the new Query API
 Since the early days of Neo4j it has been possible to use the [HTTP API](https://neo4j.com/docs/http-api/current/) , to send Cypher and get back the results without requiring installation of a driver.  The current HTTP API has proven popular and provide several benefits for our Developer community:-
@@ -16,7 +16,7 @@ Since the early days of Neo4j it has been possible to use the [HTTP API](https:/
 - Avoids having to install and maintain Drivers
 - Works well where the rich feature set offered by Drivers is not required.
 
- Although the HTTP API has withstood the passage of time rather well, it is not entirely immune to ageing.   After much consideration, it was decided to invest in building a new API that retained the benefits of the HTTP API, designed with modern architectural patterns and technology, be consistent in its usage, and work with Aura, something the HTTP API does not do. I'm forever greatful to the Engineers who made that feautre list a reality
+ Although the HTTP API has withstood the passage of time rather well, it is not entirely immune to ageing.   After much consideration, it was decided to invest in building a new API that retained the benefits of the HTTP API, designed with modern architectural patterns and technology, be consistent in its usage, and work with Aura, something the HTTP API does not do. I'm forever greatful to the Engineers who made that feature list a reality
  
 Lets start to explore the approach taken by the Query API with an example, based on our Movies sample dataset.
 
@@ -25,17 +25,17 @@ Lets start to explore the approach taken by the Query API with an example, based
 
 To try out the Query API you will need the following.
 
-- Neo4j 5.19 running locally ( community or Enterprise ). [Neo4j Desktop](https://neo4j.com/download/) or a [Docker container](https://neo4j.com/docs/operations-manual/current/docker/) will be easiest way to do this
+- Neo4j 5.19 running locally ( community or Enterprise ). Using [Neo4j Desktop](https://neo4j.com/download/) or a [Docker container](https://neo4j.com/docs/operations-manual/current/docker/) will be easiest way to do this
 - The username is neo4j with the password set to password
 - The database with the Movies Graph Database dataset is called neo4j
 - You have curl installed and are somewhat familiar with it
 
-The  Query API is off by default so we will need to turn it on.  Shtudown Neo4j and use your favourite text editor to open the neo4j.conf file.  WHen you have the neo4j.conf file open, search for this line
+The Query API is off by default so we will need to turn it on.  Shtudown Neo4j and use your favourite text editor to open the neo4j.conf file.  WHen you have the neo4j.conf file open, search for this line
 
 ```TEXT
 server.http.enabled=true
 ```
-Immediately after this line , add the line to enable the Query API. 
+Immediately after this line , add the line to enable the Query API.
 
 - If you are using Neo4j community , add  
 
