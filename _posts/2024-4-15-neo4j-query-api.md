@@ -2,7 +2,7 @@
 layout: post
 title: "Introducing the new Query API in Neo4j 5.19"
 description: ""
-tags: React UX PM DevEx
+tags: Neo4j PM DevEx QueryAPI
 ---
 
 # We built a thing
