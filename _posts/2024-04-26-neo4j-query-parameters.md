@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Using parameters with Neo4j Query API"
+title: "Using parameters with the Neo4j Query API"
 description: ""
 tags: Neo4j PM DevEx QueryAPI
 ---
