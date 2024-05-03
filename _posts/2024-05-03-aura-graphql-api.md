@@ -9,15 +9,15 @@ tags: Neo4j PM DevEx GraphQL API
 
 Much later this year you'll be able to us GraphQL API with our Aura platform - yep, you read that correctly, we've got the builders in to add an extension.  
 
-We've done this as it removes the requirement for customers to provision, configure, and then maintain a graphql server for the purposes of hosting a graphQL API - we're taking care of all of that.  By using the Aura platform, it also ensures the GraphQL API is next door, figratively speaking, to the Aura instance avoiding the transist of information across the occasionally choppy waters of the internet which improves responsiveness. 
+We've done this as it removes the requirement for customers to provision, configure, and then maintain a graphql server for the purposes of hosting a graphQL API - we're taking care of all of that in the Aura platform.  Additionally, it also ensures the GraphQL API is next door, figratively speaking, to the Aura instance avoiding the transist of information across the occasionally choppy waters of the internet which improves responsiveness and security. 
 
-In short, it's going to be much easier to take advantage of the benefits of GraphQL with Aura based DBs. 
+In short, it's going to be much easier to take advantage of the benefits of GraphQL with Aura based DBs
 
-We are running an invitation only early access program for this at the moment and will be opening it up later this Summer before the , estimated, full release towards the end of the year.  
+We are running an invitation only early access program for this at the moment and will be opening it up later this Summer before the *estimated* full release towards the end of the year.  
 
 Let me know if you want in by filling out this [Google form](https://forms.gle/3WSWtwjuj44k5LZR6)
 
-## Aura GraphQL API with a web app
+## A web app with Aura GraphQL API
 
 Lets see how this upcoming feature can be used for which we'll need some code.
 
@@ -72,8 +72,9 @@ useEffect(() => {
 
   }, [query]);
 ```
+Note the x-api-key key value in the header.  This is used to allow access to GraphQL API and must be used in every request.
 
-The GraphQL query is defined like so
+The GraphQL query itself is defined like so
 
 ```JavaScript
 const MOVIES_QUERY = `query {
@@ -89,7 +90,7 @@ const MOVIES_QUERY = `query {
 
 ```movieSearchName``` is the variable that holds the name of the Movie that we're looking for.  You'll note that the GraphQL query gets 10 movies whose title contains whatever the value of ```movieSearchName``` is set to. 
 
-I've used ```setReadyForRender``` as a flag that informs React what to render on the screeen.  Initially this will be "Loading...." , where ```setReadyForRender``` is False,  to indicate the data is being retrieved .  When the data has been obtained, ```setReadyForRender``` becomes True and we display a table with the said data.
+I've used ```setReadyForRender``` as a flag that informs React what to render on the screeen.  Initially this will be "Loading...." , where ```setReadyForRender``` is False,  to indicate data is being retrieved .  When data has been obtained, ```setReadyForRender``` becomes True and we display a table filled with the said data.
 
 If you're wanting to try this yourself, and franky why wouldn't you, you can download the [application](../code/2024-05-03-using-aura-graphql-api_code.zip) , unzip it and then nstall using ```npm install```.  Make sure you change the values in MovieTable.js to be the ones used by your Aura GraphQL API which is also where you'll find the code snippets above.  
 
