@@ -166,6 +166,7 @@ My next post on the Query API will look at how we can use the various roles of e
 Until then,
 
 JG, the elder PM.
+
 ______
 
 ## Curl statements used in testing
@@ -202,7 +203,7 @@ curl --location 'http://localhost:7474/db/neo4j/query/v2' \
 --user 'queryNoData:secretpassword' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
---data '{ "statement": "MATCH (p:Person {name:'\''Ryan Reynolds'\''}) SET p.name='\''Bob Reynolds'\'' RETURN p.name"} ' \
+--data '{ "statement": "MATCH (p:Person {name:'\''Jack Nicholson'\''}) SET p.name='\''Bob Reynolds'\'' RETURN p.name"} ' \
 | jq
 ```
 
@@ -214,7 +215,7 @@ curl --location 'http://localhost:7474/db/neo4j/query/v2' \
 --user 'queryNoData:secretpassword' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
--data '{ "statement": "MATCH (p:Person) WHERE p.name='\''Jack Nicholson'\'' DELETE p" }' \
+--data '{ "statement": "MATCH (p:Person) WHERE p.name='\''Jack Nicholson'\'' DELETE p" }' \
 | jq
 ```
 
