@@ -207,7 +207,6 @@ curl --location 'http://localhost:7474/db/neo4j/query/v2' \
 | jq
 ```
 
-
 **Delete**
 Expected result: Data is not deleted
 ```TEXT
@@ -218,8 +217,6 @@ curl --location 'http://localhost:7474/db/neo4j/query/v2' \
 --data '{ "statement": "MATCH (p:Person) WHERE p.name='\''Jack Nicholson'\'' DELETE p" }' \
 | jq
 ```
-
-
 
 ### dataReader
 This user account can read our data but not make any changes to it.
@@ -253,7 +250,7 @@ curl --location 'http://localhost:7474/db/neo4j/query/v2' \
 --user 'queryNoData:secretpassword' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
---data '{ "statement": "MATCH (p:Person {name:'\''Ryan Reynolds'\''}) SET p.name='\''Bob Reynolds'\'' RETURN p.name", "impersonatedUser":"dataReader"} ' \
+--data '{ "statement": "MATCH (p:Person {name:'\''Jack Nicholson'\''}) SET p.name='\''Bob Reynolds'\'' RETURN p.name", "impersonatedUser":"dataReader"} ' \
 | jq
 ```
 
