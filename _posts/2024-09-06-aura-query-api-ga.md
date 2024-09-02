@@ -182,19 +182,28 @@ A parameterised query is when placeholders (like $name) are used for parameters 
 ```
 
 Here's an example that loads two entries in a single request
-  curl --location '<https://c22b6d6e.databases.neo4j.io/db/neo4j/query/v2>' \
+
+```Bash
+curl --location '<https://c22b6d6e.databases.neo4j.io/db/neo4j/query/v2>' \
 -- user: neo4j:mypassword \
  --header 'Content-Type: application/json' \
  --header 'Accept: application/json' \
   --data '{ "statement":"UNWIND $items as item MERGE (s:Station {id: item.id}) ON CREATE SET s.name=item.name", "parameters": { "items" : [{"id":"123","name":"station1"},{"id":"456","name":"station2"}]}}'
-Let us dig into this a bit deeper and see what is going on
-Start with the parameters.
-"parameters": { "items" : [{"id":"123","name":"station1"},{"id":"456","name":"station2"}]}
+```
+
+Let us dig into this a bit deeper and see what is going on, starting with the parameters.
+
+```"parameters": { "items" : [{"id":"123","name":"station1"},{"id":"456","name":"station2"}]}```
 This is an array of JSON objects with each object having key:value pairs. The array is referenced by its key, items
+
 Onto the Cypher statement itself
+
+```TEXT
 UNWIND $items as item
 MERGE (s:Station {id: item.id})
 ON CREATE SET s.name=item.name
+```
+
 We can see the key name from the parameters JSON object array is $items. The array is iterated with use of the Cypher UNWIND command with each entry in the array referenced by item. The values are accessed by using the reference with the wanted property e.g item.name
 Read more about using parameters in the documentation for Query Parameters
 
