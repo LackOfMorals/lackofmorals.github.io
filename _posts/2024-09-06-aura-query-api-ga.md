@@ -14,7 +14,9 @@ For almost 14 years you could query Neo4j via HTTP, originally with a REST API, 
 The new Query API has been in Beta for our self-managed customers with the April 2024 release of Neo4j 5.19. At the time, we also started it would be coming to Aura in the Summer of 2024. Today we're making good on that promise; Query API is now available on Aura across all tiers and cloud providers for production workloads. We're also pleased to announce that with Neo4j 5.23, self-managed customers can consider the Query API has exited Beta and is now ready for production workloads.
 
 The Query API uses secure HTTP(S) communications to make Cypher requests with a JSON document response. You can also request an extended JSON document that incorporates Type information. As there is no requirement to install and maintain drivers, the Query API will work across a wide range of platforms and in situations where you do not need the rich feature set available in our Drivers or can't install custom libraries or dependencies.
+
 Overall, the Query API is an easily accessible, secure, and efficient method to work with your Neo4j DBs in Aura.
+
 Let's walk through some of the functionality of this new capability for Aura.
 
 ---
