@@ -34,7 +34,7 @@ You will need an Aura instance to try out the Query API. If you already have one
 - You will be shown the credentials for the new Aura instance. Make sure you download these or record them. You will need these shortly.
 _Note: It's really important you do this. You've been warned._
 
-Now is a great time to make a pot of tea as its steeping time is roughly the same as how long it will take for the creation process to complete. A poster <https://medium.com/r/?url=https%3A%2F%2Fshopandonart.bigcartel.com%2Fproduct%2F50-shades-of-tea-print-pre-order> is available to help you decide on tea strength.
+Now is a great time to make a pot of tea as its steeping time is roughly the same as how long it will take for the creation process to complete. [A poster](https://medium.com/r/?url=https%3A%2F%2Fshopandonart.bigcartel.com%2Fproduct%2F50-shades-of-tea-print-pre-order) is available to help you decide on tea strength.
 
 ## Query API URL
 
@@ -196,6 +196,7 @@ curl --location '<https://c22b6d6e.databases.neo4j.io/db/neo4j/query/v2>' \
 Let us dig into this a bit deeper and see what is going on, starting with the parameters.
 
 ```"parameters": { "items" : [{"id":"123","name":"station1"},{"id":"456","name":"station2"}]}```
+
 This is an array of JSON objects with each object having key:value pairs. The array is referenced by its key, items
 
 Onto the Cypher statement itself
@@ -207,7 +208,8 @@ ON CREATE SET s.name=item.name
 ```
 
 We can see the key name from the parameters JSON object array is $items. The array is iterated with use of the Cypher UNWIND command with each entry in the array referenced by item. The values are accessed by using the reference with the wanted property e.g item.name
-Read more about using parameters in the documentation for Query Parameters
+
+Read more about using parameters in the [documentation](https://neo4j.com/docs/query-api/current/) for the Query API.
 
 ## Other things you can do
 
@@ -218,8 +220,7 @@ There are several other useful things you can do with the Query API in Aura
 - Profile queries
 - Retrieve query counters
 
-More detail about each of these is available in the Query API documentation.
-Introduction - Query API
+More detail about each of these is available in the [Query API documentation.](https://neo4j.com/docs/query-api/current/).
 
 ---
 
@@ -228,8 +229,9 @@ Introduction - Query API
 Since the launch back in April, we've been hard at work on several improvements and we are always interested in your opinions to make the Query API better ( You can supply feedback on the Community Site or in the Drivers area of Discord ) .
 Here's what we have on the roadmap at the moment
 
-- Allow for management of transactions to allow for scenarios that require the successful execution of a group of statements where all succeed or none do with support for rollbacks.
+- Allow for management of transactions to allow for scenarios that require the successful execution of a group of statements where all succeed or none do with rollback support.
 - Use secure JWT for auth
+- Pagination of results
 - General performance improvements
 
 We'll also come back with examples in Python and JS to further illustrate how to use the Query API in applications.
