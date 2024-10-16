@@ -26,7 +26,7 @@ I'd wager this is an improvement - entering a single set of credentials made eve
 
 ---
 
-## How did that work then?
+## How does that work?
 
 Here's an abstract description of what's going on behind the scenes between our web application, Neo4j and Okta.
 
@@ -93,7 +93,8 @@ This should show you the Browser console for Neo4j.  Auth using the username and
 
 ## Okta configuration
 
-|`NOTE` | You can use a _free_ okta developer account - this does not require a paid account.|
+|`NOTE` | You can use a _free_ okta developer account. |
+|-|-|
 
 Create a single page application, SPA, with these settings
 
@@ -154,7 +155,7 @@ The Neo4j SSO setup maps Okta groups to profiles found in Neo4j.  This example m
 - From the list of Okta users, add a user by clicking on the plus sign
 - When finished select Done
 
-Setup SSO for Neo4j
+## Setup SSO for Neo4j
 
 Edit neo4j.conf and add this in the ODIC section swapping out these values for yours from Okta.
 
@@ -162,7 +163,8 @@ Edit neo4j.conf and add this in the ODIC section swapping out these values for y
 - YOUR_AUDIENCE_ID_FROM_OKTA
 - YOUR_CLIENT_ID_FROM_OKTA
 
-```
+```text
+
 # Okta settings
 dbms.security.authentication_providers=oidc-okta,native
 dbms.security.authorization_providers=oidc-okta,native
@@ -176,6 +178,7 @@ dbms.security.oidc.okta.config=code_challenge_method=S256;token_type_principal=i
 dbms.security.oidc.okta.claims.username=sub
 dbms.security.oidc.okta.authorization.group_to_role_mapping=neo4jDba=admin
 dbms.security.logs.oidc.jwt_claims_at_debug_level_enabled=true
+
 ```
 
 Save the file and then restart Neo4j.
@@ -192,26 +195,28 @@ Enter your okta user credentials then select Sign in
 
 If everything has been configured correctly you are taken back to the Neo4j browser and will be logged in.
 
-## Web application
+---
+
+## Get the Web application
 
 The web application is found at github here:- <https://github.com/LackOfMorals/query_api_bearer_token.git>
 
 Use git to create a folder for our web application, moviesWebApp , and clone the repo into it
 
-```
+```bash
 git clone https://github.com/LackOfMorals/query_api_bearer_token.git moviesWebApp
 ```
 
 Move into the newly created folder and install needed dependencies
 
-```
+```bash
 cd moviesWebapp
 npm install
 ```
 
 Edit srv/config.jsx and adjust the variables below for Okta
 
-```
+```text
 const CLIENT_ID = "YOUR_OKTA_CLIENT_ID";
 const ISSUER = "https://YOUR_OKTA_ACCOUNT_FQDN";
 const OKTA_TESTING_DISABLEHTTPSCHECK = true;
@@ -222,7 +227,7 @@ Save the file when the edits have been made
 
 Start up the web application
 
-```
+```bash
 npm start
 ```
 
@@ -271,5 +276,7 @@ curl -X POST https://neo4j.giffard.xyz/db/neo4j/query/v2 \
 ## Closing remarks
 
 This is a really basic example of using SSO for seamless authentication between two different applications.  There's more to do;  improve security by using SSL with Neo4j ( a blog post for another day ),  avoid jumping over to Okta for entering credentials, use Neo4j JS driver with the token instead of the Query API , the GraphQL library and a whole bunch of other things .
+
+The next blog post will go into more detail about how the web app works with the Query API & SSO
 
 Laters
