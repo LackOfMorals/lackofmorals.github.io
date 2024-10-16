@@ -45,14 +45,14 @@ Here's an abstract description of what's going on behind the scenes between our 
 To gets this to work , we will need
 
 - A free Okta developer account.  
-- Neo4j Enterprise running in Docker locally
+- Neo4j Enterprise running in Docker locally with the Movies example graph
 - Docker installed
 - Text editor
 - Beverage of choice
 
 ---
 
-## Run Neo4j Docker image in AWS for Neo4j
+## Run Neo4j Docker image locally
 
 Install Neo4j Docker image
 
@@ -87,7 +87,7 @@ Test it
 Use your browser to check Neo4j is up
 <http://localhost:7474/browser>
 
-This should show you the Browser console for Neo4j.  Auth using neo4j for the user and password for the password.
+This should show you the Browser console for Neo4j.  Auth using the username and password from NEO4J_AUTH values and then load the Movies example graph
 
 ---
 
