@@ -5,7 +5,7 @@ description: "looking at the code"
 tags: Neo4j PM DevEx QueryAPI SSO Token
 ---
 
-# Dipping into the code from the trinity of SSO, Neo4j and a web application
+# Commentary on the web application code used in SSO post
 
 As a follow on from my previous blog post, the trinity of SSO, Neo4j and a web application, this entry will look at the code used for the web application to see how it all fits together
 
@@ -122,13 +122,13 @@ Here's a sample of what's returned from the Cypher statement we're using
 
 ```
 
-We'll do an initial tidy up using JS favourite method of dealing with arrays - Map.
+We'll do an initial tidy up using JS favourite method of dealing with arrays - .map
 
 ```
 const moviesMap = json.data["values"].map( movieEntries => { return movieEntries });
 ```
 
-The result of this operation will be easier to deal with when we build out the table.
+This trims the response from Neo4j Query API to just the data.
 
 ```JSON
 [
@@ -156,7 +156,7 @@ The result of this operation will be easier to deal with when we build out the t
 ]
 ```
 
-The table is built up here
+The table is built up with this code.  You can see .map being used again for the table rows.
 
 ```Javascript
 <div className='movies-table-wrapper'>
@@ -183,7 +183,7 @@ The table is built up here
                 </div>
 ```
 
-You can see .map being used again to build up the table rows.
+This where knowledge of the shape of response from the Query API comes in handy - you can see that title is the first entry in the array which corresponds to it's position immediately after ``` RETURN ``` in the Cypher statement
 
 ```Javascript
 <td className='movie-row-cell'>{val[0]}</td>
@@ -191,4 +191,6 @@ You can see .map being used again to build up the table rows.
 <td className='movie-row-cell'>{val[2]+""}</td>
 ```
 
-This where knowledge of the shape of response from the Query API comes in handy - you can see that title is the first entry in the array which corresponds to it's position immediately after ``` RETURN ``` in the Cypher statement
++"" ensures that a comma seperates the names of various actors.
+
+That's the main bits of the web application.  I'm sure that there's other ( and likely better ) ways of achieving the same outcome - I can understand what's going on here so I'll stick with this until I acquire more knowledge !.
