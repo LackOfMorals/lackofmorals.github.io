@@ -7,17 +7,17 @@ tags: Neo4j PM DevEx QueryAPI SSO Token
 
 # Commentary on the web application code used in SSO post
 
-As a follow on from my previous blog post, the trinity of SSO, Neo4j and a web application, this entry will look at the code used for the web application to see how it all fits together
+As a follow on from my previous blog post, the trinity of SSO, Neo4j and a web application, this entry takes a deeper look at the code used for the web application to see how it all fits together.
 
- Given my JS / React knowledge is basic ( and I'm flattering myself there ) you'll be relieved to know that this is not a PR review or a step by step journey.
+Given my JS / React knowledge is basic ( and I'm flattering myself there ) the more experienced of you are likely to be amused at my efforts.
 
- I'm just looking at the important bits in small snippetts at a time.
+The web application is based on code I had previously used for showing how graphql can be used to read data from Neo4j and displayed it in a table.  I've borrowed heavily from OKtas example React application - many thanks to them.
 
- The web application is based on the example React application from Okta combined with code I had hanging around that obtained data from Neo4j and displayed it in a table.
+Lets start with the home page
 
 ### srv/pages/Home.jsx
 
-If the user is not authenticated, ```!authState.isAuthenticated```      ,then some descriptive text is shown and the user is invited to click on the Login button
+If the user is not authenticated, ```!authState.isAuthenticated```      ,then we show a bit of descriptive text and invite the user to auth by selecting the login button.  
 
 ```Javascript
  {!authState.isAuthenticated && (
@@ -38,7 +38,7 @@ If the user is not authenticated, ```!authState.isAuthenticated```      ,then so
           </Grid>
 ```
 
-When they do select login, this happens
+When they do select login, to do the acutal login, something that Okta handles for us, we do this
 
 ```Javascript
 const login = async () => {
@@ -48,7 +48,7 @@ const login = async () => {
 
 Which causes the browser to load the okta sigin page.
 
-If authentication was successful, then we now have this check to see if we should call the Movies component with a property that holds the value of the id token from the JWT Okta returned to us.
+If authentication was successful, ``` authState.isAuthenticated ``` ,call the Movies component with a property that holds the value of the id token that Okta included to us as part of the received JWT.
 
 ```
  {authState.isAuthenticated && (
@@ -57,11 +57,11 @@ If authentication was successful, then we now have this check to see if we shoul
 
 ```
 
-At this point, Movies has what it needs to go get data from Neo4j , populate a table and return that back to page.
+Lets move to the Movies component.
 
 ### /srv/components/Movies.jsx
 
-Lets start with calling the Neo4j Query API.
+We start with calling the Neo4j Query API using the id token.  I'm using ```fetch``` for the HTTP reequest and there's likely something better than would deal with retries, responses codes etc.. in a more graceful manner
 
 ```Javascript
         const response = await fetch( "http://localhost:7474/db/neo4j/query/v2" ,
@@ -75,10 +75,6 @@ Lets start with calling the Neo4j Query API.
             }
           )
 ```
-
-In the header, we set Authorization to use the value from the property we received.  Note the space used in 'Bearer ' - it must be there or things break.
-
-We taken advantage of JSON.stringify ( what a great name ) to ccorreclty onvert the Cypher statement to JSON.  
 
 The data contract for responses can be found in the Query API documentation but how you actually deal will be shaped by how you asked Cypher to return it.
 
@@ -194,3 +190,5 @@ This where knowledge of the shape of response from the Query API comes in handy 
 +"" ensures that a comma seperates the names of various actors.
 
 That's the main bits of the web application.  I'm sure that there's other ( and likely better ) ways of achieving the same outcome - I can understand what's going on here so I'll stick with this until I acquire more knowledge !.
+
+Laters
