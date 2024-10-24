@@ -264,6 +264,8 @@ A response with a single entry from your Neo4j graph will be returned
 
 ## An example Python application
 
+Needs the request module to be installed before this can be used.  Replace YOUR_ with values for your setup.
+
 ```Python
 """
  * Copyright (c) 2024-Present, Neo4j. and/or its affiliates. All rights reserved.
