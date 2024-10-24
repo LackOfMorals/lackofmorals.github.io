@@ -289,11 +289,11 @@ from requests.auth import HTTPBasicAuth, AuthBase
 
 # Configuration values
 class MyConfiguration():
-    CLIENT_ID = "0oakgdxxrr3qbVHED5d7"
-    CLIENT_SECRET = "JZLO3RBydZVBbXU9N5oaxA7pNwNx0jYtXbgasawYRMWB3b3-Dg3WGr2MHLbmAhG7"
-    OKTA_TOKEN_URI = "https://dev-85257838.okta.com/oauth2/default/v1/token"
-    OKTA_SCOPE = "neo4jDba"
-    NEO4J_QUERY_URI = "http://localhost:7474/db/neo4j/query/v2"
+    CLIENT_ID = "YOUR_CLIENT_ID_FROM_OKTA"
+    CLIENT_SECRET = "YOUR_CLIENT_SECRET_FROM_OKTA"
+    OKTA_TOKEN_URI = "https://YOUR_DEVELOPER_ACCOUNT_DOMAIN/oauth2/default/v1/token"
+    OKTA_SCOPE = "YOUR_SCOPE_FROM_OKTA"
+    NEO4J_QUERY_URI = "YOUR_NEO4j_QUERY_API_URL"
 
 # Returns Auth object for use with Python requests 
 # that uses our token from Okta
