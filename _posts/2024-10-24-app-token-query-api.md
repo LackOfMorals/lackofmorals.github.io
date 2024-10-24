@@ -5,20 +5,20 @@ description: "A gude to using tokens with application and Neo4j Query API"
 tags: Neo4j PM DevEx QueryAPI SSO Token
 ---
 
-# Application using token for auth with Neo4j Querty API
+# Applications, Tokens and Neo4j Query API
 
 Using tokens with Applications and Neo4j Query API for auth
 ================================================
 
-Consider the scenario of an application needing to use data from Neo4j.   For auth, you can use a username / password combination - basic authentication - or a token.   There's pro / cons of both approaches and this deals with the latter , using a token.
+In a previous blog post I discussed a web application obtaining and using a token with Neo4j Query API as a result of a user successfully authenticating.  This entry looks at what would be involved for an application to obtain a token and use it with Neo4j Query API.  
 
-To get a token,  the client credentials flow is followed.  This allows for an application , rather than a user, to obtain a token that can then be used with Neo4j Query API for obtaining data.
+**Plot spoiler** - it's very similar.
 
-Lets look at how this can be achieved with an example  
+Many organisations prefer a token based approach, one reason for this is the limited lifespan and scope of token which helps to reduce risk if it is intercepted.  Lets look at how this can be achieved.
 
 We will need
 
-* A free Okta developer account.
+* A free Okta developer account
 
 * Neo4j Enterprise running in Docker locally
 
@@ -159,7 +159,12 @@ Once Okta is configured, we will have
 Neo4j configuration
 -------------------
 
-Edit neo4j.conf and add this in the ODIC section swapping out these values for yours from Okta.
+It's entirely possible for Neo4j to have more than one configured ODIC provider.  It's also possible to hide an entry from users of the Neo4j web Browser console, something that we will need to do as the configuration for an application to use token is not going to work for a user.
+
+This is line that we'll need to use with our OIDC configuration entry
+```dbms.ecurity.oidc.YOUR_OIDC_ENTYR_NAME.visible=false```
+
+Edit neo4j.conf and add this in the OIDC section swapping out these values for yours from Okta.
 
 * YOUR_AUDIENCE_ID_FROM_OKTA
 
@@ -173,7 +178,6 @@ Edit neo4j.conf and add this in the ODIC section swapping out these values for y
 
 ```Text
 # Okta m2m settings
-
 dbms.ecurity.oidc.m2m.visible=false
 dbms.security.oidc.m2m.display_name=m2m
 dbms.security.oidc.m2m.auth_flow=pkce
