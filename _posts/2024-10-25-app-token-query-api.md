@@ -1,13 +1,13 @@
 ---
 layout: post
 title: "Applications, Tokens and Neo4j Query API "
-description: "looking at the code"
+description: "A gude to using tokens with application and Neo4j Query API"
 tags: Neo4j PM DevEx QueryAPI SSO Token
 ---
 
 # Application using token for auth with Neo4j Querty API
 
-Using client credential with Neo4j Query API
+Using tokens with Applications and Neo4j Query API for auth
 ================================================
 
 Consider the scenario of an application needing to use data from Neo4j.   For auth, you can use a username / password combination - basic authentication - or a token.   There's pro / cons of both approaches and this deals with the latter , using a token.
