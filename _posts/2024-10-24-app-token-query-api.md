@@ -137,7 +137,7 @@ Select **Create**
 
 The newly created scope will now be shown in the table.  Make a note of the **Issuer URI**
 
-Takeways from Okta confiuration work
+Takeways from Okta configuration work
 --------
 
 Once Okta is configured, we will have
