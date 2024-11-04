@@ -7,15 +7,11 @@ tags: Neo4j PM DevEx QueryAPI  Aura
 
 # Explicit transactions with Neo4j Query API on Aura
 
-When we launched the Query API for Neo4j, it executed a Cypher statement as implicit transaction.  This is where the Query API took care of the transaction handling.  We always intended providing the ability for users of the API to control the lifecycle of the transaction - create, commit, rollback - within which Cypher statements are executed. This is referred to as an Explicit Transaction.
+When we launched the Query API for Neo4j, it executed Cypher statements within an implicit transaction, automatically handling transaction management. However, we always intended to give users more control over transaction lifecycles—enabling them to explicitly create, commit, or rollback transactions in which Cypher statements are executed. In Neo4j this approach is known as an Explicit Transaction.
 
-Over the last few months, we've been working hard ( I say we - I've just drank tea and ate biscuits , the engineers have done all of the hard work ) to add support for Explicit Transactions to the Query API and I'm pleased to say that this will be available soon.
-
-You use explicit transactions to group together related queries which work together to achieve a single logical database operation. For example, adding a new movie, actors and directors can be seen as a single logical operation.
-
-As Neo4j is ACID compliant, queries within a transaction will either be executed as a whole or not at all: you cannot get a part of the transaction succeed and another fail.
-
-You should also be aware that , once created, a transaction does not exist forever.  There's time limit of 30 seconds before it expires.
+Over the past few months, we've been working hard (well, the engineers have—I've just been enjoying tea and biscuits) to add support for Explicit Transactions to the Query API. I'm excited to announce that this feature will be available soon.
+Explicit transactions allow you to group related queries together, treating them as a single logical operation. For example, adding a new movie along with its actors and directors can be managed as one cohesive operation.
+Since Neo4j is ACID-compliant, all queries within a transaction are executed as a unit: they either all succeed or none do. This ensures consistency and prevents partial updates.
 
 Query API uses the same workflow as for any other transaction with Neo4j
 
@@ -23,7 +19,7 @@ Query API uses the same workflow as for any other transaction with Neo4j
 - Perform database operations.
 - Commit or roll back the transaction.
 
-Remember that transactions are all or nothing. When trying a Commit or Delete ( rollback ) these can only be succesful if every single database operation was also succfessful.  If any database operation failed then the transaction itself fails.  As a result a subsequent commit or delete attempt will also fail; effectively the transaction never happened.
+It's important to note that transactions don't last indefinitely. Once created, a transaction has a 30-second time limit before it expires.
 
 The Query API has an extend path for transactions that works like this
 
