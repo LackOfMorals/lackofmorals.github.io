@@ -33,16 +33,18 @@ The Query API has an extend path for transactions
 | /tx/{tx id} | A DELETE option to this path  will rollback all database operations for the given transaction id |
 
 ___
-Aura
-Explicit transaction with Aura work slightly differently when compared to self-managed single Neo4j DB or self-managed Neo4j DB Cluster.  The lifecycle of a transaction is managed by a single Neo4j DB.  In order to maintain this in Aura, a header key:value pair is returned in the response from the initial request to /tx along with the tx id in the request body.  The key:value pair is then used in all subsequent requests during the lifecycle of the transactions which ensures correct routing.
+#### IDs and affinity
 
-___
-Self managed customers need to be aware that
+Explicit transactions with Aura work slightly differently when compared to a self-managed single Neo4j DB or a self-managed Neo4j DB Cluster. At the begining of a transaction, a POST request made is to /tx which behaves slightly differently with Aura with the response.
 
-- A single Neo4j DB installation does not need anything configuring to use explicit transactions with Query API
-- A Neo4j DB Cluster will need configuration work.  This will be the subject of a follow-on blog entry.
+Aura: returns a key:value pair in the header **and** a transaction id
+Self-managed: returns  a transaction id
 
-## Explicit transactions with Aura
+With Aura and self-managed the transaction id is used for subsequent Cypher operations and the commit or rollout.
+
+It is only Aura that requires the key:value pair is set in the header as well.  This ensures correct routing within the Aura cloud infrastructure. A similar operation is needed for self-managed Neo4j DB clusters and this will be covered in it's own blog.
+
+## Explicit transactions example with Aura
 
 Lets take a scenario of adding a new movie and it's actors.  We'll use very simple Python to illustrate how this works.  I've added inline comments to explain what's going on.  
 
