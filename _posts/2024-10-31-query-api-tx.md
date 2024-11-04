@@ -21,21 +21,23 @@ Query API uses the same workflow as for any other transaction with Neo4j
 
 It's important to note that transactions don't last indefinitely. Once created, a transaction has a 30-second time limit before it expires.
 
-The Query API has an extend path for transactions that works like this
+___
 
-- /tx
-A POST operation to this path will return a tx id in the response.
-- /tx/{tx id}
-A POST operation to this path with a transacton id is used for database operations
-- /tx/{tx id}/commit
-A POST operation to this path with a transacton id is used to commit database operations.
+The Query API has an extend path for transactions
 
-- /tx/{tx id}
-A DELETE option to this path  will rollback all database operations for the given transaction id
+| Path | Purpose |
+| -------- | ------- |
+|  /tx | A POST operation to this path will return a tx id in the response. |
+| /tx/{tx id} | A POST operation to this path with a transacton id is used for database operations. |
+| /tx/{tx id}/commit | A POST operation to this path with a transacton id is used to commit database operations. |
+| /tx/{tx id} | A DELETE option to this path  will rollback all database operations for the given transaction id |
 
+___
+Aura
 Explicit transaction with Aura work slightly differently when compared to self-managed single Neo4j DB or self-managed Neo4j DB Cluster.  The lifecycle of a transaction is managed by a single Neo4j DB.  In order to maintain this in Aura, a header key:value pair is returned in the response from the initial request to /tx along with the tx id in the request body.  The key:value pair is then used in all subsequent requests during the lifecycle of the transactions which ensures correct routing.
 
-For self managed customers
+___
+Self managed customers need to be aware that
 
 - A single Neo4j DB installation does not need anything configuring to use explicit transactions with Query API
 - A Neo4j DB Cluster will need configuration work.  This will be the subject of a follow-on blog entry.
