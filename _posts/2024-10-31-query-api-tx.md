@@ -23,7 +23,7 @@ It's important to note that transactions don't last indefinitely. Once created, 
 
 ___
 
-The Query API has an extend path for transactions
+The Query API has these new paths for explicit transactions
 
 | Path | Purpose |
 | -------- | ------- |
@@ -33,12 +33,13 @@ The Query API has an extend path for transactions
 | /tx/{tx id} | A DELETE option to this path  will rollback all database operations for the given transaction id |
 
 ___
-#### IDs and affinity
+
+#### Differences in /tx response with Aura
 
 Explicit transactions with Aura work slightly differently when compared to a self-managed single Neo4j DB or a self-managed Neo4j DB Cluster. At the begining of a transaction, a POST request made is to /tx which behaves slightly differently with Aura with the response.
 
-Aura: returns a key:value pair in the header **and** a transaction id
-Self-managed: returns  a transaction id
+- Aura: returns a key:value pair in the header **and** a transaction id
+- Self-managed: returns  a transaction id only
 
 With Aura and self-managed the transaction id is used for subsequent Cypher operations and the commit or rollout.
 
