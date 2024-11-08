@@ -7,11 +7,11 @@ tags: Neo4j PM DevPM QueryAPI  Aura SSL
 
 # A guide to using SSL with Neo4j Query API
 
- To save my fingers hammering out letters to form the words that describe why, lets just accecpt that using SSL is a good thing.
+To save my fingers hammering out letters to form the words that describe why, lets just accecpt that using SSL is a good thing.
 
- If you're using Aura then you can skip reading my prose and do something more interesting instead as Aura only uses SSL.  For everyone else you will need to configure SSL.  
+If you're using Aura then you can skip reading my prose and do something more interesting instead as Aura only uses SSL.  For everyone else you will need to configure SSL.  
 
- The following is a guide to doing this with LetsEncrypt, a free source of certificates, and an AWS EC2 running docker with Neo4j.  I run that combination on a frequent basis - it's my goto for trying stuff out.  
+The following is a guide to doing this with LetsEncrypt, a free source of certificates, and an AWS EC2 running docker with Neo4j.  I run that combination on a frequent basis - it's my goto for trying stuff out.  
 
 Neo4j supports SSL across these communication channels.
 
@@ -22,7 +22,7 @@ Neo4j supports SSL across these communication channels.
 
 It's entirely possible to selectively turn on SSL - you don't have to do everything.
 
-I'm going to look at Bolt + HTTPS.  Why both?  For reasons that I've not yet discovered, to use HTTPS you also must have Bolt using SSL.   ¯\_(ツ)_/¯
+I'm going to look at Bolt + HTTPS.  Why both?  For reasons that I've not yet discovered, to use HTTPS you also must have Bolt using SSL.
 
 Enabling HTTPS covers everything that uses HTTP operations including the Query API
 
@@ -69,7 +69,7 @@ Type at the command prompt on the EC2 machine
 sudo yum install docker -y
 ```
 
-## Enable docker service at AMI boot time. ( AWS linux v1 )
+## Enable docker service at AMI boot time
 
 Type at the command prompt on the EC2 machine
 
@@ -77,7 +77,7 @@ Type at the command prompt on the EC2 machine
 sudo chkconfig docker on
 ```
 
-## Start the docker service ( AWS linux v1 )
+## Start the docker service
 
 ```Bash
 sudo service docker start
