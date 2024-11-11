@@ -6,7 +6,7 @@ tags: Neo4j PM DevEx QueryAPI  Aura
 ---
 
 
-# Moving forwards
+# Considering a move to the Neo4j Query API - Partie Un
 
 If you're interested in transitioning to the Query API, this post will provide an overview of the key areas to consider and plan for. A follow up post post will dive deeper with a worked example. While there's no immediate pressure to move from the HTTP API, it's important to note that updates will be limited to critical security and defect fixes. All future development effort  will be focused on the Query API.
 
