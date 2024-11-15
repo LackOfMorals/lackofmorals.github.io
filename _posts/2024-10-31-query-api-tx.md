@@ -44,15 +44,17 @@ To commit the transaction, we make a POST request to  /tx/{transaction ID}/commi
 
 __Note__: All operations must be made to the same Neo4j DB Server.  If you have a clustered environment, you must implement a mechanism to do this.  For example, HAProxy has [sticky sessions](https://www.haproxy.com/blog/enable-sticky-sessions-in-haproxy) and other API Gateways have similar approaches to meet this requirement.
 
-#### Explicit Transaction with Aura
+## Explicit Transaction with Aura
 
-Explicit transactions with Aura follow the workflow that has just been described but there's an important difference; at the begining of a transaction, when a POST request is made is to /tx, Aura returns a key:value pair in the header __and__ the transaction id.
+Explicit transactions with Aura follow the workflow that has just been described but there's an important difference; at the begining of a transaction, when a POST request is made is to /tx, Aura returns a key:value pair, ```"neo4j-cluster-affinity":value``` in the header __and__ the transaction id.
 
-Aura then requires you to include the key:value pair in each request that you make for that transaction. This ensures   ensures correct routing within the Aura cloud infrastructure.
+Aura then requires you to include this key:value pair in each request that you make for that transaction. This ensures correct routing within the Aura cloud infrastructure to the Neo4j DB server that is handling the transaction.
 
 Here's a Python example to illustrate this with inline comments to explain what's going on at each stage.
 
 __Note:__ This is structured to help show how this feature works.  It's really not a best practice example of how to do this!
+
+__requirements__  Make sure you have the requests module installed.  Do this with ```pip install requests```
 
 __.env file__  Create a .env file in the same folder as this Python script will run.  The .env file should have the following content. Change the values to match your own Aura setup.
 
@@ -61,6 +63,8 @@ NEO4J_URI=neo4j+s://FQDN_TO_AURA_INSTANCE
 NEO4J_USERNAME=neo4j
 NEO4J_PASSWORD=AURA_INSTANCE_PASSWORD
 ```
+
+__Python code__  Save this as 'AuraTX.py' and execute with ```python AuraTX.py```
 
 ```Python
 import requests
@@ -99,7 +103,7 @@ def AuraExpliciTX(MyConfig):
     # to associate database operations with the transaction
     tx_id = response.json()['transaction']['id']
 
-    # Add the affinity to the request header.  This ensures the requests for the transaction
+    # Add neo4j-cluster-affinity to the request header.  This ensures the requests for the transaction
     # are routed correctly in Aura
     query_headers['neo4j-cluster-affinity'] = response.headers['neo4j-cluster-affinity']
 
