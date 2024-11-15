@@ -1,19 +1,19 @@
 ---
 layout: post
-title: "Managed transactions with the Neo4j Query API on Aura "
-description: "Introducing managed transactions"
+title: "Explicit transactions with the Neo4j Query API coming shortly "
+description: "Introducing explicit transactions"
 tags: Neo4j PM DevEx QueryAPI  Aura
 ---
 
-# Explicit transactions with Neo4j Query API on Aura
+# Explicit transactions with Neo4j Query API
 
-When we launched the Query API for Neo4j, it executed Cypher statements within an implicit transaction, automatically handling transaction management. However, we always intended to give users more control over transaction lifecycles—enabling them to explicitly create, commit, or rollback transactions in which Cypher statements are executed. In Neo4j this approach is known as an Explicit Transaction.
+Over the last few months, we've been working hard (well, the engineers have — I've just been sipping tea and eating biscuits) to add support for Explicit Transactions to the Query API. I'm excited to announce that this feature will be available real soon for our self-managed and Aura customers.
 
-Over the past few months, we've been working hard (well, the engineers have—I've just been enjoying tea and biscuits) to add support for Explicit Transactions to the Query API. I'm excited to announce that this feature will be available soon.
-Explicit transactions allow you to group related queries together, treating them as a single logical operation. For example, adding a new movie along with its actors and directors can be managed as one cohesive operation.
-Since Neo4j is ACID-compliant, all queries within a transaction are executed as a unit: they either all succeed or none do. This ensures consistency and prevents partial updates.
+Up to now you gave the Query API a Cypher statement and it managed transaction  for you -  an Implicit Transaction.  Explicit Transactions hands over control of the transaction , from start to finish, to you.
 
-Query API uses the same workflow as for any other transaction with Neo4j
+This allows you to group related queries together, treating them as a single logical operation. For example, adding a new movie along with its actors and directors can be managed as one cohesive operation.  Since Neo4j is ACID-compliant, all queries within a transaction are executed as a unit: they either all succeed or none do. This ensures consistency and prevents partial updates.
+
+The Query API uses the same workflow as for any other transaction with Neo4j
 
 - Begin a transaction.
 - Perform database operations.
@@ -27,31 +27,34 @@ The Query API has these new paths for explicit transactions
 
 | Path | Purpose |
 | -------- | ------- |
-|  /tx | A POST operation to this path will return a tx id in the response. |
-| /tx/{tx id} | A POST operation to this path with a transacton id is used for database operations. |
-| /tx/{tx id}/commit | A POST operation to this path with a transacton id is used to commit database operations. |
-| /tx/{tx id} | A DELETE option to this path  will rollback all database operations for the given transaction id |
+| /tx | A POST operation to this path will return a tx id in the response. |
+| /tx/{transaction id} | A POST operation to this path with a transacton id is used for database operations. |
+| /tx/{transaction id}/commit | A POST operation to this path with a transacton id is used to commit database operations. |
+| /tx/{transaction id} | A DELETE option to this path  will rollback all database operations for the given transaction id |
 
 ___
 
-#### Differences in /tx response with Aura
+## Explicit transaction workflow
 
-Explicit transactions with Aura work slightly differently when compared to a self-managed single Neo4j DB or a self-managed Neo4j DB Cluster. At the begining of a transaction, a POST request made is to /tx which behaves slightly differently with Aura with the response.
+The first step is to perform a POST operation to /tx .  This will return a transaction ID
 
-- Aura: returns a key:value pair in the header **and** a transaction id
-- Self-managed: returns  a transaction id only
+With the transaction ID appended to the /tx path,  /tx/{transaction ID}, we can perform a series of POST requests that contain Cpyher statements such that our logical operation is completed.  For example adding a movie , it's Actors and Director.
 
-With Aura and self-managed the transaction id is used for subsequent Cypher operations and the commit or rollout.
+To commit the transaction, we make a POST request to  /tx/{transaction ID}/commit.  Or to rollback , we would use a DELETE request to  /tx/{transaction ID}
 
-It is only Aura that requires the key:value pair is set in the header as well.  This ensures correct routing within the Aura cloud infrastructure. A similar operation is needed for self-managed Neo4j DB clusters and this will be covered in it's own blog.
+__Note__: All operations must be made to the same Neo4j DB Server.  If you have a clustered environment, you must implement a mechanism to do this.  For example, HAProxy has [sticky sessions](https://www.haproxy.com/blog/enable-sticky-sessions-in-haproxy) and other API Gateways have similar approaches to meet this requirement.
 
-## Explicit transactions example with Aura
+#### Explicit Transaction with Aura
 
-Lets take a scenario of adding a new movie and it's actors.  We'll use very simple Python to illustrate how this works.  I've added inline comments to explain what's going on.  
+Explicit transactions with Aura follow the workflow that has just been described but there's an important difference; at the begining of a transaction, when a POST request is made is to /tx, Aura returns a key:value pair in the header __and__ the transaction id.
 
-**Note:** This is structured to help show how this feature works.  It's really not a best practice example of how to do this!
+Aura then requires you to include the key:value pair in each request that you make for that transaction. This ensures   ensures correct routing within the Aura cloud infrastructure.
 
-**.env file**  Create a .env file in the same folder as this Python script will run.  The .env file should have the following content. Change the values to match your own Aura setup.
+Here's a Python example to illustrate this with inline comments to explain what's going on at each stage.
+
+__Note:__ This is structured to help show how this feature works.  It's really not a best practice example of how to do this!
+
+__.env file__  Create a .env file in the same folder as this Python script will run.  The .env file should have the following content. Change the values to match your own Aura setup.
 
 ```Text
 NEO4J_URI=neo4j+s://FQDN_TO_AURA_INSTANCE
