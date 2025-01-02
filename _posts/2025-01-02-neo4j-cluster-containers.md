@@ -5,7 +5,7 @@ description: "How to make a Neo4j Cluster"
 tags: Neo4j PM DevPM Cluster Containers
 ---
 
-# A Neo4j cluster
+# Build a Neo4j cluster
 
 Most of time having a single copy of Neo4j running is suitable for what I need to do.  There are occasions where only a cluster will do and, as it's not something that happens that often, I've written down the steps i follow that results in a 3 member cluster which is front end by a load balancer - HA Proxy.
 
