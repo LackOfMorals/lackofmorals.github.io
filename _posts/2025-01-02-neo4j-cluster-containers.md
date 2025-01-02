@@ -25,7 +25,7 @@ Of course I could be wrong and I leave that judgement to you, my dear reader.
 
 ## Folder structures
 
-There's a folder layout to create.  This has one folder for each container with all of the folders under a single parent, neo4j_cluster, which itself will be in the Home folder.  If you want another location, thats fine but remember to adjust other references to these in each step.
+There's a folder layout to create.  This has one folder for each container with all of the folders under a single parent, neo4j-cluster, which itself will be in the Home folder.  If you want another location, thats fine but remember to adjust other references to these in each step.
 
 To create the folders in the home folder, run these commands at the command prompt ( use of -p will create the entire paths in one go and save a bit of key pressing )
 
