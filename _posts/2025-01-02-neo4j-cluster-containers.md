@@ -9,7 +9,7 @@ tags: Neo4j PM DevPM Cluster Containers
 
 Most of time having a single copy of Neo4j running is suitable for what I need to do.  There are occasions where only a cluster will do and, as it's not something that happens that often, I've written down the steps i follow that results in a 3 member cluster which is front end by a load balancer - HA Proxy.
 
-I'm awware that you also go down the Kubernetes route for this but it seems overkill for a 3 node cluster with static membership.
+I'm aware that you also go down the Kubernetes route for this but it seems overkill for a 3 node cluster with static membership.
 
 Of course I could be wrong and I leave that judgement to you, my dear reader.
 
@@ -18,10 +18,12 @@ Of course I could be wrong and I leave that judgement to you, my dear reader.
 - A Mac
 - [podman](https://podman.io/)* for the containers
 - neo4j enterprise
-- [haproxy](https://www.haproxy.org/) , our load balancer
+- [haproxy](https://www.haproxy.org/)**
 - A text editor.  nano is my go to but others are available
 
 *Why podman?  It works and it's free  ( at the time of writing ) from the restrictions that docker has .  The command line is compatible with that of docker .
+
+**The ports on the containers are kept within a dedicated network.  HAProxy acts as a proxy, exposing the ports for Neo4j in an expected way i.e as if it is a single copy of Neo4j running. If we didn't do this and exposed the containers directly , we would have to use different ports.  This makes it complex.  As a side benefit, we also get load balancing across the containers.
 
 ## Folder structures
 
