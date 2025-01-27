@@ -57,13 +57,13 @@ You should see ``` aura version v1.0.0 ```
 
 2. Navigate to the top right where your account name is displayed as shown in the red box below and click on the down arrow
 
-![](/img/guide-to-new-aura-cli/console-classic-home.png)
+    ![](/img/guide-to-new-aura-cli/console-classic-home.png)
 
 3. You will be shown a menu with your account name.  Select _Account Details_  
 
 4. From the Account Details display, select the _Create_ button in the Aura API Credentials section.
 
-![](/img/guide-to-new-aura-cli/console-classic-api-keys.png)
+    ![](/img/guide-to-new-aura-cli/console-classic-api-keys.png)
 
 5. On the pop-up window, enter a Client name, and select _Create_.
 
@@ -75,19 +75,19 @@ You should see ``` aura version v1.0.0 ```
 
 2. Navigate to the top right where your account name is displayed as shown in the red box below and click on the down arrow
 
-![](/img/guide-to-new-aura-cli/unified-console-home.png)
+    ![](/img/guide-to-new-aura-cli/unified-console-home.png)
 
 3. From the menu, choose _API keys__
 
-![](/img/guide-to-new-aura-cli/unified-console-account-dropdown.png)
+    ![](/img/guide-to-new-aura-cli/unified-console-account-dropdown.png)
 
 4. When API Keeys is shown, select _Create_
 
-![](/img/guide-to-new-aura-cli/unified-console-api-keys.png)
+    ![](/img/guide-to-new-aura-cli/unified-console-api-keys.png)
 
 5. On the pop-up window, enter a name for the API Key and then select _Create_
 
-![](/img/guide-to-new-aura-cli/unified-console-create-api-key.png)
+    ![](/img/guide-to-new-aura-cli/unified-console-create-api-key.png)
 
 6. You will be shown the client id and client secret.  Make a note as the client secret will not be shown again and you need both. If you download them, keep them safe.
 
@@ -97,15 +97,15 @@ Configure the Aura CLI with the Aura API client ID and client secret you obtaine
 
 1. At the command prompt,  enter the following, using your values for the items in CAPITALS:
 
-```text
-aura-cli credential add --name YOUR\_LABEL --client-id YOUR\_CLIENT\_ID --client-secret YOUR\_CLIENT\_SECRET
-```
+    ```text
+    aura-cli credential add --name YOUR\_LABEL --client-id YOUR\_CLIENT\_ID --client-secret YOUR\_CLIENT\_SECRET
+    ```
 
 2. To confirm the credentials are working, list your Aura instances.
 
-```text
-aura-cli instance list --output table
-```
+    ```text
+    aura-cli instance list --output table
+    ```
 
 # Working with AuraDB tenants
 
@@ -249,27 +249,27 @@ This provides the ability to over write the content of one AuraDB instance with 
 
 1. Obtain the ID of the AuraDB instance that has the desired snapshot you wish to use ( referred to as the Source Instance ).
 
-```text
-aura-cli instance list --output table  
-```
+    ```text
+    aura-cli instance list --output table  
+    ```
 
 2. Decide which of it’s snapshots to use and note the snapshot ID ( referred to as Source Snapshot )
 
-```text
-aura-cli instance snapshot list --instance-id SOURCE_INSTANCE_ID  
-```
+    ```text
+    aura-cli instance snapshot list --instance-id SOURCE_INSTANCE_ID  
+    ```
 
 3. Locate the destination AuraDB instance and obtain it’s ID ( referred to as the Destination Instance ).
 
-```text
-aura-cli instance list --output table
-```
+    ```text
+    aura-cli instance list --output table
+    ```
 
 4. Perform the overwrite
 
-```text
-aura-cli instance overwrite DESTINATION_INSTANCE_ID --source-instance-id SOURCE_INSTANCE_ID  --source-snapshot-id SOURCE_SNAPSHOT_ID
-```
+    ```text
+    aura-cli instance overwrite DESTINATION_INSTANCE_ID --source-instance-id SOURCE_INSTANCE_ID  --source-snapshot-id SOURCE_SNAPSHOT_ID
+    ```
 
 If you receive a response that looks like
 
@@ -281,9 +281,9 @@ You will need to select another snapshot to use.  It is not possible at this ti
 
 5. The destination AuraDB instance content will now be overwritten.  Depending on the size, this will take several minutes to complete.  You can check the status with
 
-```text
-aura-cli instance get DESTINATION_INSTANCE_ID 
-```
+    ```text
+    aura-cli instance get DESTINATION_INSTANCE_ID 
+    ```
 
 When the status is “Running” the overwrite is completed.
 
@@ -291,21 +291,21 @@ When the status is “Running” the overwrite is completed.
 
 1. Locate the destination AuraDB instance and obtain it’s ID ( referred to as the Destination Instance ).
 
-```text
-aura-cli instance list --output table
-```
+    ```text
+    aura-cli instance list --output table
+    ```
 
 2. Perform the overwrite
 
-```text
-aura-cli instance overwrite DESTINATION_INSTANCE_ID --source-instance-id SOURCE_INSTANCE_ID
-```
+    ```text
+    aura-cli instance overwrite DESTINATION_INSTANCE_ID --source-instance-id SOURCE_INSTANCE_ID
+    ```
 
 3. The destination AuraDB instance content will now be overwritten.  Depending on the size, this will take several minutes to complete.  You can check the status with
 
-```text
-aura-cli instance get DESTINATION_INSTANCE_ID 
-```
+    ```text
+    aura-cli instance get DESTINATION_INSTANCE_ID 
+    ```
 
 When the status is “Running” the overwrite is completed.
 
@@ -411,8 +411,6 @@ Set the value for a chosen setting
 aura-cli config set SETTING_NAME SETTING_VALUE
 ```
 
-#
-
 # Migrating to the new Aura CLI
 
 Aura CLI has graduated from a Neo4j Labs project to a full Neo4j product with all of the goodness it brings. The Neo4j Labs Aura CLI will continue to be available for installation for the foreseeable future, abet without any further development.  Customers are recommended to move to the new Aura CLI as soon as they are able to do so.   This KB outlines what you need to consider to move the new Aura CLI
@@ -443,7 +441,6 @@ The new Aura CLI is downloaded from <https://github.com/neo4j/aura-cli/releases>
 | tenants -> get-metrics-integration | →        | instance get \<InstanceID> returns the URL for metrics integration |
 |                                    |          | NEW - customer-managed-key                                         |
 |                                    |          | NEW - data-api  ( beta )                                           |
-|   |   |
 
 ## Command & flag changes with new Aura CLI
 
