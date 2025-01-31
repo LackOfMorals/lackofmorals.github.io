@@ -9,9 +9,7 @@ tags: Neo4j Aura GraphQL
 
 With the launch of GraphQL for AuraDB, its seems an auspicious time to put together a tutorial.   All tutorials have an outcome - seems sensible - so we're going to show how you can build Conway Game Of Life.
 
-## Convway?  Who is that?
-
-Here’s an improved version with better flow, clarity, and a touch more polish:  
+_Conway?_  Wait, what?
 
 ---
 
@@ -21,7 +19,7 @@ Cast your mind back to the 1970s (or Google it if you must)—an era of disco fe
 
 Mathematicians, as you might have gathered, are a lively bunch—so much so that they were often called upon to ensure guests left parties promptly by dazzling them with their sparkling wit and even more dazzling equations.  
 
-Following one such dazzling conversation (possibly involving an exceptional cup of tea and a fresh fairy cake*), Conway’s creation first appeared in the October 1970 issue of *Scientific American*, within Martin Gardner’s legendary “Mathematical Games” column.  
+Following one such dazzling conversation (possibly involving an exceptional cup of tea and a fresh fairy cake * ), Conway’s creation first appeared in the October 1970 issue of _Scientific American_, within Martin Gardner’s legendary “Mathematical Games” column.  
 
 ### The Game Itself  
 
@@ -53,4 +51,4 @@ So, in this tutorial series, we’ll build a sleek browser-based front end that 
 
 Until next time!  
 
-\* Some details here may be *alternative facts*—but wouldn’t it be nice if they were true?  
+\* Some details here may be _alternative facts_—but wouldn’t it be nice if they were true?  
