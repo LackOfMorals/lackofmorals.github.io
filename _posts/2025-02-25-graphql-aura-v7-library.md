@@ -1,6 +1,6 @@
 ---
 layout: posts
-title: "GraphQL for AuraDB and the v7 Library
+title: "GraphQL for AuraDB and the v7 Library"
 description: "Using introspector with v7 library"
 tags: Neo4j Aura GraphQL
 ---
@@ -13,7 +13,7 @@ This also means that the v7 Libary schema is different. For example, it is requi
 
 Here's the schema that v7 library expects for the sample Movies Graph
 
-```Java
+```Text
 type ActedInProperties @relationshipProperties {
  roles: [String]!
 }
