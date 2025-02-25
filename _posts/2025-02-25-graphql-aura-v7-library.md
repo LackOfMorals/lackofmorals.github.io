@@ -1,6 +1,6 @@
 ---
-layout: post
-title: "GraphQL for AuraDB & v7 Library
+layout: posts
+title: "GraphQL for AuraDB and the v7 Library
 description: "Using introspector with v7 library"
 tags: Neo4j Aura GraphQL
 ---
