@@ -1,5 +1,5 @@
 ---
-layout: posts
+layout: post
 title: "GraphQL for AuraDB and the v7 Library"
 description: "Using introspector with v7 library"
 tags: Neo4j Aura GraphQL
@@ -117,3 +117,18 @@ node ./src/intro.cjs
 ```
 
 Output to the console will be a v7 library GraphQL schema file for your Neo4j database. You can adjust it as needed and then load into the GraphQL for Neo4j AuraDB using the Console or the Aura CLI.
+
+## A few final words
+
+Admitedly this can be improved ( a lot, I'm not kidding myself at all ) with items such as:-
+
+- Output to a file
+- Better error handling for things like issue with Neo4j connection
+
+But it works.
+
+If you're taking part in the Conway Game of Life competition, using the introspector in this way allows you to quickly generate the schema based off the Developer Blog for [Conway Game of Life in Cyper](https://neo4j.com/blog/developer/cypher-game-of-life/)
+
+You can then use that with a GraphQL DataAPI
+
+Later
