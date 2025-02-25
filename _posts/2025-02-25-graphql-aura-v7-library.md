@@ -11,37 +11,39 @@ In our roadmap [blog](https://neo4j.com/blog/developer/neo4j-graphql-library-roa
 
 This also means that the v7 Libary schema is different. For example, it is required to use the @node directive to any type they wish to be considered a "node" in their database for which we should generate graphql queries and mutations
 
+Here's the schema that v7 library expects for the sample Movies Graph
+
 ```Java
 type ActedInProperties @relationshipProperties {
-        roles: [String!]!
+ roles: [String]!
 }
 
 type Movie @node {
-        peopleActedIn: [Person!]! @relationship(type: "ACTED_IN", direction: IN, properties: "ActedInProperties")
-        peopleDirected: [Person!]! @relationship(type: "DIRECTED", direction: IN)
-        peopleProduced: [Person!]! @relationship(type: "PRODUCED", direction: IN)
-        peopleReviewed: [Person!]! @relationship(type: "REVIEWED", direction: IN, properties: "ReviewedProperties")
-        peopleWrote: [Person!]! @relationship(type: "WROTE", direction: IN)
-        released: BigInt!
-        tagline: String
-        title: String!
+ peopleActedIn: [Person!]! @relationship(type: "ACTED_IN", direction: IN, properties: "ActedInProperties")
+ peopleDirected: [Person!]! @relationship(type: "DIRECTED", direction: IN)
+ peopleProduced: [Person!]! @relationship(type: "PRODUCED", direction: IN)
+ peopleReviewed: [Person!]! @relationship(type: "REVIEWED", direction: IN, properties: "ReviewedProperties")
+ peopleWrote: [Person!]! @relationship(type: "WROTE", direction: IN)
+ released: BigInt!
+ tagline: String
+ title: String!
 }
 
 type Person @node {
-        actedInMovies: [Movie!]! @relationship(type: "ACTED_IN", direction: OUT, properties: "ActedInProperties")
-        born: BigInt
-        directedMovies: [Movie!]! @relationship(type: "DIRECTED", direction: OUT)
-        followsPeople: [Person!]! @relationship(type: "FOLLOWS", direction: OUT)
-        name: String!
-        peopleFollows: [Person!]! @relationship(type: "FOLLOWS", direction: IN)
-        producedMovies: [Movie!]! @relationship(type: "PRODUCED", direction: OUT)
-        reviewedMovies: [Movie!]! @relationship(type: "REVIEWED", direction: OUT, properties: "ReviewedProperties")
-        wroteMovies: [Movie!]! @relationship(type: "WROTE", direction: OUT)
+ actedInMovies: [Movie!]! @relationship(type: "ACTED_IN", direction: OUT, properties: "ActedInProperties")
+ born: BigInt
+ directedMovies: [Movie!]! @relationship(type: "DIRECTED", direction: OUT)
+ followsPeople: [Person!]! @relationship(type: "FOLLOWS", direction: OUT)
+ name: String!
+ peopleFollows: [Person!]! @relationship(type: "FOLLOWS", direction: IN)
+ producedMovies: [Movie!]! @relationship(type: "PRODUCED", direction: OUT)
+ reviewedMovies: [Movie!]! @relationship(type: "REVIEWED", direction: OUT, properties: "ReviewedProperties")
+ wroteMovies: [Movie!]! @relationship(type: "WROTE", direction: OUT)
 }
 
 type ReviewedProperties @relationshipProperties {
-        rating: BigInt!
-        summary: String!
+ rating: BigInt!
+ summary: String!
 }
 ```
 
@@ -61,12 +63,14 @@ When prompted for a framework, select Vanilla
 
 For the Variant, select JavaScript
 
-Then
+Then we will install all of the packages we need including the latest build of the v7 GraphQL library.
 
 ```Bash
 cd my-graphql-introspector
 npm install
+npm install dotenv
 npm install @neo4j/introspector
+npm install @neo4j/graphql@7.0.0-alpha.3
 ```
 
 Create a file called intro.cjs in the src folder under my-graphql-introspector with this content
