@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "GraphQL for AuraDB and the v7 Library"
+title: "Generate the schema for GraphQL for Neo4j AuraDB beta"
 description: "Using introspector with v7 library"
 tags: Neo4j Aura GraphQL
 ---
