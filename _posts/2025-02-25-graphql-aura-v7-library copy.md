@@ -5,7 +5,7 @@ description: "Using introspector with v7 library"
 tags: Neo4j Aura GraphQL
 ---
 
-# GraphQL for Neo4j AuraDB Beta and the v7 library
+# Generate the schema for GraphQL for Neo4j AuraDB beta
 
 In our roadmap [blog](https://neo4j.com/blog/developer/neo4j-graphql-library-roadmap/) we outlined what to expect in GraphQL releases across 2025. One of those items is v7 of the library that introduces several changes that will massively reduce schema size to improve server startup and query time.
 
