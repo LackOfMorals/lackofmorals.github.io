@@ -7,21 +7,23 @@ tags: Neo4j Aura GraphQL
 
 # Lets figure out the GraphQL for Conway - Part One
 
-Grab an adult beverage and read this [blog entry](https://medium.com/neo4j/a-cypher-game-of-life-53b5faf04caa/).
+It would be advisable to grab an adult beverage before you start reading as this is a longer than usual post.
 
-TL;DR In that blog post, Christoffer Bergman describes Conways Game of Life implemented in Cypher. I'm going to base my attempt at Conway Game Of Life using GraphQL on his work. To start with , I'm going to need a GraphQL schema and a GraphQL service. That will then allow me to experiment with GraphQL Queries / Mutations to figure out those needed to implement the game.
+Ready? Then lets begin.
 
-Lets get the GraphQL Data API deployed and then , in next post, we can try out that GraphQL.
+In his[(blog post](https://medium.com/neo4j/a-cypher-game-of-life-53b5faf04caa/) Christoffer Bergman describes implementing Conways Game of Life in Cypher. I'm going to base my attempt at Conway Game Of Life on his work but using GraphQL instead of Cypher. To do that I'm going to need a GraphQL schema and a GraphQL service. Then I can experiment with GraphQL Queries / Mutations to figure out what is needed to implement the game.
 
-You may guess from those words this a fairly long entry.
+For the GraphQL service I will be using the GraphQL for Aura Beta which will need a schema, also known as Type Definitions and that's the goal of this post.
+
+You may guess from those words that this will be a fairly long entry.
 
 I'd go get another adult beverage from the fridge.
 
 ## Eyes open
 
-Christoffer uses a Neo4j schema that has a Cell node using a boolean property, alive, to represent the cells state ( true = alive, false = dead ). Additionally, there is a Spatial coordinate used for Cells position in the grid. Finally, Cells are related to each other using NEIGHBOUR_OF.
+Christoffer used a Neo4j schema with a Cell node that uses a boolean property, alive, to represent the cells state ( true = alive and false = dead ). A Spatial coordinate is used to represent a Cells position in the grid with Cells being connected to each other using a NEIGHBOUR_OF relattionship.
 
-I am going to represent this in GraphQL 'as is' apart from an adjustment for the co-ordinates so they use x and y properties as it makes GraphQL operations somewhat easier. I'll also add in an ID for good measure. My GraphQL schema looks like this
+I will represent this in GraphQL 'as is' apart from an adjustment for a Cells position to use x and y properties as it makes GraphQL operations somewhat easier. I'll also add in an ID for good measure. My GraphQL schema looks like this
 
 ```Text
 type Cell @node {
@@ -34,11 +36,11 @@ type Cell @node {
 }
 ```
 
-I would like to say I wrote this but I didn't. Instead I ran Cypher against an Aura instance to create Cells and relate them. Then I a modified version of the GraphQL Introspector to generate the schema from me. I will also use the same Neo4j Db for the GraphQL Data api.
+I would like to say I wrote this but I didn't. Instead I ran Cypher against an Aura instance to create Cells and then place into a grid using the NEIGHBOUR_OF relationship. THis allowsed to me to use a modified version of the GraphQL Introspector to generate the GraphQL schema. I will also be using the same Aura DB with GraphQL for Aura which means I have some data already present to try out. Win win really.
 
 ## Look what you made me do
 
-If you have an Aura Professional, Business Critical or Virtual Dedicated Cloud account, then you can skip this bit. If you don't have one of these, then sign up for an Aura Profressional Trial account as the GraphQL for Neo4j AuraDB Beta is not avaiable on Aura Free.
+As I'm using Aura I will need an edition that allows for GraphQL. If you're already using Aura Professional, Business Critical or Virtual Dedicated Cloud account, then you are good to go. If you don't have one of these, then sign up for an Aura Profressional Trial account as the GraphQL for Neo4j AuraDB Beta is not avaiable on Aura Free.
 
 **Signing up for an Aura Pro Trial**
 
@@ -51,18 +53,18 @@ If you have an Aura Professional, Business Critical or Virtual Dedicated Cloud a
 
 ## I knew you were trouble
 
-Now to run Cypher against the deployed Aura database to create several Cells and connect them together using NEIGHBOUR_OF.
+Now that we have a deployed Aura DB, let run some Cypher against it to create Cells and link them together. This will enable the GraphQL Introspector to infer a GraphQL Schema.
 
-First create a few cells with the properties we want.
+First create a few cells with the properties we want to give us a 10x10 grid.
 
 ```Text
-UNWIND range(1,2) as x
-    UNWIND range (1,2) as y
+UNWIND range(1,10) as x
+    UNWIND range (1,10) as y
     CREATE (c:Cell {id:x + '_' + y, x: x, y: y, alive: False})
 RETURN COUNT(c)
 ```
 
-Then join the cells together using the NEIGHBOUR_OF relationship but do not join a cell to itself.
+Then join a cells together with it's immediate neighbours using the NEIGHBOUR_OF relationship whilst avoiding joining a cell to itself.
 
 ```Text
 MATCH(ac:Cell)
@@ -78,9 +80,9 @@ CALL (c) {
 
 ## Shake it off
 
-The GraphQL schema was genereted using the Introspect tool which I had adapted to use the GraphQL v7 library used by the GraphQL for Neo4j AuraDB.
+The GraphQL schema was generated using the Introspect tool which I had adapted to use the GraphQL v7 library used by the GraphQL for Neo4j AuraDB. If you want to see how to modify the Introspector and build your own, see this [blog post](https://www.pm50plus.com/2025/02/25/graphql-aura-v7-library.html).
 
-I have created a GitHub repo which you can use by following these steps
+I have createad a GitHUb repo with everything already done. To use this , do the following
 
 - Clone the repo
 
@@ -88,14 +90,14 @@ I have created a GitHub repo which you can use by following these steps
 git clone https://github.com/LackOfMorals/my-graphql-introspector.git
 ```
 
-- Install
+- Install dependencies
 
 ```Text
 cd my-graphql-introspector
 npm install
 ```
 
-- Set connection to Neo4j / AuraDB by creating a .env file at the folder root. Replace values for NEO4J_URI, NEO4J_USR and NEO4J_PWD with the values that match your configuraiton
+- Set connection to your AuraDB by creating a .env file at the root of the installation folder my-graphql-introspector. Replace values for NEO4J_URI, NEO4J_USR and NEO4J_PWD with those values that match your configuraiton.
 
 ```Text
 NEO4J_URI=neo4j://localhost:7687
@@ -109,26 +111,24 @@ NEO4J_PWD=password
 node ./src/intro.csj
 ```
 
-If you want to see how to modify the Introspector and build your own, see this [blog post](https://www.pm50plus.com/2025/02/25/graphql-aura-v7-library.html).
-
-We're now ready to deploy GraphQL for AuraDB Beta using the schema that was just provider by the Introspector.
+If everything has been configured correctly you will see the GraphQL schema which means we're now ready to deploy GraphQL for AuraDB Beta.
 
 ##  Blank space
 
 Jump back into the Aura Console.
 
-Note: You will need the username and password for your Aura DB instance that we just used with Cypher and Instrospector.
+Note: You will need the username and password for your Aura DB instance that we just used in the previous step with the GraphQL Instrospector.
 
-- Select _Data APIs Beta_ and then _Create API_
+- From the left hand side of the Aura Console, select _Data APIs Beta_ and then _Create API_
   ![](/img/graphql-aura-beta/DataAPI.png)
 
-- There's a number of boxes to fill out and it doens't fit nicely into a single screenshot. I've broken them out in multiple ones.
+- There's a number of boxes to fill out and it doens't fit nicely into a single screenshot. I've broken these out into seperate steps.
 
 - _Details_
-  - API Name , a friendly name
-  - Instance. From the drop down, select the name of the Aura DB to use with GraphQL. Choose the one that was used with Cypher / Introspector
-  - Instance username. The username for the Instance you selected
-  - Instance password. The password for the Instance you selected
+  - API Name: a friendly name
+  - Instance: From the drop down, select the name of the Aura DB to use with GraphQL. Choose the one that was used with Cypher / Introspector
+  - Instance username: The username for the Instance you selected
+  - Instance password: The password for the Instance you selected
 
 ![](/img/graphql-aura-beta/DataAPIDetails.png)
 
@@ -139,9 +139,9 @@ Note: You will need the username and password for your Aura DB instance that we 
 - _CORS policy_
   ![](/img/graphql-aura-beta/DataAPICors.png)
 
-- By default, as part of security layers around a GraphQL Data API, a very restrictive CORS policy excludes all communications from a browser. This will be problematic for any browser based application that is going to be using it. For more on CORs, AWS has a good write up here: - [What is Cross-Origin Resource Sharing?](<https://aws.amazon.com/what-is/cross-origin-resource-sharing/#:~:text=Cross%2Dorigin%20resource%20sharing%20(CORS)%20is%20an%20extension%20of,that%20are%20public%20or%20authorized>)
+- By default, as part of security layers around a GraphQL Data API, a very restrictive CORS policy excludes all communications coming from a browser. This will be problematic for any browser based application. For more on CORs, AWS has a good write up here: - [What is Cross-Origin Resource Sharing?](<https://aws.amazon.com/what-is/cross-origin-resource-sharing/#:~:text=Cross%2Dorigin%20resource%20sharing%20(CORS)%20is%20an%20extension%20of,that%20are%20public%20or%20authorized>). We will need to adjust the CORs policy.
 
-- As all of my development is using the vite framework on node.js, <http://localhost:5173> will need adding to the CORS policy by selecting _Add allowed origin_.
+- As all of my development is using the vite framework on node.js, the browser will be using <http://localhost:5173>. This URL will need adding to the CORS policy. Do this by selecting _Add allowed origin_ and entering the URL used by your browser.
 
 ![](/img/graphql-aura-beta/DataAPICORSlocalhost.png)
 
@@ -152,29 +152,28 @@ Note: You will need the username and password for your Aura DB instance that we 
 
   - Select _Add authenticaton provider_
   - Choose _API key_ from the drop down
-  - Enter a friendly name for the API key. The key itself will automatically be generated
+  - Enter a friendly name for the API key. The key itself will automatically be generated when the GraphQL Data API itself is created at the end of this process.
 
 - _Sizing_
   There will be a number of different sizes at different charging rates for GraphQL Data API when its fully released. The beta is free and uses a fixed size.
 
 ![](/img/graphql-aura-beta/DataAPISizing.png)
 
-That's everything needed. Select _Create_
+That's everything. Select _Create_
 
-Note: There's a little defect that occasionally crops up that results in having to re-enter the Instance username and Instance password when creating or modifying when there is no need to do so. We'll fix that before release. Hopefully.
+Note: There's a little defect that occasionally crops up that results in having to re-enter the Instance username and Instance password when there is no need to do so. This usally happens when something is not right at time of first creation or making an modification to an existing one. We'll fix that before release. Hopefully. For now, just be aware of this undocumented feature that may not be supported in future versions.
 
-If everything has been entered and validated you will see a window with the URL and API Key for the GraphQL Data API. Make sure you save this in a safe place as there is no way to recover the API Key. If you do misplace the key, a new one will need to be furnished.
+If everything has been entered and validated you will see a window appear with the URL and API Key for the GraphQL Data API. Make sure you save this information in a safe place as there is no way to recover the API Key. If you do misplace the key, a new one will need to be furnished.
 
 Deployment will take a few minutes. As this post is going on for way longer than I intended, now is would be a good time for a cup of tea. Or another adult beverage.
 
 ## Cruel Summer
 
-In the new user experience you should now see the GraphQL Data API with a status of Ready. We'll run a GraphQL Query that returns the Cells we created earlier using Cypher. curl will be used for this.
+In the Aura console under _Data APIs_ you should now see the GraphQL Data API with a status of _Ready_. We'll now run a GraphQL Query, that returns the Cells we created earlier using Cypher, to test everything is working. curl will be used for this.
 
-Replace
-
-- YOUR_GRAPHQL_DATA_API_URL with your URL for the GraphQL Data API
-- YOUR_API_KEY with your API key
+- Replace
+  - YOUR_GRAPHQL_DATA_API_URL with your URL for the GraphQL Data API
+  - YOUR_API_KEY with your API key
 
 ```text
 curl --location  'YOUR_GRAPHQL_DATA_API_URL' \
@@ -187,7 +186,7 @@ You should see a JSON response with the data.
 
 ##  Is it over now?
 
-For now, yes, that's it. We have a working GraphQL Data API which we can now use to figure out the various GraphQL Queries and Mutations with Conway Game Of Life.
+For now, yes, that's it. We have a working GraphQL Data API which we can now use to figure out the various GraphQL Queries and Mutations to use with Conway Game Of Life.
 
 Which we'll do in the next blog .
 
