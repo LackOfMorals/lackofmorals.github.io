@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Generate the schema for GraphQL for Neo4j AuraDB beta"
+title: "Using Neo4j GraphQL Introspector with the forthcoming v7 library"
 description: "Using introspector with v7 library"
 tags: Neo4j Aura GraphQL
 ---
 
-# Generate the schema for GraphQL for Neo4j AuraDB beta
+# Using Neo4j GraphQL Introspector with v7 library
 
 In our roadmap [blog](https://neo4j.com/blog/developer/neo4j-graphql-library-roadmap/) we outlined what to expect in GraphQL releases across 2025. One of those items is v7 of the library that introduces several changes that will massively reduce schema size to improve server startup and query time.
 
@@ -47,9 +47,11 @@ type ReviewedProperties @relationshipProperties {
 }
 ```
 
-The GraphQL for Neo4j AuraDB will be launched using the v7 library ( the beta of that service is using an early release of v7 ) and it would be nice if there was a quick way to generate a v7 schema.
+You can expect a full set of documentation when the v7 Libary is launched. Using the GraphQL Introspector with the Neo4j Database that you will be using with GraphQL is the easiest way to generate the schema. Additionally, the GraphQL for Neo4j AuraDB Beta uses the v7 library and the same schema can be used with that.
 
-Which is possible by making a simple change to the GraphQL introspector tool
+Which is possible by making a simple change to the GraphQL introspector tool. Lets see hows that done
+
+BTW , if you can't be bothered to read on, then jump over to [https://github.com/LackOfMorals/my-graphql-introspector](https://github.com/LackOfMorals/my-graphql-introspector) and use one I built earlier.
 
 ## GraphQL introspector
 
