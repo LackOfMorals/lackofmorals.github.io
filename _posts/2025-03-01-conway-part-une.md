@@ -11,7 +11,7 @@ It would be advisable to grab an adult beverage before you start reading as this
 
 Ready? Then lets begin.
 
-In his[(blog post](https://medium.com/neo4j/a-cypher-game-of-life-53b5faf04caa/) Christoffer Bergman describes implementing Conways Game of Life in Cypher. I'm going to base my attempt at Conway Game Of Life on his work but using GraphQL instead of Cypher. To do that I'm going to need a GraphQL schema and a GraphQL service. Then I can experiment with GraphQL Queries / Mutations to figure out what is needed to implement the game.
+In his [blog post](https://medium.com/neo4j/a-cypher-game-of-life-53b5faf04caa/) Christoffer Bergman describes implementing Conways Game of Life in Cypher. I'm going to base my attempt at Conway Game Of Life on his work but using GraphQL instead of Cypher. To do that I'm going to need a GraphQL schema and a GraphQL service. Then I can experiment with GraphQL Queries / Mutations to figure out what is needed to implement the game.
 
 For the GraphQL service I will be using the GraphQL for Aura Beta which will need a schema, also known as Type Definitions and that's the goal of this post.
 
@@ -21,7 +21,7 @@ I'd go get another adult beverage from the fridge.
 
 ## Eyes open
 
-Christoffer used a Neo4j schema with a Cell node that uses a boolean property, alive, to represent the cells state ( true = alive and false = dead ). A Spatial coordinate is used to represent a Cells position in the grid with Cells being connected to each other using a NEIGHBOUR_OF relattionship.
+Christoffer used a Neo4j schema with a Cell node that uses a boolean property, alive, to represent the cells state ( true = alive and false = dead ). A Spatial coordinate is used to represent a Cells position in the grid with Cells being connected to each other using a NEIGHBOUR_OF relationship.
 
 I will represent this in GraphQL 'as is' apart from an adjustment for a Cells position to use x and y properties as it makes GraphQL operations somewhat easier. I'll also add in an ID for good measure. My GraphQL schema looks like this
 
@@ -36,7 +36,7 @@ type Cell @node {
 }
 ```
 
-I would like to say I wrote this but I didn't. Instead I ran Cypher against an Aura instance to create Cells and then place into a grid using the NEIGHBOUR_OF relationship. THis allowsed to me to use a modified version of the GraphQL Introspector to generate the GraphQL schema. I will also be using the same Aura DB with GraphQL for Aura which means I have some data already present to try out. Win win really.
+I would like to say I wrote this but I didn't. Instead I ran Cypher against an Aura instance to create Cells and then place them into a grid using the NEIGHBOUR_OF relationship. THis allowsed to me to use a modified version of the GraphQL Introspector to generate the GraphQL schema. I will also be using the same Aura DB with GraphQL for Aura which means I have some data already present to try out. Win win really.
 
 ## Look what you made me do
 
