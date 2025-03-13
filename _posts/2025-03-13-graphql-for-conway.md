@@ -5,9 +5,9 @@ description: "GraphQL for Conway with a bit of Cypher"
 tags: Neo4j Aura GraphQL Conway
 ---
 
-## Conway Game Of Life in GraphQL - mostly
+## GraphQL for Conway Game Of Life
 
-In my last post I covered setting up GraphQL for AuraDB that used this Type Definition
+In my last post I covered setting up GraphQL for AuraDB with this Schema / Type Definition
 
 ```Text
 type Cell @node {
@@ -30,21 +30,25 @@ curl --location  'YOUR_GRAPHQL_DATA_API_URL' \
 
 ```
 
-Which means we have arrived at the point where thought can be applied for the GraphQL that will be needed as part of the implementation of Conway Game Of Life.
+Which means we have arrived at the point to start thinking about the GraphQL queries and mutations that will be needed as part of the implementation of Conway Game Of Life.
 
-To help with this process, lets see if we can answer this question. What will a Player need to do to setup and then play the game?
+Like most new adventures, the first step is the hardest.
 
-Lets start with a quickly drawn basic UI and use that to help get the brain matter going.
+I find starting with the User Experience helps with this so lets answer this question. What will a Player need to do to setup and then play the game?
+
+A quickly drawn basic UI is a great quide in helping answering that question.
 
 Here's my attempt - go ahead and judge me if you like.
 
 ![Shite UX by a PM](/img/conway-graphql/ConwayGameOfLife.drawio.png)
 
-Back to our question. What will a Player need to do so they can enjoy the Game Of Life?
+Back to our question. What will a Player need to do to setup and then play the game? Refering back to my drawing, I can suggest the following:-
 
-- Enter the width and height of the grid. They then select Draw and a grid will appear in line with the dimensions they entered.
-- If the Player chooses Reset, then the grid is removed
-- Start does what it says - starts the simulation and Stop, well that's apparant as to its function
+- Enter the width and height of the grid.
+- Select Draw will cause the grid to appear in line with the dimensions they entered.
+- If the Player chooses Reset, then the grid is removed and they can choose new parameters
+- Start does what it says - starts the simulation
+- Stop, well that's apparant as to its function
 
 Our storage for all of this is a Neo4j AuraDB that we are accessing using GraphQL. We can take our requirements above and slice them into the various operations of Create, Read, Update, and Delete , otherwise known as CRUD.
 
