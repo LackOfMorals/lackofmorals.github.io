@@ -7,7 +7,7 @@ tags: Neo4j Aura GraphQL Conway
 
 ## GraphQL for Conway Game Of Life
 
-In my last post I covered setting up GraphQL for AuraDB with this Schema / Type Definition
+In my [last post](https://www.pm50plus.com/2025/03/01/conway-part-une.html) I covered setting up GraphQL for AuraDB with this Schema / Type Definition
 
 ```Text
 type Cell @node {
