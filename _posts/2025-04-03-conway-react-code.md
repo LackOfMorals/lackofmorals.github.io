@@ -5,7 +5,8 @@ description: "Conway Game of Life using GraphQL and Neo4j Aura"
 tags: Neo4j Aura GraphQL Conway
 ---
 
-## Conway Game Of Life 
+## Conway Game Of Life
+
 A common piece of advice on how to best learn a new development language is to build an application. For example, you often see variants on 'hello world' to start with and then folks try progressively more challenging endeavours. This technique follows the well trodden path of crawl, walk, run and, maybe, matharons ( I guess the equivalent in these times of AI assistants would be taking a metaphorical taxi to speed up the journey ).
 
 I'm not sure where Creating Conway Game of Life as your first ever React project would be placed on that road - likely at the far end where you're sweating , exhausted and general just want to take yourself off to a dark room for several hours to comtemplate your life choices.
@@ -15,6 +16,8 @@ Did I mention my experience of JS is somewhat basic ?
 For those of you who already have experience in this area, there are likely to be moments of 'Why did you do that?!!'. Afterall , a little knowledge is dangerous.
 
 But remember what we are always told - it is all about the outcome.
+
+![Conway ready to start](/img/conway-app/firstload.png)
 
 Here's my journey
 
@@ -143,6 +146,8 @@ In main.jsx we see
 
 These get used and mutated in various places within components / functions underneath main.jsx. This is why state has been pulled up from them to allow for this.
 
+![State pulled up and flows](/img/conway-app/conway%20staret.drawio.png)
+
 I did encounter a situation where the state change of running from false to true did not happen quickly enough resulting in the simulation never running. After some scratching of head, I asked ChatGPT and it pointed me in the direction of useRef and useEffect.
 
 > ChaptGPT has been really efficient at finding issues and explaining what to do about them - most of the time. The answers still need verifying but I found it to be an effective teacher when learning a new language and got me unblocked a couple of times
@@ -229,6 +234,8 @@ A try / await block ensures that things happen in the order they need to e.g del
 A while loop is used to continous iterate until running becomes false. This carries the risk of making the UX un-responsive which is why there are several `await new Promise((resolve) => setTimeout(resolve, 100));` statements at various points to mitigate this eventuality and allow React to do it's own work.
 
 It was within this bit of the code that I stumbled across the way Javascript passes arguments to a function. You may notice
+
+![Controls disabled](/img/conway-app/controls-disabled.png)
 
 ```JavaScript
 var nextGraphIteration = simulation(
@@ -345,4 +352,4 @@ For my fellow PMs, go try your hand at coding - any coding. Start with something
 
 Enjoy
 
-[https://github.com/LackOfMorals/conway-game-of-life.git]
+[GitHub repo for Conway Game of Life](https://github.com/LackOfMorals/conway-game-of-life.git)
