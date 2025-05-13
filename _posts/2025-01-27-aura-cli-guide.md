@@ -23,7 +23,7 @@ The new Aura CLI is available on [GitHub](https://github.com/neo4j/aura-cli/rele
 
 5. Complete the installation by moving the aura-cli executable file into the file path.
 
-- Mac users:  
+- Mac users:
 
 ```text
 sudo mv aura-cli /usr/local/bin
@@ -41,7 +41,7 @@ Check installation with
 aura-cli -v
 ```
 
-You should see ``` aura version v1.0.0 ```
+You should see `aura version v1.0.0`
 
 **Note**: If you are using a Mac, you may receive a rather alarming warning from Apple that aura-cli could not be verified.  If this happens, then open **system settings**, select **Privacy & Security** on the left, and scroll down on the right. Select **Open** **Anyway.**   This should not happen again.   The aura-cli has been through the Apple certification process but this can take time to trickle down through the Apple ecosystem.
 
@@ -57,13 +57,13 @@ You should see ``` aura version v1.0.0 ```
 
 2. Navigate to the top right where your account name is displayed as shown in the red box below and click on the down arrow
 
-    ![](/img/guide-to-new-aura-cli/console-classic-home.png)
+   ![](/img/guide-to-new-aura-cli/console-classic-home.png)
 
-3. You will be shown a menu with your account name.  Select _Account Details_  
+3. You will be shown a menu with your account name.  Select _Account Details_
 
 4. From the Account Details display, select the _Create_ button in the Aura API Credentials section.
 
-    ![](/img/guide-to-new-aura-cli/console-classic-api-keys.png)
+   ![](/img/guide-to-new-aura-cli/console-classic-api-keys.png)
 
 5. On the pop-up window, enter a Client name, and select _Create_.
 
@@ -75,19 +75,19 @@ You should see ``` aura version v1.0.0 ```
 
 2. Navigate to the top right where your account name is displayed as shown in the red box below and click on the down arrow
 
-    ![](/img/guide-to-new-aura-cli/unified-console-home.png)
+   ![](/img/guide-to-new-aura-cli/unified-console-home.png)
 
-3. From the menu, choose _API keys__
+3. From the menu, choose \_API keys\_\_
 
-    ![](/img/guide-to-new-aura-cli/unified-console-account-dropdown.png)
+   ![](/img/guide-to-new-aura-cli/unified-console-account-dropdown.png)
 
 4. When API Keeys is shown, select _Create_
 
-    ![](/img/guide-to-new-aura-cli/unified-console-api-keys.png)
+   ![](/img/guide-to-new-aura-cli/unified-console-api-keys.png)
 
 5. On the pop-up window, enter a name for the API Key and then select _Create_
 
-    ![](/img/guide-to-new-aura-cli/unified-console-create-api-key.png)
+   ![](/img/guide-to-new-aura-cli/unified-console-create-api-key.png)
 
 6. You will be shown the client id and client secret.  Make a note as the client secret will not be shown again and you need both. If you download them, keep them safe.
 
@@ -97,19 +97,19 @@ Configure the Aura CLI with the Aura API client ID and client secret you obtaine
 
 1. At the command prompt,  enter the following, using your values for the items in CAPITALS:
 
-    ```text
-    aura-cli credential add --name YOUR\_LABEL --client-id YOUR\_CLIENT\_ID --client-secret YOUR\_CLIENT\_SECRET
-    ```
+   ```text
+   aura-cli credential add --name YOUR\_LABEL --client-id YOUR\_CLIENT\_ID --client-secret YOUR\_CLIENT\_SECRET
+   ```
 
 2. To confirm the credentials are working, list your Aura instances.
 
-    ```text
-    aura-cli instance list --output table
-    ```
+   ```text
+   aura-cli instance list --output table
+   ```
 
 # Working with AuraDB tenants
 
-Aura CLI allows you to list the Aura Tenants you can access and then obtain the available AuraDB instance for each one. To list tenants  
+Aura CLI allows you to list the Aura Tenants you can access and then obtain the available AuraDB instance for each one. To list tenants
 
 ```text
 aura-cli tenant list
@@ -118,13 +118,13 @@ aura-cli tenant list
 To get available AuraDB instances for an individual tenant, change TENANT-ID to the one you are interested in.  The output is substantial as all available AuraDB instance configurations are returned.  Consider filtering, for example with the use of the jq utility
 
 ```text
-aura-cli tenant get TENANT-ID 
+aura-cli tenant get TENANT-ID
 ```
 
 If you have a single tenant or one that you use most frequently, it is recommended that you set it as the default to avoid repetition with other Aura CLI commands.   Do this with
 
 ```text
-aura-cli config set default-tenant TENANT-ID 
+aura-cli config set default-tenant TENANT-ID
 ```
 
 # Managing AuraDB instances
@@ -136,7 +136,7 @@ The Aura CLI provides a full set of commands to manage the lifecycle of an AuraD
 Before you can create an AuraDB instance, you need to make sure that your desired configuration is available in a tenant where the AuraDB will reside.   Get these by using the Tenant command as mentioned previouslyIf you are using Aura Free, there is no need to do this as the configurations are fixed.  You can simply create an AuraDB instance with
 
 ```text
-aura-cli instance create --name YOUR\_INSTANCE\_NAME --type free-db --await 
+aura-cli instance create --name YOUR\_INSTANCE\_NAME --type free-db --await
 ```
 
 For other Aura Tiers, you must provide:-
@@ -150,7 +150,7 @@ For other Aura Tiers, you must provide:-
 The values for these are found with the usage of the aforementioned Tenant commands.  Once you have them, proceed with ( you can skip --tenant-id if you have set a default tenant)
 
 ```text
-aura-cli instance create --name YOUR_INSTANCE_NAME --cloud-provider YOUR_CLOUD_PROVIDER --region CLOUD_REGION --memory MEMORY --type  AURA_INSTANCE_TYPE --tenant-id YOUR_TENANT_ID 
+aura-cli instance create --name YOUR_INSTANCE_NAME --cloud-provider YOUR_CLOUD_PROVIDER --region CLOUD_REGION --memory MEMORY --type  AURA_INSTANCE_TYPE --tenant-id YOUR_TENANT_ID
 ```
 
 The response will provide the connection details for the request AuraDB which will contain authentication details - the username and password - that are only shown once.  Make sure to record these safely and securely.
@@ -166,7 +166,7 @@ aura-cli instance list
 Use of the table format output option provides an improved viewing experience
 
 ```text
-aura-cli instance list --output table 
+aura-cli instance list --output table
 ```
 
 From the list, you can then use the ID for an AuraDB instance to get detailed information about it, including the URL to use for metrics
@@ -211,7 +211,7 @@ aura-cli instance resume YOUR_INSTANCE_ID 
 
 ## Snapshots
 
-A snapshot is a copy of an AuraDB instances data at a specific point in time.  It can then be restored with the ‘overwrite’ command of the Aura CLI.  
+A snapshot is a copy of an AuraDB instances data at a specific point in time.  It can then be restored with the ‘overwrite’ command of the Aura CLI.
 
 ### Create
 
@@ -239,9 +239,9 @@ aura-cli instance snapshot SNAPSHOT_ID --instance-id YOUR_INSTANCE_ID
 
 ## Overwrite
 
-This provides the ability to over write the content of one AuraDB instance with that from another whilst leaving the configuration alone.  However, the destination storage must be of sufficient size.  A snapshot provides the source material.   Overwrites can be used for restoration of an AuraDB instance databases, for duplication, moving between regions or any situation where you want to use the content of one AuraDB with another AuraDB.   A couple of cautions* Existing content of the destination AuraDB instance is completely replaced
+This provides the ability to over write the content of one AuraDB instance with that from another whilst leaving the configuration alone.  However, the destination storage must be of sufficient size.  A snapshot provides the source material.   Overwrites can be used for restoration of an AuraDB instance databases, for duplication, moving between regions or any situation where you want to use the content of one AuraDB with another AuraDB.   A couple of cautions\* Existing content of the destination AuraDB instance is completely replaced
 
--  Like the Delete command of the Aura CLI, there is no confirmationProceed with caution. There are two sets of steps provided to illustrate the process of overwriting an existing AuraDB with the snapshot from another.   * Historical snapshot is for  choosing an existing, pior, snaphost.
+- Like the Delete command of the Aura CLI, there is no confirmationProceed with caution. There are two sets of steps provided to illustrate the process of overwriting an existing AuraDB with the snapshot from another.   \* Historical snapshot is for  choosing an existing, pior, snaphost.
 
 - Latest snapshot for when you want to take and use a new snapshotIn both cases, the destination AuraDB instance must be running.  If Lastest Snapshot steps are used, then the source AuraDB must also be running.
 
@@ -249,27 +249,27 @@ This provides the ability to over write the content of one AuraDB instance with 
 
 1. Obtain the ID of the AuraDB instance that has the desired snapshot you wish to use ( referred to as the Source Instance ).
 
-    ```text
-    aura-cli instance list --output table  
-    ```
+   ```text
+   aura-cli instance list --output table 
+   ```
 
 2. Decide which of it’s snapshots to use and note the snapshot ID ( referred to as Source Snapshot )
 
-    ```text
-    aura-cli instance snapshot list --instance-id SOURCE_INSTANCE_ID  
-    ```
+   ```text
+   aura-cli instance snapshot list --instance-id SOURCE_INSTANCE_ID 
+   ```
 
 3. Locate the destination AuraDB instance and obtain it’s ID ( referred to as the Destination Instance ).
 
-    ```text
-    aura-cli instance list --output table
-    ```
+   ```text
+   aura-cli instance list --output table
+   ```
 
 4. Perform the overwrite
 
-    ```text
-    aura-cli instance overwrite DESTINATION_INSTANCE_ID --source-instance-id SOURCE_INSTANCE_ID  --source-snapshot-id SOURCE_SNAPSHOT_ID
-    ```
+   ```text
+   aura-cli instance overwrite DESTINATION_INSTANCE_ID --source-instance-id SOURCE_INSTANCE_ID  --source-snapshot-id SOURCE_SNAPSHOT_ID
+   ```
 
 If you receive a response that looks like
 
@@ -281,9 +281,9 @@ You will need to select another snapshot to use.  It is not possible at this ti
 
 5. The destination AuraDB instance content will now be overwritten.  Depending on the size, this will take several minutes to complete.  You can check the status with
 
-    ```text
-    aura-cli instance get DESTINATION_INSTANCE_ID 
-    ```
+   ```text
+   aura-cli instance get DESTINATION_INSTANCE_ID
+   ```
 
 When the status is “Running” the overwrite is completed.
 
@@ -291,27 +291,27 @@ When the status is “Running” the overwrite is completed.
 
 1. Locate the destination AuraDB instance and obtain it’s ID ( referred to as the Destination Instance ).
 
-    ```text
-    aura-cli instance list --output table
-    ```
+   ```text
+   aura-cli instance list --output table
+   ```
 
 2. Perform the overwrite
 
-    ```text
-    aura-cli instance overwrite DESTINATION_INSTANCE_ID --source-instance-id SOURCE_INSTANCE_ID
-    ```
+   ```text
+   aura-cli instance overwrite DESTINATION_INSTANCE_ID --source-instance-id SOURCE_INSTANCE_ID
+   ```
 
 3. The destination AuraDB instance content will now be overwritten.  Depending on the size, this will take several minutes to complete.  You can check the status with
 
-    ```text
-    aura-cli instance get DESTINATION_INSTANCE_ID 
-    ```
+   ```text
+   aura-cli instance get DESTINATION_INSTANCE_ID
+   ```
 
 When the status is “Running” the overwrite is completed.
 
 ## Customer Managed Keys
 
-Encryption of data at rest  is a standard feature of AuraDB and uses keys from a supported cloud key management service (KMS).   AuraDB Virtual Dedicated Cloud customers may wish to use their own encryption keys, a capability that is referred to as Customer Managed Encryption Keys (CMEK).   More information is available in Aura Documentation in the [Encryption](https://neo4j.com/docs/aura/classic/platform/security/encryption/) section  and you are advised to read this before continuing.  The Aura CLI allows management of this feature with these commands:  _CreateAllows Aura to use the Key defined in your Cloud Key Management System_ DeleteRemoves the permission for Aura to use a Key.  This makes all data encrypted with that key inaccessible._List List already defined CMEKs_ GetDetailed information about an individual CMEK
+Encryption of data at rest  is a standard feature of AuraDB and uses keys from a supported cloud key management service (KMS).   AuraDB Virtual Dedicated Cloud customers may wish to use their own encryption keys, a capability that is referred to as Customer Managed Encryption Keys (CMEK).   More information is available in Aura Documentation in the [Encryption](https://neo4j.com/docs/aura/classic/platform/security/encryption/) section  and you are advised to read this before continuing.  The Aura CLI allows management of this feature with these commands:  *CreateAllows Aura to use the Key defined in your Cloud Key Management System* DeleteRemoves the permission for Aura to use a Key.  This makes all data encrypted with that key inaccessible._List List already defined CMEKs_ GetDetailed information about an individual CMEK
 
 ### Create
 
@@ -347,7 +347,7 @@ aura-cli customer-managed-key get YOUR\_CMEK\_ID
 
 # Configuration of Aura CLI
 
-Aura CLI has two commands for it’s own configuration _CredentalSets of Client IDs and Client Secrets that are used to authenticate with the Aura API that the Aura CLI uses to perform its own operations._ ConfigAddtional configuration options for the Aura CLI, such as turning Beta features on / off
+Aura CLI has two commands for it’s own configuration *CredentalSets of Client IDs and Client Secrets that are used to authenticate with the Aura API that the Aura CLI uses to perform its own operations.* ConfigAddtional configuration options for the Aura CLI, such as turning Beta features on / off
 
 ## Credential
 
@@ -417,11 +417,11 @@ Aura CLI has graduated from a Neo4j Labs project to a full Neo4j product with al
 
 ## Behaviour
 
-- The name of the CLI is now aura-cli*Support for using environmental variables has been removed as they can be visible in process listings and can be accidentally logged making them vulnerable to exposure. For sensitive values e.g Aura API client id and client secret, a secrets manager is the recommended approach.* Neo4j Labs Aura CLI used plural names for commands; the new Aura CLI has singular naming for these* It is not possible to return the raw API response body with the new Aura CLI- Flags with the new Aura CLI do not have a short form and must be specified in full
+- The name of the CLI is now aura-cli*Support for using environmental variables has been removed as they can be visible in process listings and can be accidentally logged making them vulnerable to exposure. For sensitive values e.g Aura API client id and client secret, a secrets manager is the recommended approach.* Neo4j Labs Aura CLI used plural names for commands; the new Aura CLI has singular naming for these\* It is not possible to return the raw API response body with the new Aura CLI- Flags with the new Aura CLI do not have a short form and must be specified in full
 
 ## Feature set
 
-At the time of general availability, the new Aura CLI supports these new features compared to the previous Labs project* Customer managed keys
+At the time of general availability, the new Aura CLI supports these new features compared to the previous Labs project\* Customer managed keys
 
 - Beta of GraphQL Data APIs
 
@@ -432,7 +432,7 @@ The new Aura CLI is downloaded from <https://github.com/neo4j/aura-cli/releases>
 ## Commands
 
 | Labs Aura CLI                      | maps to  | New Aura CLI                                                       |
-| --- | --- | ---
+| ---------------------------------- | -------- | ------------------------------------------------------------------ |
 | config                             | →        | config                                                             |
 | credentials                        | →        | credential                                                         |
 | instances                          | →        | instance                                                           |
@@ -448,7 +448,7 @@ As far as was possible, the new Aura CLI commands and their flags are the same a
 
 ## Config
 
-It is not possible to remove a setting and its value although the value itself can be changed.  If deletion is wanted, then remove it from the JSON configuration file _Mac$HOME/Library/Preferences/neo4j/cli/config.json_ Windows%LOCALAPPDATA%\neo4j\cli\config.json
+It is not possible to remove a setting and its value although the value itself can be changed.  If deletion is wanted, then remove it from the JSON configuration file *Mac$HOME/Library/Preferences/neo4j/cli/config.json* Windows%LOCALAPPDATA%\neo4j\cli\config.json
 
 ## Create a new AuraDB
 
