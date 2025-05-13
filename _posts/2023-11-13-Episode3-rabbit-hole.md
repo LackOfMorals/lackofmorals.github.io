@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Doing more with less"
 description: ""
 tags: Neo4j Python REST 

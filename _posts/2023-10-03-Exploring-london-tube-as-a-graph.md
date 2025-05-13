@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Exploring London tube as a graph"
 description: "Introducing Graphs using London Tube as an example"
 tags: Neo4j Tfl

@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Aura welcomes Query API"
 description: "Query API is now generally available for Aura customers"
 tags: Neo4j PM DevEx QueryAPI

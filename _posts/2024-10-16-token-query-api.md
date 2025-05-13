@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Using token with Query API - an example with SSO"
 description: "Seamless auth with web application and Query API using SSO"
 tags: Neo4j PM DevEx QueryAPI SSO Token

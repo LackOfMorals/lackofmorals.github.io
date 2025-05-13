@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Enabling introspection on the GraphQL for Aura"
 description: "Enabling introspection on the GraphQL for Aura"
 tags: Neo4j Aura GraphQL

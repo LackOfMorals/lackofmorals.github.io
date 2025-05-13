@@ -1,24 +1,23 @@
 ---
-layout: post
+layout: posts
 title: "Moving to Neo4j Query API - Partie Un "
 description: "Say goodbye, wave hello"
 tags: Neo4j PM DevEx QueryAPI  Aura
 ---
 
-
 # Considering a move to the Neo4j Query API - Partie Un
 
-If you're interested in transitioning to the Query API, this post will provide an overview of the key areas to consider and plan for. A follow up post post will dive deeper with a worked example. While there's no immediate pressure to move from the HTTP API, it's important to note that updates will be limited to critical security and defect fixes. All future development effort  will be focused on the Query API.
+If you're interested in transitioning to the Query API, this post will provide an overview of the key areas to consider and plan for. A follow up post post will dive deeper with a worked example. While there's no immediate pressure to move from the HTTP API, it's important to note that updates will be limited to critical security and defect fixes. All future development effort will be focused on the Query API.
 
 ---
 
 ## Embracing differences
 
-In an ideal world, there would not be any differences between the HTTP and Query APIs. When designing the Query API data contracts, our primary goal was to make Developer outcomes easier to achieve compared to what had gone before. As we iterated our way along the design and development process, it quickly became apparent that changes would be needed to realise the benefits we set out to achieve.  Lets delve more into what those changes are and what they mean to you.
+In an ideal world, there would not be any differences between the HTTP and Query APIs. When designing the Query API data contracts, our primary goal was to make Developer outcomes easier to achieve compared to what had gone before. As we iterated our way along the design and development process, it quickly became apparent that changes would be needed to realise the benefits we set out to achieve. Lets delve more into what those changes are and what they mean to you.
 
 ### URL
 
-The most obvious change is with the URL.  The path has changed to support Versioning ( covered in more detail next ) and introduces the name of API itself.  The latter avoids a namespace collision to allow running of both API so you can gradually move over
+The most obvious change is with the URL. The path has changed to support Versioning ( covered in more detail next ) and introduces the name of API itself. The latter avoids a namespace collision to allow running of both API so you can gradually move over
 
 - HTTP API: /db/{db name}
 - Query API: /db/{db name}/query/v2
@@ -58,19 +57,19 @@ This is an addition to the Notification section of a response and is there for c
 
 JSON allows for values a type from string, number, JSON object, array , boolean or null. The Neo4j type list is much more extensive covering many more types. The HTTP API has a content type that adds JSON type information to the returned JSON response - JOLT. Jolt, short for JSON Bolt, is a JSON-based format which encloses the response value's type together with the value inside a singleton object ( Bolt being the packet stream based protocol use by Neo4j server and platform drivers ).
 
-In all honesty, the feedback from Developers for JOLT can best be summarised as _'Would not recommend'_ but there remained a desire for types.  
+In all honesty, the feedback from Developers for JOLT can best be summarised as _'Would not recommend'_ but there remained a desire for types.
 
-We like a challenge and commenced on a ground-up re-design for extending JSON with Neo4j type information. With the Query API you now ```Accept: application/vnd.neo4j.query``` to your request header and get back a JSON response that is decorated with Neo4j type information. More detail on this in in the [JSON with Type](https://neo4j.com/docs/query-api/current/result-formats/#_json_with_type_information) documentation
+We like a challenge and commenced on a ground-up re-design for extending JSON with Neo4j type information. With the Query API you now `Accept: application/vnd.neo4j.query` to your request header and get back a JSON response that is decorated with Neo4j type information. More detail on this in in the [JSON with Type](https://neo4j.com/docs/query-api/current/result-formats/#_json_with_type_information) documentation
 
 Feedback is encouraged.
 
-### Response  changes
+### Response changes
 
-It's morphed a bit from the response that you previously got from the HTTP API.  The response has been organised into distinct areas within the JSON response with a top level that contains one or more these entries
+It's morphed a bit from the response that you previously got from the HTTP API. The response has been organised into distinct areas within the JSON response with a top level that contains one or more these entries
 
 ```JSON
 
-{ 
+{
    "data":{},
    "counters":[],
    "profiledQueryPlan": {},
@@ -81,24 +80,24 @@ It's morphed a bit from the response that you previously got from the HTTP API. 
    "bookmarks": []
 ```
 
-The top level entries change depending on the request, if an error occurred, information from the Neo4j server, and if the Cypher statement was to be profiled.   Exact details for each of these can be found in the [documentation](https://neo4j.com/docs/query-api/current/)
+The top level entries change depending on the request, if an error occurred, information from the Neo4j server, and if the Cypher statement was to be profiled. Exact details for each of these can be found in the [documentation](https://neo4j.com/docs/query-api/current/)
 
-___
+---
 
 ## What's next?
 
 There's three other points to consider when planning your migration
 
 - Be curious
-Althought this blog has covered the main areas of difference between the HTTP API and the Query API, do not assume that these are the  **only areas** that you need to pay attention to. These are general points and each application will have it's own quirks. Be curious - go read your applications source code to learn more about how they are using the HTTP API
+  Althought this blog has covered the main areas of difference between the HTTP API and the Query API, do not assume that these are the **only areas** that you need to pay attention to. These are general points and each application will have it's own quirks. Be curious - go read your applications source code to learn more about how they are using the HTTP API
 
 - Remember that the Tortoise won
-"The Tortoise and the Hare" is one of Aesop's Fables where the Hare looses the race due to foolish over confidence. A slow and steady migration is better than a hasty swap over.  For self-managed customers, the HTTP API will be supported for a long time yet as part of the 5.26 LTS version of Neo4j, recieving updates for critical bugs and security defects.
+  "The Tortoise and the Hare" is one of Aesop's Fables where the Hare looses the race due to foolish over confidence. A slow and steady migration is better than a hasty swap over. For self-managed customers, the HTTP API will be supported for a long time yet as part of the 5.26 LTS version of Neo4j, recieving updates for critical bugs and security defects.
 
 - Dual running
-Self-managed customers can run both the HTTP and Query API at the sametime.  Take advantage of this for back to back testing where results, performance, and security can be compared between the two APIs. It also allows for a gradual transistion with the HTTP being switched off when eveything has been moved across.
+  Self-managed customers can run both the HTTP and Query API at the sametime. Take advantage of this for back to back testing where results, performance, and security can be compared between the two APIs. It also allows for a gradual transistion with the HTTP being switched off when eveything has been moved across.
 
 - Read the docs
-Do not forget to read the Query API documentation so that you are informed of what the API does and it does it!  [Query API Documentation](https://neo4j.com/docs/query-api/current/)
+  Do not forget to read the Query API documentation so that you are informed of what the API does and it does it! [Query API Documentation](https://neo4j.com/docs/query-api/current/)
 
 As mentioned at the start of this blog, a follow up post will look at code changes to move a Python application from the HTTP API to the Query API.

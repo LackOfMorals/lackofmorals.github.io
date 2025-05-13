@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Neo4j Cluster built with containers"
 description: "How to make a Neo4j Cluster"
 tags: Neo4j PM DevPM Cluster Containers

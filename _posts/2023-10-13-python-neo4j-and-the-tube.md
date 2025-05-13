@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Using Python and data from Tfl API"
 description: "Building our graph with data from Tfl API using Python"
 tags: Neo4j Tfl Python

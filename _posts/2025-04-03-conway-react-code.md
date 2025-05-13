@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Conway Game Of Life application"
 description: "Conway Game of Life using GraphQL and Neo4j Aura"
 tags: Neo4j Aura GraphQL Conway

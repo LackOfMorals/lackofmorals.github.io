@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Dipping into the code from the trinity of SSO, Neo4j and a web application "
 description: "looking at the code"
 tags: Neo4j PM DevEx QueryAPI SSO Token

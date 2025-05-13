@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "I am always willing to learn"
 description: "Speed up tips with Neo4j Python driver and code structure for Tfl Neo4j app"
 tags: Neo4j Python 

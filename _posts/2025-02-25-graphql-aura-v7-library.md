@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Using Neo4j GraphQL Introspector with the forthcoming v7 library"
 description: "Using introspector with v7 library"
 tags: Neo4j Aura GraphQL

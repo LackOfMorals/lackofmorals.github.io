@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Explicit transactions with the Neo4j Query API coming shortly "
 description: "Introducing explicit transactions"
 tags: Neo4j PM DevEx QueryAPI  Aura

@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Lets figure out the GraphQL for Conway Game Of Life"
 description: "GraphQL for Conway with a bit of Cypher"
 tags: Neo4j Aura GraphQL Conway

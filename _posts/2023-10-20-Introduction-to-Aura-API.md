@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "It is all about the REST"
 description: "First steps with Aura provisioning API"
 tags: Neo4j Python REST

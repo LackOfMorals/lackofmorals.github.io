@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "About that Conway Game Of Life"
 description: "Figuring out the Graphql - Part One"
 tags: Neo4j Aura GraphQL

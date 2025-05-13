@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "A guide to the new Aura CLI"
 description: "Using the new Aura CLI"
 tags: Neo4j Aura CLI

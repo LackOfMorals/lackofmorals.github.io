@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "GraphQL for AuraDB - A tutorial trilogy in 4 parts"
 description: "A tutorial for GraphQL on AuraDB"
 tags: Neo4j Aura GraphQL
