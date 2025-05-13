@@ -1,41 +1,38 @@
 ---
-layout: posts
+layout: post
 title: "Using Python and data from Tfl API"
 description: "Building our graph with data from Tfl API using Python"
 tags: Neo4j Tfl Python
 ---
 
-
-# Episode 1 :  Back to school 
+# Episode 1 : Back to school
 
 ![London Tube Stations](/img/tflTube/tflStations.png)
 
+To become more familar with the TfL API and working with Neo4j programmatically , I'm going to write some funky Python code to explore and learn more about them. In Agile terms, it's a Spike. The vast majority of this code is likely to be thrown away - no need to make it pretty , optimised or anything like that, just functional.
 
-To become more familar with the TfL API and working with Neo4j programmatically , I'm going to write some funky Python code to explore and learn more about them.  In Agile terms, it's a Spike. The vast majority of this code is likely to be thrown away - no need to make it pretty , optimised or anything like that, just functional. 
-
-For the spike, I want to know more about 
+For the spike, I want to know more about
 
 - How to use the Tfl API to get a list of tube lines
 - Create entries in Neo4j using its Python driver
 
+## Install Neo4j locally
 
-## Install Neo4j locally.
-I'm going to use Neo4j Desktop for this exercise.  It's a local install with a nice UI attached that makes it easy to use and work with.  
+I'm going to use Neo4j Desktop for this exercise. It's a local install with a nice UI attached that makes it easy to use and work with.
 
-Download Neo4j Desktop here:- [https://neo4j.com/download/]() and install it.  
+Download Neo4j Desktop here:- [https://neo4j.com/download/]() and install it.
 
-After the install has completed, launch Desktop and create a new project.  Then click on the 'Add' button to , err, add a local DBMS.  Give the DBSM a name, a password ( remember this as we will need it shortly ), choose the latest version of Neo4j, then select 'Create'  and wait for the process to finish.
+After the install has completed, launch Desktop and create a new project. Then click on the 'Add' button to , err, add a local DBMS. Give the DBSM a name, a password ( remember this as we will need it shortly ), choose the latest version of Neo4j, then select 'Create' and wait for the process to finish.
 
 Once that's done, go to the project and click on the dbms, then choose 'Start'
 
-You now have a running Neo4j graphdatabase. 
-
+You now have a running Neo4j graphdatabase.
 
 ## Get the list of tube lines from Tfl
-I've already created an account and obtained an API key to access Tfl API. If you haven't , go here [https://api-portal.tfl.gov.uk/]()  and then come back. 
 
-Lets use some Python code that's going to connect to Tfl API and get the list of Tube lines. 
+I've already created an account and obtained an API key to access Tfl API. If you haven't , go here [https://api-portal.tfl.gov.uk/]() and then come back.
 
+Lets use some Python code that's going to connect to Tfl API and get the list of Tube lines.
 
 ```python
 # Use python requests libary for our comms with Tfl
@@ -121,9 +118,9 @@ Next step will be to iterate through the list, extract the tube line id and then
 
 ## Obtain the list of stations for a tube line from Tfl
 
-Lets expand the code to go get those stations on a Tube line.   
+Lets expand the code to go get those stations on a Tube line.
 
-Rather than print the response after the check to see if we got json back, we will iterate our way through each Tube line entry to obtain the Tube line id.  This is used with the Tfl endpoint that returns stop points, or stations, for a line.  We'll then print the output again to see what we have.
+Rather than print the response after the check to see if we got json back, we will iterate our way through each Tube line entry to obtain the Tube line id. This is used with the Tfl endpoint that returns stop points, or stations, for a line. We'll then print the output again to see what we have.
 
 ```python
 # If we got JSON back
@@ -177,28 +174,29 @@ If all goes ok, and watch for those Python indents, our output will look similar
 
 There's a lot of stuff returned from the Tfl endpoint, some of which will be useful - the name, id, and physical location information in the form of lat & lon - and a lot that will not.
 
-If you look at the station list a bit more closely, we find two problems. 
+If you look at the station list a bit more closely, we find two problems.
 
-The first  is a tube line can have several  routes - you can see this on the map where the Northen Line splits.
+The first is a tube line can have several routes - you can see this on the map where the Northen Line splits.
 
 ![London Tube Stations](/img/tflTube/tubeMap.png)
 
-Our second is the stations are not in sequence for a route on a line. This will make connecting them together tricky.  
+Our second is the stations are not in sequence for a route on a line. This will make connecting them together tricky.
 
-We'll solve those next time. 
+We'll solve those next time.
 
 Lets go load this information into Neo4j
 
 ## Create nodes in Neo4j with the Python driver
+
 We're going to take each station and create an entry in Neo4j - a node - which will have two properties , the stations id and name.
 
-To make the connection to Neo4j, we'll need the address, user and password.  As we're using the local Desktop version, this is straight forward. You can recall the password you created earlier ? 
+To make the connection to Neo4j, we'll need the address, user and password. As we're using the local Desktop version, this is straight forward. You can recall the password you created earlier ?
 
-Once we have established the connection we will use Cypher to create the entry.  Cypher is the query language used by Neo4j and there's lots of materials to educate yourselve about it.  Take one of the free courses at the Neo4j Graph Academy here:- [https://graphacademy.neo4j.com/]() and read the docs here:- [https://neo4j.com/developer/cypher/]()
+Once we have established the connection we will use Cypher to create the entry. Cypher is the query language used by Neo4j and there's lots of materials to educate yourselve about it. Take one of the free courses at the Neo4j Graph Academy here:- [https://graphacademy.neo4j.com/]() and read the docs here:- [https://neo4j.com/developer/cypher/]()
 
-We'll use MERGE as it will only create an entry if it doesn't already exists.  This will avoid duplicates which is handy if there's an error and we need to run the code again. 
+We'll use MERGE as it will only create an entry if it doesn't already exists. This will avoid duplicates which is handy if there's an error and we need to run the code again.
 
-Change the code starting at the line 'if tfl_tube_line_stations.json():'  
+Change the code starting at the line 'if tfl_tube_line_stations.json():'
 
 As this is Python - think indents !
 
@@ -245,9 +243,9 @@ If all goes well you should see entries like this appearing from the code
 Process finished with exit code 0
 ```
 
-Finishing with an exit code of 0 indicates that times are good. 
+Finishing with an exit code of 0 indicates that times are good.
 
-We can now check if we have entries in Neo4j by going over to Neo4j Desktop and choosing the Open button.  This will open the Neo4j browser window.
+We can now check if we have entries in Neo4j by going over to Neo4j Desktop and choosing the Open button. This will open the Neo4j browser window.
 
 Enter this cyhper statement
 
@@ -255,17 +253,16 @@ Enter this cyhper statement
 MATCH (n) RETURN n
 ```
 
-And you should see a picture like the one at the top of this blog post. 
+And you should see a picture like the one at the top of this blog post.
 
 You can downlod the entire code from here:- [Complete Python code](/code/2023-10-13_code.py)
 
-Make sure to change the Tfl API Key to match your own along with password for Neo4j. 
+Make sure to change the Tfl API Key to match your own along with password for Neo4j.
 
+## What's next?
 
-## What's next? 
+Another spike. We need to connect up the stations which means we'll be adding relationships between them. And there's the matter of getting them in the correct sequence on each route on a line.
 
-Another spike.  We need to connect up the stations which means we'll be adding relationships between them.  And there's the matter of getting them in the correct sequence on each route on a line. 
-
-Then we really need to talk about the code that's been written and how we can structure it better.  Some careful munnging together of Python Classes is going be a major factor in that.
+Then we really need to talk about the code that's been written and how we can structure it better. Some careful munnging together of Python Classes is going be a major factor in that.
 
 Until then, stay safe.

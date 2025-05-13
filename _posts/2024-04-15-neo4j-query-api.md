@@ -1,5 +1,5 @@
 ---
-layout: posts
+layout: post
 title: "Introducing the new Query API in Neo4j 5.19"
 description: ""
 tags: Neo4j PM DevEx QueryAPI

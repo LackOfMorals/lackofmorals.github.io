@@ -1,5 +1,5 @@
 ---
-layout: posts
+layout: post
 title: "Cattle and Pets"
 description: "Thoughts on how to compute resources"
 tags: ComputeResources

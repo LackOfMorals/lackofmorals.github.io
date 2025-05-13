@@ -1,5 +1,5 @@
 ---
-layout: posts
+layout: post
 title: "SSL for Neo4j so the Query API can use it "
 description: "How to configure Neo4j for SSL using Lets Encrypt"
 tags: Neo4j PM DevPM QueryAPI  Aura SSL

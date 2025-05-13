@@ -1,5 +1,5 @@
 ---
-layout: posts
+layout: post
 title: "Using the forthcoming Aura GraphQL API"
 description: ""
 tags: Neo4j PM DevEx GraphQL API

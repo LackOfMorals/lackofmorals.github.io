@@ -1,5 +1,5 @@
 ---
-layout: posts
+layout: post
 title: "Moving to Neo4j Query API - Partie Un "
 description: "Say goodbye, wave hello"
 tags: Neo4j PM DevEx QueryAPI  Aura

@@ -1,5 +1,5 @@
 ---
-layout: posts
+layout: post
 title: "Applications, Tokens and Neo4j Query API "
 description: "A gude to using tokens with application and Neo4j Query API"
 tags: Neo4j PM DevEx QueryAPI SSO Token
