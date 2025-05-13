@@ -16,25 +16,23 @@ linkedin_username: "jgiffard"
 #googleplus_username: +username
 
 social-links:
-  Resume:          https://pm50plus/com/resume
-  LinkedIn:        https://www.linkedin.com/in/jgiffard/
-  GitHub:          https://github.com/LackOfMorals
-  Twitter:         https://twitter.com/jgiffard
-  Website:         https://pm50plus.com
-
+  Resume: https://pm50plus/com/resume
+  LinkedIn: https://www.linkedin.com/in/jgiffard/
+  GitHub: https://github.com/LackOfMorals
+  Twitter: https://twitter.com/jgiffard
+  Website: https://pm50plus.com
 
 #########################################################################################
 ######### Nothing below needs to be changed (unless you know what you're doing) #########
 #########################################################################################
 theme: "minima"
 
-
 #rss: rss
 
 kramdown:
   syntax_highlighter_opts:
     disable: true
-    
+
 plugins:
   - jekyll-feed
   - jekyll-sitemap
@@ -47,7 +45,6 @@ header_pages:
   - resume.html
   - about.md
   - archive.md
-  
 
 google_analytics:
   - G-1FRK92XVZN # New GA4 property
@@ -57,6 +54,6 @@ code_block_max_height: 500px
 defaults:
   - scope:
       path: ""
-      type: post
+      type: posts
     values:
       tags: Other

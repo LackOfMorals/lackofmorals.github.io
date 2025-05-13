@@ -3,7 +3,6 @@ layout: posts
 title: "Cattle and Pets"
 description: "Thoughts on how to compute resources"
 tags: ComputeResources
-type: posts
 ---
 
 ## Cattle and Pets
