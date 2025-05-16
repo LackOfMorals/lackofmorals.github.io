@@ -24,7 +24,7 @@ In this blog post I look at what's needed to setup GraphQL for AuraDB to use JWT
 
 - A Okta developer account. These are currently free!
 
-- AuraDB Professional, AuraDB Professional Trial or AuraDB Business Critical
+- AuraDB Professional, AuraDB Professional Trial or AuraDB Business Critical with Movies example graph
 
 - GraphQL for AuraDB deployed
 
@@ -39,7 +39,7 @@ In Okta, we need to :-
 
 Go ahead and sign into your Okta Developer account
 
-### Application
+### Okta -> Application
 
 Once signed in to Okta, select **Applications** -> **Create App Integration**
 
@@ -70,7 +70,7 @@ General Setting
 
 Make sure you select **Save** when done.
 
-### Security
+### Oktas -> Security
 
 Select **Security** -> **API** -> **Add Authorization Server**
 
@@ -176,3 +176,141 @@ From this we will use the value of the access_token key to use with the graphQL
 ---
 
 ## GraphQL for AuraDB
+
+When creating a GraphQL API for an AuraDB, you will need type definitions.
+
+The type definitions given here are those for the Movies example graph.
+
+```Text
+type ActedInProperties @relationshipProperties {
+  roles: [String!]!
+}
+
+type Movie @node {
+  peopleActedIn: [Person!]!
+    @relationship(
+      type: "ACTED_IN"
+      direction: IN
+      properties: "ActedInProperties"
+    )
+  peopleDirected: [Person!]! @relationship(type: "DIRECTED", direction: IN)
+  peopleProduced: [Person!]! @relationship(type: "PRODUCED", direction: IN)
+  peopleReviewed: [Person!]!
+    @relationship(
+      type: "REVIEWED"
+      direction: IN
+      properties: "ReviewedProperties"
+    )
+  peopleWrote: [Person!]! @relationship(type: "WROTE", direction: IN)
+  released: BigInt!
+  tagline: String
+  title: String!
+}
+
+type Person @node {
+  actedInMovies: [Movie!]!
+    @relationship(
+      type: "ACTED_IN"
+      direction: OUT
+      properties: "ActedInProperties"
+    )
+  born: BigInt
+  directedMovies: [Movie!]! @relationship(type: "DIRECTED", direction: OUT)
+  followsPeople: [Person!]! @relationship(type: "FOLLOWS", direction: OUT)
+  name: String!
+  peopleFollows: [Person!]! @relationship(type: "FOLLOWS", direction: IN)
+  producedMovies: [Movie!]! @relationship(type: "PRODUCED", direction: OUT)
+  reviewedMovies: [Movie!]!
+    @relationship(
+      type: "REVIEWED"
+      direction: OUT
+      properties: "ReviewedProperties"
+    )
+  wroteMovies: [Movie!]! @relationship(type: "WROTE", direction: OUT)
+}
+
+type ReviewedProperties @relationshipProperties {
+  rating: BigInt!
+  summary: String!
+}
+```
+
+As we are using JWT, we will need to supply the Okta endpoint that is used to validate the incoming JWT. This is often referred to as a JWKS endpoint.
+
+With Okta, this is your ISSUER_URI appended with /v1/keys
+
+Lets create the GraphQL API
+
+### Creating the Graph QL
+
+> Note: Assumes you have an AuraDB provisioned with the Movies example graph. If you haven't done this, do it now before proceeding.
+
+Log into Aura.
+
+Select **Data API**
+
+Then choose **Create API**
+
+You are shown the create API screen. There's a lot to complete so we will go section by section
+
+**Details**
+
+- API Name
+- Instance
+- Instance Username
+- Instance Password
+
+**Type Definitions**
+Copy the Type Definitions from earlier and paste them in
+
+**Cross origin policy**
+Nothing to see here for now as a browser is not being used to access our GraphQL API
+
+**Authentication providers**
+
+- Type: JWKS
+- Name: Provide a descriptive name
+- URL: The JWKS endpoint. This is your ISSUER_URI appended with /v1/keys
+
+> Note: The JWKS endpoint could be different if you're not using Okta. Check this for your identity provider if that is the case
+
+**Sizing**
+Only 256Mb is availabel at time of writing
+
+When you've done all of this, select **Save**
+
+Make sure you note the URL for the GraphQL API.
+
+It will take a few moments to provision the GraphQL API
+
+Select **Data API** to see the current status. Whent the status becomes 'ready' we're ready to test
+
+## Testing
+
+Get a token from Okta. Replace ISSUER_URI, SCOPE, CLIENT_ID, CLIENT_SECRET_ID with your values
+
+Use curl to get the token
+
+```Bash
+curl --request POST \
+
+--url ISSUER_URI/v1/token \
+--header 'accept: application/json' \
+--header 'cache-control: no-cache' \
+--header 'content-type: application/x-www-form-urlencoded' \
+--data 'grant_type=client_credentials&scope=SCOPE' \
+-u CLIENT_ID:CLIENT_SECRET
+```
+
+From the response, copy the value for access_token
+
+Lets run a simple graphql query with that uses the token
+
+```Bash
+curl --location 'GRAPHQL_API_URI' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer TOKEN_FROM_OKTA \
+--data '{"query":"query MoviesAndDirectors{\n  movies(limit: 5 )\n{\n    released\n    title\n    peopleDirected { name }\n    peopleActedIn { name }\n  }\n}","variables":{}}'
+```
+
+This should return 5 movies and their directors
