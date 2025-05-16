@@ -5,9 +5,9 @@ description: "Part one of a guide to using token with GraphQL for AuraDB"
 tags: Neo4j PM DevEx Token GraphQL
 ---
 
-# Tokens with GraphQL
+# Tokens with GraphQL for AuraDB
 
-There are two options ( we're looking at another token based approach for the future ) to control access to a GraphQL
+There are two options ( we're looking at another token based approach for the future ) to control access to a GraphQL for AuraDB endpoint
 
 - API Key
 - JWT
