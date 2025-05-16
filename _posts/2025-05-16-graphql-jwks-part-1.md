@@ -12,7 +12,7 @@ There are two options ( we're looking at another token based approach for the fu
 - API Key
 - JWT
 
-APIs keys are a simple, straight forward approach that requires a key to be sent in header of every request. This makes it ideal for development environments. For production environments we recommend the use of a 3rd party indentity provider that manages tokens in the form of JWTs as these provide more flexibility when it comes to ensuring secure access to your GraphQL. Additionally, JWT enable the use of rules within your type definitions for authentication and authorisation.
+APIs keys are a simple, straight forward approach that requires a key to be sent in header of every request. This makes it ideal for development environments. For production environments we recommend the use of a 3rd party indentity provider that manages tokens in the form of JWTs as these provide more flexibility when securing access to your GraphQL. Additionally, JWTs enable the use of rules within your type definitions for authentication and authorisation.
 
 In this blog post I look at what's needed to setup GraphQL for AuraDB to use JWT, both the GraphQL API itself and the indentity provider. The follow on post will look at use of @authentication and @authorization within type definitions for granular controls. The final post in this series looks at using Single Sign On where a user initiates the token generation, typicall seen with web applications.
 
@@ -255,10 +255,10 @@ You are shown the create API screen. There's a lot to complete so we will go sec
 
 **Details**
 
-- API Name
-- Instance
-- Instance Username
-- Instance Password
+- API Name: Provide a short name
+- Instance: Select the AuraDB to use with your GraphQL API
+- Instance Username: Provide the username to access the AuraDB. Normally this is Neo4j
+- Instance Password: Provide the associated password for the username
 
 **Type Definitions**
 Copy the Type Definitions from earlier and paste them in
@@ -302,7 +302,7 @@ curl --request POST \
 
 From the response, copy the value for access_token
 
-Lets run a simple graphql query with that uses the token
+Lets run a simple graphql query with the token
 
 ```Bash
 curl --location 'GRAPHQL_API_URI' \
