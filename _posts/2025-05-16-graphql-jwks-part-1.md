@@ -287,9 +287,7 @@ Select **Data API** to see the current status. Whent the status becomes 'ready' 
 
 ## Testing
 
-Get a token from Okta. Replace ISSUER_URI, SCOPE, CLIENT_ID, CLIENT_SECRET_ID with your values
-
-Use curl to get the token
+Use curl to get the token. Replace ISSUER_URI, SCOPE, CLIENT_ID, CLIENT_SECRET_ID with your values
 
 ```Bash
 curl --request POST \
