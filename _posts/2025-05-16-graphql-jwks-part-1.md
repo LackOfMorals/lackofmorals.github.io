@@ -2,20 +2,27 @@
 layout: post
 title: "Using token with GraphQL for AuraDB "
 description: "Part one of a guide to using token with GraphQL for AuraDB"
-tags: Neo4j PM DevEx QueryAPI SSO Token
+tags: Neo4j PM DevEx Token GraphQL
 ---
 
-# Tokens - nice
+# Tokens with GraphQL
 
-In a previous blog post I discussed a web application obtaining and using a token with Neo4j Query API as a result of a user successfully authenticating. This entry looks at what would be involved for an application to obtain a token and use it with Neo4j Query API.
+There are two options ( we're looking at another token based approach for the future ) to control access to a GraphQL
 
-**Plot spoiler** - it's very similar.
+- API Key
+- JWT
 
-Many organisations prefer a token based approach, one reason for this is the limited lifespan and scope of token which helps to reduce risk if it is intercepted. Lets look at how this can be achieved.
+APIs keys are a simple, straight forward approach that requires a key to be sent in header of every request. This makes it ideal for development environments. For production environments we recommend the use of a 3rd party indentity provider that manages tokens in the form of JWTs as these provide more flexibility when it comes to ensuring secure access to your GraphQL. Additionally, JWT enable the use of rules within your type definitions for authentication and authorisation.
 
-We will need
+In this blog post I look at what's needed to setup GraphQL for AuraDB to use JWT, both the GraphQL API itself and the indentity provider. The follow on post will look at use of @authentication and @authorization within type definitions for granular controls. The final post in this series looks at using Single Sign On where a user initiates the token generation, typicall seen with web applications.
 
-- A free Okta developer account
+> This will use machine to machine tokens as that's the easier starting point
+
+---
+
+## Pre-reqs
+
+- A Okta developer account. These are currently free!
 
 - AuraDB Professional, AuraDB Professional Trial or AuraDB Business Critical
 
@@ -23,13 +30,9 @@ We will need
 
 - A local copy of curl
 
-- Text editor
-
 ## Okta
 
-Okta has a free offering for development purposes. We'll take advantage of this and use Okta for our identity provider.
-
-In Okta,we will need to :-
+In Okta, we need to :-
 
 - Create and configure a new Application
 - Create and configure a new Security Authorisation Server
@@ -38,27 +41,34 @@ Go ahead and sign into your Okta Developer account
 
 ### Application
 
-Once signed in, select **Applications** -> **Create App Integration** -> **API Services**
+Once signed in to Okta, select **Applications** -> **Create App Integration**
+
+- Select **API Services**
+- Click **Next**
+
+When you're at the **New API Services App Integration** display
 
 - Provide a name e.g tokenForFGraphQLAPI
+- Select **Save**
 
-The configuration for the new Application will be shown. Make changes as described below
+The configuration screen for the new Application will be shown. Make changes as described below
 
-**General**
-
+**General section**
 Client credentials
 
 - Client ID: Copy the client id as this will be needed later
 
 - Client authentication: Client secret
 
-CLIENT SECRETS
+Client Secret
 
 - Client secret:   Copy this as it also will be needed later
 
 General Setting
 
 - Proof of possession :  Make sure Require Demonstrating Proof of Possession (DPoP) header in token requests is not selected
+
+Make sure you select **Save** when done.
 
 ### Security
 
@@ -74,7 +84,7 @@ Now make these changes to the configuration
 
 The newly created authorization server is now displayed. Changes are need to the Scope and Rules
 
-The next step is to create a Scope which will be used in the Neo4j configuration to map to a Neo4j role.  This determines the access level that will be granted.
+The next step is to create a Scope which will be used later on in the next blog to determine access.
 
 **Scopes**
 Select **Scopes** -> **Add Scope**
@@ -128,17 +138,16 @@ Now Okta is configured, we will have
 
 ### Test Okta by getting a token
 
-A token to use with the Query API is obtained from **https://YOUR_DEVELOPER_ACCOUNT_DOMAIN/oauth2/default/v1/token**  as illustrated with this example using CURL
+A token to use with the Query API is obtained from **ISSUER_URI/v1/token**  as illustrated with this example using CURL
 
 Replace the following with your values from Okta with the curl command
 
 - ISSUER_URI
-
 - SCOPE
-
 - CLIENT_ID
-
 - CLIENT_SECRET_ID
+
+curl command to request a token
 
 ```Bash
 curl --request POST \
