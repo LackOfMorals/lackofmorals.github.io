@@ -12,11 +12,11 @@ There are two options ( we're looking at another token based approach for the fu
 - API Key
 - JWT
 
-APIs keys are a simple, straight forward approach that requires a key to be sent in header of every request. This makes it ideal for development environments. For production environments we recommend the use of a 3rd party indentity provider that manages tokens in the form of JWTs as these provide more flexibility when securing access to your GraphQL. Additionally, JWTs enable the use of rules within your type definitions for authentication and authorisation.
+Using APIs keys are asimple, straight forward approach to control access to a GraphQL API and work really well for development environments. For production environments we recommend the use of a 3rd party indentity provider that manages tokens in the form of JWTs as these provide more flexibility when securing access to your GraphQL. Additionally, JWTs enable the use of rules within your type definitions for authentication and authorisation.
 
-In this blog post I look at what's needed to setup GraphQL for AuraDB to use JWT, both the GraphQL API itself and the indentity provider. The follow on post will look at use of @authentication and @authorization within type definitions for granular controls. The final post in this series looks at using Single Sign On where a user initiates the token generation, typicall seen with web applications.
+In this blog post I walk through an example covering the setup of the GraphQL API itself and the indentity provider. A follow on post will look at providing granula control using type defintion directives, @authentication and @authorization. That example is using machine to machine token as it's relatively straight forward. The last, and final post in this series will show how user initiated token flow - Single Sign On in a browser - can be used.
 
-> This will use machine to machine tokens as that's the easier starting point
+Lets get started
 
 ---
 
