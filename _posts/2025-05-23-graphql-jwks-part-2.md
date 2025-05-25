@@ -7,7 +7,7 @@ tags: Neo4j PM DevEx Token GraphQL
 
 # # An introdcution to using JWTs with GraphQL for AuraDB - Part Two
 
-In part one I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.
+In [part one](https://www.pm50plus.com/2025/05/16/graphql-jwks-part-1.html) I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.
 
 This blog will look at using properties of a token to control access to the API and the data within.
 
@@ -64,13 +64,13 @@ This quick JWT introduction arms us with suffiicient detail for what we need to 
 
 > Note: JWT payload can be read by _anyone_ who has it unless it has been encrypted. Be careful what you include.
 
-## Using JWT with a GraphQL API
+## Using JWT with GraphQL for AuraDB
 
-At the end of part one of this blog series, we have a GraphQL data api that can only be used with a JWT. Your use case may determine that this is sufficient - possesion of a verifiable JWT is a sufficient level of protection for being able to query / mutate your data using GraphQL operations. If you need nothing more than this, you now have the chance to do something else instead of moving your eyes over the rest of these fine words.
+At the end of part one of this blog series, we had a GraphQL data api that can only be access with a valid JWT. Your use case may determine that this is sufficient - possesion of a verifiable JWT is a sufficient level of protection for being able to query / mutate your data using GraphQL operations. If you need nothing more than this, you now have the chance to do something else instead of moving your eyes over the rest of these fine words.
 
-But what if you need more? Let consider how we can use what is in a JWT to control access to our data and the operations that can be performed.
+But what if you need more control?
 
-For reference, here's what is possible with links to the relevant documentation page
+For reference, here's what is possible with JWTs along with links to the relevant documentation page
 
 [Authentication](https://neo4j.com/docs/graphql/current/security/authentication/)
 You could judge that this is fairly useless as the GraphQL API itself has already checked the JWT and allowed access if it was verified. However, that process does not look at any private claims that have been added to the JWT payload which you may want to use to further refine who is permitted to use the GraphQL API, set specific or default rules as to what they can do by controlling what operations are pemitted.
@@ -80,15 +80,15 @@ Authorization rules cover what specific data a generated Cypher query is allowed
 
 We'll use examples to show these being used in a number of scenarios.
 
+Introducing ACME Corporation.
+
 ### Scenario One - Controlling access to a group of ACME's users
 
-ACME Corporation ( they are going to appear a lot BTW ) use Single Sign On for all of their applications. They wish to use the same to provide access to GraphQL Data API for a subset of their users.
+ACME Corporation use Single Sign On for all of their applications. They wish to use the same system to provide access to GraphQL Data API for a subset of their users.
 
-Solution
+Configuring the GraphQL to support JWT will allow anyone using SSO in ACME Corp to gain access but we only want some of them to do so. To enforce additional controls, we can use the `@authentication` directive to check the JWT to see if it contains a certain claim that indicates authentication should be allowed. Using the Okta web console, ACME Corp adds an additional entry in the JWT scope claim for this purpose - "acmeGraphQLUser"
 
-Configuring the GraphQL to support JWT will allow anyone using SSO in ACME Corp to gain access. To enforce additional controls, we can use the `@authentication` directive to check the JWT to see if it contains a certain claim that indicates authentication should be allowed. Using the Okta web console, ACME Corp adds an additional entry in the JWT scope claim for this purpose,
-
-This would be achieved with this additional configuration to the Type Definitions
+Lets modify the Type Definitions to use this
 
 ```JSON
 type JWTPayload @jwt {
@@ -98,7 +98,7 @@ type JWTPayload @jwt {
 extend @authentication( jwt: { roles: { includes: "acmeGraphQLUser" } })
 ```
 
-Lets dig into what's going
+Lets dig into what's going on here.
 
 We define a type, JWTPayload that's decorated with @jwt. You can use any type name so long as you add @jwt. Within the type we have an array of strings, roles and we use @jwtClaim to copy over values from the JWT payload claim 'scp' into it. So the net result is we now have access to the values defined in the scp claim of our JWT. We have to do this as scp is a private claim from Okta and not a publically registered one. If we were only using [public claim names](https://www.rfc-editor.org/rfc/rfc7519#section-4.1) from the JWT specification, e.g iss, then we don't need to do this as those claims are automatically available to us.
 
@@ -112,7 +112,7 @@ Great success.
 
 ACME Corporation is so stoked with the outcomes it's getting from using GraphQL with AuraDB that they want to do more. But some of the data they wish to expose is sensitive and not all users should be able to access it.
 
-Here's where we can make use of @authorization directive combined with either validation or verification rules or a combination thereof.
+Here's where we can make use of `@authorization` directive combined with either validation or verification rules or a combination thereof.
 
 Rather than rush in, ACME Corp decides to try a few things using the Movies example graph. Here's the Type Definitions for Movies graph.
 
@@ -180,7 +180,7 @@ type ReviewedProperties @relationshipProperties {
 
 ACME Corp has the changes from Scenario One that control access to the GraphQL API to those with the "acmeGraphQLUser" claim in their token. This token will always be present but there will be an additional token, "acmeGraphQLSensitive" that allows access to sensitive data.
 
-There are two rules ACME can use with _@authorization_ filtering and validuation. Recall from our earlier explanation, filtering will remove data according to defined rules where as validation returns an error. Let sees what's these look like when protecting sensitive data.
+There are two rules ACME can use with `@authorization` filtering and validuation. Recall from our earlier explanation, filtering will remove data according to defined rules where as validation returns an error. Let sees what's these look like when protecting sensitive data.
 
 The Person type contains sensitive data that we want to protect. Lets do that by restricting it to only those users with "acmeGraphQLSensitive" in their token.
 
@@ -219,9 +219,9 @@ If you now run a graphQL query with the "acmeGraphQLSensitive" claim in your tok
 }
 ```
 
-If there is a subset of fields that need to protected, you can do this. When the received JWT lacks the required claim, an emplty JSON document is returned like the one above, if the query included the protected field. If the query had not included it, then the query would return results. Lets try this using _born_ as an example
+But what if there are only a subset of fields that need to protected ? Well you can apply `@authorization` to individual fields. If a query contains any of those field and the received JWT lacks the required claim, an emplty JSON document is returned like the one above. But if the query does not have any of protected fields and the JWT lacks the need claim, you will still get the asked for data back.
 
-ACME Type Def changes to
+To do this, ACME changes its Type Def as follows
 
 ```JSON
 type Person @node
@@ -248,7 +248,7 @@ type Person @node
 }
 ```
 
-When a query is issued that does not include _born_ and the JWT does not have "acmeGraphQLSensitive" in its claims, then we still get results
+When a query is issued that does not include _born_ and the JWT does not have "acmeGraphQLSensitive" in its claims, then we still get them requested results
 
 ```JSON
 {
@@ -296,7 +296,7 @@ More on filter and validate can be found in the GraphQL API [documentation](http
 
 With protection for sensitive data, ACME Corporation turns it attention to controlling who can change the data. Again, a claim in the JWT will control this "acmeGraphQLReadWrite".
 
-Staying with the Type Defs already present, we can protect ACME Corporation data by using _@authentication_ for each node by adding
+Staying with the Type Defs already present, we can protect ACME Corporation data by using `@authentication` for each node by adding
 
 ```JSON
 @authentication(operations: [CREATE, DELETE, UPDATE], jwt: { roles: { includes: "acmeGraphQLReadWrite" } } )
