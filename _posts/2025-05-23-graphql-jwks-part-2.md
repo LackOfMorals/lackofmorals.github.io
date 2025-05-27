@@ -397,6 +397,6 @@ ACME Corparation now has all of the three outcomes it was looking for. GraphQL A
 
 This is a gentle introduction controlling data access using claims found in JWT. There's more flexibilty available by using logical operations such as OR , AND and this is covered in the [documentation](https://neo4j.com/docs/graphql)
 
-A pragmatic approach is recommended when it comes to applying this in a produciton environment. You need to carefully balance operational overhead and security or you can end up diving down this rabiit hole and end up a guest at the Mad Hatters Tea party.
+A pragmatic approach is recommended when it comes to applying this in a production environment. You need to carefully balance operational overhead and security or you can end up diving down this rabiit hole and end up a guest at the Mad Hatters Tea party.
 
 Next time I'll be covering using this approach with a using a client initiated JWT from a web browser app.
