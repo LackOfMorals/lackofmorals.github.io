@@ -5,7 +5,7 @@ description: "Part two of a guide to using token with GraphQL for AuraDB"
 tags: Neo4j PM DevEx Token GraphQL
 ---
 
-# # An introdcution to using JWTs with GraphQL for AuraDB - Part Two
+# An introdcution to using JWTs with GraphQL for AuraDB - Part Two
 
 In [part one](https://www.pm50plus.com/2025/05/16/graphql-jwks-part-1.html) I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.
 
