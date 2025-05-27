@@ -290,13 +290,13 @@ When requesting **born** without the required JWT claim, you now get an error li
 }
 ```
 
-More on filter and validate can be found in the GraphQL API [documentation](https://neo4j.com/docs/graphql/current/security/authorization/)
+More on **filter** and **validate** can be found in the GraphQL API [documentation](https://neo4j.com/docs/graphql/current/security/authorization/)
 
 ### Scenario Three - control writes
 
-With protection for sensitive data, ACME Corporation turns it attention to controlling who can change the data. Again, a claim in the JWT will control this "acmeGraphQLReadWrite".
+With protection for sensitive data, ACME Corporation turns it attention to controlling who can change the data. ACME Corps adds another claim to the JWT to control this:- "acmeGraphQLReadWrite".
 
-Staying with the Type Defs already present, we can protect ACME Corporation data by using `@authentication` for each node by adding
+Staying with the Type Defs already present, we add `@authentication`, with a check for "acmeGraphQLReadWrite" in the JWT, to each node that requires protection against change like this:-
 
 ```JSON
 @authentication(operations: [CREATE, DELETE, UPDATE], jwt: { roles: { includes: "acmeGraphQLReadWrite" } } )
@@ -368,3 +368,35 @@ type ReviewedProperties @relationshipProperties {
   summary: String!
 }
 ```
+
+If someone at ACME Corp tries to make a change and lacks the necessary claim in their JWT, they get this response
+
+```JSON
+{
+    "errors": [
+        {
+            "message": "Unauthenticated",
+            "locations": [
+                {
+                    "line": 2,
+                    "column": 5
+                }
+            ],
+            "path": [
+                "createPeople"
+            ]
+        }
+    ],
+    "data": null
+}
+```
+
+## Summary
+
+ACME Corparation now has all of the three outcomes it was looking for. GraphQL API fits into it's SSO system whilst restricting access to those who have the "acmeGraphQLUser" claim in their JWT. Their senstive data requires an additional claim, "acmeGraphQLSensitive", and any change to the People data needs "acmeGraphQLReadWrite"
+
+This is a gentle introduction controlling data access using claims found in JWT. There's more flexibilty available by using logical operations such as OR , AND and this is covered in the [documentation](https://neo4j.com/docs/graphql)
+
+A pragmatic approach is recommended when it comes to applying this in a produciton environment. You need to carefully balance operational overhead and security or you can end up diving down this rabiit hole and end up a guest at the Mad Hatters Tea party.
+
+Next time I'll be covering using this approach with a using a client initiated JWT from a web browser app.
