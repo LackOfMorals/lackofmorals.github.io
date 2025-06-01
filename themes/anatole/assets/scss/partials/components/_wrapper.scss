@@ -1,0 +1,55 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  @include desktop {
+    flex-direction: row;
+  }
+
+  @include widescreen {
+    justify-content: center;
+  }
+
+  &__main {
+    width: 100%;
+
+    @include desktop {
+      width: $content-ratio;
+    }
+
+    @include widescreen {
+      width: $content-ratio-wide;
+    }
+
+    &--fullscreen {
+      margin-top: 20px;
+
+      @include desktop {
+        width: 100%;
+        margin-top: 0px;
+      }
+
+      @include widescreen {
+        width: $body-max-width;
+      }
+    }
+  }
+
+  &__sidebar {
+    width: 100%;
+    padding: 16px 0;
+
+    @include desktop {
+      width: $sidebar_ratio;
+      padding: 0;
+    }
+
+    @include widescreen {
+      width: $sidebar_ratio_wide;
+    }
+
+    &--hidden {
+      display: none;
+    }
+  }
+}
