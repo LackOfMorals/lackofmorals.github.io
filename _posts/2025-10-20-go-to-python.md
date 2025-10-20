@@ -13,6 +13,17 @@ I find when having those 'why can't i connect to Neo4j' moments, having a refere
 
 Here's my reference Python code for that situatin in case anyone finds it useful
 
+There are two files, requirements.txt and the Python code, neo4jTest.py. These are given below. Save them both in the same folder.
+
+The requirements file which will install the latest version of the Neo4j Python driver. Save as requirements.txt
+
+```Text
+neo4j
+
+```
+
+The Python file. Save this as neo4jTest.py
+
 ```Python
 # Use the Neo4j python driver
 from neo4j import GraphDatabase
@@ -37,4 +48,9 @@ neo4j_response = neo4jDB_connection.execute_query(cypher_statement)
 print(neo4j_response.records)
 ```
 
-Enjoy
+At the command line, do this in the folder you saved those two files in.
+
+```Console
+pip install -r ./requirements.txt.
+python neo4jTest.py
+```
