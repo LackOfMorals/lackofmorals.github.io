@@ -51,6 +51,6 @@ print(neo4j_response.records)
 At the command line, do this in the folder you saved those two files in.
 
 ```Console
-pip install -r ./requirements.txt.
+pip install -r ./requirements.txt
 python neo4jTest.py
 ```
