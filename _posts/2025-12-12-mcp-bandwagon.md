@@ -78,7 +78,7 @@ func main() {
 }
 ```
 
-This was inspired by the Neo4j Labs Terraform project access the Aura API as I thought it would the Aura API easier to work with if it came as a Go package.
+This was inspired by the Neo4j Labs Terraform project as I thought it would the Aura API easier to work with if there was a Go package for it.
 
 ## lets code
 
