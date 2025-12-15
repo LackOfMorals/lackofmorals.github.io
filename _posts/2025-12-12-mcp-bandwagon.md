@@ -47,7 +47,7 @@ This is similar to what is described by SpeakEasy in their article [Reducing MCP
 
 After avoiding writing a MCP server from scratch by forking MCP for Neo4j and only needing to write three tools ( yes, I know that will more functions needed ) I can turn my attention to how Aura API will be accessed.
 
-As it turns out, the first Go package I put together is a client for the Aura API. For example, to list instances
+As it turns out, the first Go package I put together is a [client for the Aura API](https://github.com/LackOfMorals/aura-client). For example, to list instances
 
 ```Go
 package main
