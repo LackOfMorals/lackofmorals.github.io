@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Aura API Go client
+title: "Aura API Go client"
 description: "v1 of a Go client for Aura API "
 tags: Neo4j PM DevEx Go
 ---
