@@ -7,9 +7,9 @@ tags: Neo4j PM DevEx Go
 
 ## A Go client for Aura API
 
-Over the last few weeks I've worked on creating a wrapper around the Aura API for use with Go. This is not wholly my own work; I've lifted the concept of using structs to model API request / responses and embraced assistance from Claude to explore potential ideas, write tests and direct me when I got stuck.
+Over the last few weeks I've worked on creating a wrapper around the Aura API for use with Go. This is not wholly my own work; I've lifted the concept of using structs to model API request / responses from our Neo4j Labs Terraform Provider and embraced assistance from Claude to explore potential ideas, write tests and direct me when I got stuck.
 
-The Aura CLient ( I'm now that great with naming ) is ready for use and it's something that I'll carry on working on during the rest of this year.
+The Aura CLient ( I'm not that great with naming ) is ready for use - mostly. Did I mention that I'm a hobby coder ?
 
 ## Installation
 
