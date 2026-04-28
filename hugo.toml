@@ -1,3 +1,44 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://www.pm50plus.co.uk/'
 locale = 'en-us'
-title = 'My New Hugo Project'
+title = 'Work In Progress'
+
+[module]
+  [[module.imports]]
+    path = "github.com/nanxiaobei/hugo-paper"
+
+
+[services]
+
+
+[params]
+  # color style
+  color = 'linen'                           # linen, wheat, gray, light
+
+  # header social icons
+  
+  github = 'LackOfMorals'                 # github.com/YOUR_GITHUB_ID
+  instagram = 'body_by_dad'           # instagram.com/YOUR_INSTAGRAM_ID
+  linkedin = 'YOUR_LINKEDIN_ID'             # linkedin.com/in/YOUR_LINKEDIN_ID
+  bluesky = 'YOUR_BLUESKY_ID'               # https://bsky.app/profile/YOUR_BLUESKY_ID
+  rss = true                                # show rss icon
+
+  # home page profile
+  avatar = 'GRAVATAR_EMAIL'                 # gravatar email or image url
+  name = 'YOUR_NAME'
+  bio = 'YOUR_BIO'
+
+
+  # misc
+  disableHLJS = true                        # disable highlight.js
+  disablePostNavigation = true              # disable post navigation
+  monoDarkIcon = true                       # show monochrome dark mode icon
+  gravatarCdn = 'GRAVATAR_CDN_LINK'         # e.g. 'https://cdn.v2ex.com/gravatar/'
+  math = true                               # enable KaTeX math typesetting globally
+  localKatex = false                        # use local KaTeX js/css instead of CDN
+  graphCommentId = "YOUR_GRAPH_COMMENT_ID"  # use graph comment (disqus alternative)
+  favicon = "favicon.ico"                   # customize the default favicon
+  appleTouchIcon = "apple-touch-icon.png"   # customize the default Apple touch icon
+
+  # RTL supprot
+  direction = "rtl"                         # RTL support for Right-to-left languages
+
