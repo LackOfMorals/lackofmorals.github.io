@@ -1,0 +1,483 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Lets figure out the GraphQL for Conway Game Of Life - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="GraphQL for Conway Game Of Life
+In my last post I covered setting up GraphQL for AuraDB with this Schema / Type Definition
+type Cell @node {
+ cellsConnected: [Cell!]! @relationship(type: &#34;NEIGHBOUR_OF&#34;, direction: IN)
+ connectedCells: [Cell!]! @relationship(type: &#34;NEIGHBOUR_OF&#34;, direction: OUT)
+ alive: Boolean!
+ id: String!
+ x: BigInt!
+ y: BigInt!
+}
+and checked it was all working with a very simple GraphQL Query
+curl --location  &#39;YOUR_GRAPHQL_DATA_API_URL&#39; \
+--header &#39;Content-Type: application/json&#39; \
+--header &#39;x-api-key: YOUR_API_KEY&#39; \
+--data &#39;{&#34;query&#34;:&#34;query getAllCells {\n    cells {\n      alive\n      id\n      x\n      y\n    }\n  }&#34;,&#34;variables&#34;:{}}&#39;
+Which means we have arrived at the point to start thinking about the GraphQL queries and mutations that will be needed as part of the implementation of Conway Game Of Life." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Lets figure out the GraphQL for Conway Game Of Life</h1><div class="text-xs antialiased opacity-60"><time>Mar 13, 2025</time></div></header>
+
+  <section><h2 id="graphql-for-conway-game-of-life">GraphQL for Conway Game Of Life</h2>
+<p>In my <a href="https://www.pm50plus.com/2025/03/01/conway-part-une.html">last post</a> I covered setting up GraphQL for AuraDB with this Schema / Type Definition</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>type Cell @node {
+</span></span><span style="display:flex;"><span> cellsConnected: [Cell!]! @relationship(type: &#34;NEIGHBOUR_OF&#34;, direction: IN)
+</span></span><span style="display:flex;"><span> connectedCells: [Cell!]! @relationship(type: &#34;NEIGHBOUR_OF&#34;, direction: OUT)
+</span></span><span style="display:flex;"><span> alive: Boolean!
+</span></span><span style="display:flex;"><span> id: String!
+</span></span><span style="display:flex;"><span> x: BigInt!
+</span></span><span style="display:flex;"><span> y: BigInt!
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>and checked it was all working with a very simple GraphQL Query</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>curl --location  &#39;YOUR_GRAPHQL_DATA_API_URL&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;x-api-key: YOUR_API_KEY&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{&#34;query&#34;:&#34;query getAllCells {\n    cells {\n      alive\n      id\n      x\n      y\n    }\n  }&#34;,&#34;variables&#34;:{}}&#39;
+</span></span></code></pre></div><p>Which means we have arrived at the point to start thinking about the GraphQL queries and mutations that will be needed as part of the implementation of Conway Game Of Life.</p>
+<p>Like most new adventures, the first step is the hardest.</p>
+<p>I find starting with the User Experience helps with this so lets answer this question. What will a Player need to do to setup and then play the game?</p>
+<p>A quickly drawn basic UI is a great quide in helping answering that question.</p>
+<p>Here&rsquo;s my attempt - go ahead and judge me if you like.</p>
+<p><img src="/img/conway-graphql/ConwayGameOfLife.drawio.png" alt="Shite UX by a PM"></p>
+<p>Back to our question. What will a Player need to do to setup and then play the game? Refering back to my drawing, I can suggest the following:-</p>
+<ul>
+<li>Enter the width and height of the grid.</li>
+<li>Select Draw will cause the grid to appear in line with the dimensions they entered.</li>
+<li>If the Player chooses Reset, then the grid is removed and they can choose new parameters</li>
+<li>Start does what it says - starts the simulation</li>
+<li>Stop, well that&rsquo;s apparant as to its function</li>
+</ul>
+<p>Our storage for all of this is a Neo4j AuraDB that we are accessing using GraphQL. We can take our requirements above and slice them into the various operations of Create, Read, Update, and Delete , otherwise known as CRUD.</p>
+<h2 id="create">Create</h2>
+<p>After the Player has supplied the size of the grid, we will need to create the nodes and relationships in Neo4j. This will be a two part operation - create nodes and then associate them with a relationship.</p>
+<h3 id="create-individual-nodes">Create individual nodes</h3>
+<p>A mutation is required to create the nodes, or rather cells as the game refers to them. Thoughout the various GraphQL operations we will be using variables. These are JSON documents that get sent along with the GraphQL operation and allow for efficient operation and flexibility. You can read more about the use of variables on the <a href="https://graphql.org/learn/queries/">GraphQL website</a></p>
+<p>As for our create cells mutation</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>mutation createCells($input: [CellCreateInput!]!) {
+</span></span><span style="display:flex;"><span>  createCells(input: $input) {
+</span></span><span style="display:flex;"><span>    cells {
+</span></span><span style="display:flex;"><span>      id
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>`;
+</span></span></code></pre></div><p>And the associated variables JSON document</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;input&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;alive&#34;</span>: <span style="color:#960050;background-color:#1e0010">boolean</span>, <span style="color:#960050;background-color:#1e0010">true</span> <span style="color:#960050;background-color:#1e0010">if</span> <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">cell</span> <span style="color:#960050;background-color:#1e0010">is</span> <span style="color:#960050;background-color:#1e0010">alive,</span> <span style="color:#960050;background-color:#1e0010">false</span> <span style="color:#960050;background-color:#1e0010">if</span> <span style="color:#960050;background-color:#1e0010">dead</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;x&#34;</span>: <span style="color:#960050;background-color:#1e0010">int</span> , <span style="color:#960050;background-color:#1e0010">X</span> <span style="color:#960050;background-color:#1e0010">position</span> <span style="color:#960050;background-color:#1e0010">on</span> <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">Grid.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;y&#34;</span>: <span style="color:#960050;background-color:#1e0010">int</span>, <span style="color:#960050;background-color:#1e0010">Y</span> <span style="color:#960050;background-color:#1e0010">position</span> <span style="color:#960050;background-color:#1e0010">on</span> <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">Grid</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#960050;background-color:#1e0010">string</span>, <span style="color:#960050;background-color:#1e0010">unique</span> <span style="color:#960050;background-color:#1e0010">identifier</span> <span style="color:#960050;background-color:#1e0010">for</span> <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">cell</span> <span style="color:#960050;background-color:#1e0010">made</span> <span style="color:#960050;background-color:#1e0010">from</span> <span style="color:#960050;background-color:#1e0010">x</span> <span style="color:#960050;background-color:#1e0010">&amp;</span> <span style="color:#960050;background-color:#1e0010">y</span> <span style="color:#960050;background-color:#1e0010">seperated</span> <span style="color:#960050;background-color:#1e0010">by</span> <span style="color:#960050;background-color:#1e0010">an</span> <span style="color:#960050;background-color:#1e0010">underscore</span> <span style="color:#960050;background-color:#1e0010">e.g</span> <span style="color:#f92672">&#34;1_1&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>   ]
+</span></span><span style="display:flex;"><span> }
+</span></span></code></pre></div><p>You may wonder where the input type <code>CellCreateInput</code> comes from. The answer to that is, along with several other input types, it is automatically generated by the GraphQL library that is helping to power the GraphQL API.</p>
+<p>The variables JSON document will be assembled by our code ( more on that in the next blog entry ) and sent along with the mutation. This allows us to create all of the cells in a single requuest in the database.</p>
+<p>We now have all of the cells and need to join them together into a grid.</p>
+<h3 id="making-a-grid">Making a grid</h3>
+<p>A cell is joined together with its immediate neighbour. Recall that each cell has X &amp; Y values that represent it&rsquo;s co-ordinates. We can therefore calculate a neighbour like this</p>
+<blockquote>
+<p>C1 is a cell. C2 is another cell. C1 and C2 are neighbours if C2(X-1) &lt;= C1(X) &lt;= C2(X+1) and C2(Y-1) &lt;= C1(Y) &lt;= C2(Y+1).</p>
+</blockquote>
+<p>We can then connect them together in Neo4j by using the NEIGHBOUR_OF relationship.</p>
+<p>In GraphQL that is achieved with a mutation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>mutation connectCellWithNeighbours($where: CellWhere, $update: CellUpdateInput) {
+</span></span><span style="display:flex;"><span>  updateCells(where: $where, update: $update) {
+</span></span><span style="display:flex;"><span>    info {
+</span></span><span style="display:flex;"><span>      relationshipsCreated
+</span></span><span style="display:flex;"><span>      nodesCreated
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The variable JSON document looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;where&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;id&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;eq&#34;</span>: <span style="color:#960050;background-color:#1e0010">string</span>, <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">Unique</span> <span style="color:#960050;background-color:#1e0010">ID</span> <span style="color:#960050;background-color:#1e0010">of</span> <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">Cell</span> <span style="color:#960050;background-color:#1e0010">we</span> <span style="color:#960050;background-color:#1e0010">will</span> <span style="color:#960050;background-color:#1e0010">make</span> <span style="color:#960050;background-color:#1e0010">connections</span> <span style="color:#960050;background-color:#1e0010">for</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;update&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;connectedCells&#34;</span>: [
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;connect&#34;</span>: [
+</span></span><span style="display:flex;"><span>          {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;where&#34;</span>: {
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&#34;node&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;id&#34;</span>: {
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&#34;in&#34;</span>: [ <span style="color:#960050;background-color:#1e0010">string</span> ] , <span style="color:#960050;background-color:#1e0010">a</span> <span style="color:#960050;background-color:#1e0010">list</span> <span style="color:#960050;background-color:#1e0010">of</span> <span style="color:#960050;background-color:#1e0010">IDs</span> <span style="color:#960050;background-color:#1e0010">for</span> <span style="color:#960050;background-color:#1e0010">Cells</span> <span style="color:#960050;background-color:#1e0010">that</span> <span style="color:#960050;background-color:#1e0010">will</span> <span style="color:#960050;background-color:#1e0010">be</span> <span style="color:#960050;background-color:#1e0010">connected</span>
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>              }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>But there&rsquo;s a drawback. This will require looping around all of the cells, sending a mutation to link each of them with it&rsquo;s immediate neighbours. For a 10x10 grid, that is 100 requests and with our max grid of 100x100, well that is a <em>lot</em> of network action.</p>
+<p>What if there was a way to do this in a more efficient way? Well there is - get Neo4j to do it.</p>
+<p>Neo4j GraphQL has a number of directives, one of which allows the execution of Cypher that has been defined in a query or mutation the GraphQL schema / Type Definitions. Read more about directives and what they can offer at <a href="https://neo4j.com/docs/graphql/current/directives/">Directives with Neo4j GraphQL</a></p>
+<p>We will need to modify the GraphQL for Aura Data API and add this mutation to the Type Definitions</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>type Mutation {
+</span></span><span style="display:flex;"><span>    joinCellsTogetherIntoGrid: String @cypher(statement: &#34;&#34;&#34;
+</span></span><span style="display:flex;"><span>        MATCH(ac:Cell)
+</span></span><span style="display:flex;"><span>        UNWIND ac AS c
+</span></span><span style="display:flex;"><span>        CALL (c) {
+</span></span><span style="display:flex;"><span>            MATCH (c2:Cell)
+</span></span><span style="display:flex;"><span>            WHERE c2.x-1&lt;=c.x&lt;=c2.x+1
+</span></span><span style="display:flex;"><span>            AND c2.y-1&lt;=c.y&lt;=c2.y+1
+</span></span><span style="display:flex;"><span>            AND c.id &lt;&gt; c2.id
+</span></span><span style="display:flex;"><span>            MERGE (c)-[:NEIGHBOUR_OF]-&gt;(c2)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        RETURN &#34;Done&#34; AS status
+</span></span><span style="display:flex;"><span>    &#34;&#34;&#34;, columnName: &#34;status&#34;)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can see that the @CYPHER directive is used to define Cypher statement that connects all of the cells together to form a grid.</p>
+<blockquote>
+<p>Why do this? Recall the Game Of Life use rules that flip an individual cell between life and death based on how many of it&rsquo;s neighbours are alive. This is where using a Neo4j graph database comes into it own as this is really easy to model as the rules are describing a <em>graph!</em></p>
+</blockquote>
+<p>We use this mutation by calling it with a mutation GraphQL request</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>mutation MyMutation {
+</span></span><span style="display:flex;"><span>    joinCellsTogetherIntoGrid
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>As all of the work is performed on the Neo4j server, this is way quicker than making all of those individual GraphQL requests.</p>
+<p>That&rsquo;s everything required to build the Grid. What about reading it so it can be displayed?</p>
+<h2 id="read">Read</h2>
+<h3 id="the-grid">The Grid</h3>
+<p>There&rsquo;s an additional element to factor in when obtaining the information needed to display the grid; the visualisation library to be used. I&rsquo;ve chosen <a href="https://github.com/vasturiano/react-force-graph">ForceGraph2D</a> for this and it expects a list of nodes and a list of links between them. Node list is made from Cells and their properties. Links are used to join the Nodes together which looks like <code>[{ source: Cell ID, target: Cell ID}]</code></p>
+<p>We will need a query that returns a Cell with all of its properties and the ID of any connected Cell. This provides everything needed to use ForceGraph2D to display the grid</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>query getEntireGrid {
+</span></span><span style="display:flex;"><span>    cells {
+</span></span><span style="display:flex;"><span>      alive
+</span></span><span style="display:flex;"><span>      id
+</span></span><span style="display:flex;"><span>      x
+</span></span><span style="display:flex;"><span>      y
+</span></span><span style="display:flex;"><span>      connectedCells {
+</span></span><span style="display:flex;"><span>        id
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h3 id="how-many-neighbours-are-alive">How many neighbours are alive</h3>
+<p>The rules for Conway Game Of Live are remarkably simple. If a living cell has two or three living neighbors, it stays alive, otherwise it dies. If a dead cell has three living neighbors, it is born (or reborn).</p>
+<p>Which means we need a query that tells us how many alive neighbours a cell has. This information will then determine the cells fate.</p>
+<p>We do this with this query</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>query aliveCellsWithAliveNeighours($where: CellWhere) {
+</span></span><span style="display:flex;"><span>    cells {
+</span></span><span style="display:flex;"><span>      id
+</span></span><span style="display:flex;"><span>      alive
+</span></span><span style="display:flex;"><span>      connectedCells(where: $where) {
+</span></span><span style="display:flex;"><span>        id
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>The variables JSON document will be</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;where&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;alive&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;eq&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The response will return a cells ID, alive ( true or false ) and then the IDs of any alive neighbours. Here&rsquo;s a snippet of a typical response to this query.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;data&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;cells&#34;</span>: [
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;1_1&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;connectedCells&#34;</span>: [
+</span></span><span style="display:flex;"><span>                    {
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;1_2&#34;</span>
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                ]
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;1_5&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;connectedCells&#34;</span>: []
+</span></span><span style="display:flex;"><span>            },
+</span></span></code></pre></div><p>You can see cell 1_1 has one alive neighbour where as cell 1_5 has none. As connectCells is an array, we can use JS <code>.length</code> to return an int representing how many alive neighbours there are.</p>
+<p>We now have a query to give the values needed to process the simulation rules.</p>
+<h2 id="update">Update</h2>
+<p>There are two areas for consideration when it comes to updates</p>
+<ul>
+<li>Enable a Player to choose which Cells start the simulation Alive or Dead</li>
+<li>Setting a Cell status as the simulation is running</li>
+</ul>
+<h3 id="alive-or-dead-cells">Alive or Dead Cells</h3>
+<p>Before the simulation can start, the Player will need to select a number of Cells to be alive as they all start out as dead. This requires setting the Alive property of a cell to either True ( Alive ) or False ( Dead ) in case the Player changes their mind and wishes to kill off a cell they previously set to alive.</p>
+<p>This is a relatively straight forward mutation</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span> mutation changeCellAlive($where: CellWhere, $update: CellUpdateInput) {
+</span></span><span style="display:flex;"><span>  updateCells(where: $where, update: $update) {
+</span></span><span style="display:flex;"><span>    cells {
+</span></span><span style="display:flex;"><span>      alive
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The variable JSON document will be</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;where&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;id&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;eq&#34;</span>: <span style="color:#960050;background-color:#1e0010">string</span>, <span style="color:#960050;background-color:#1e0010">unique</span> <span style="color:#960050;background-color:#1e0010">ID</span> <span style="color:#960050;background-color:#1e0010">of</span> <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">Cell</span> <span style="color:#960050;background-color:#1e0010">whose</span> <span style="color:#960050;background-color:#1e0010">Alive</span> <span style="color:#960050;background-color:#1e0010">value</span> <span style="color:#960050;background-color:#1e0010">we</span> <span style="color:#960050;background-color:#1e0010">are</span> <span style="color:#960050;background-color:#1e0010">going</span> <span style="color:#960050;background-color:#1e0010">to</span> <span style="color:#960050;background-color:#1e0010">change</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>   ],
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;update&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;alive&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;set&#34;</span>: <span style="color:#66d9ef">true</span> <span style="color:#960050;background-color:#1e0010">or</span> <span style="color:#66d9ef">false</span> <span style="color:#960050;background-color:#1e0010">as</span> <span style="color:#960050;background-color:#1e0010">determined</span> <span style="color:#960050;background-color:#1e0010">by</span> <span style="color:#960050;background-color:#1e0010">the</span> <span style="color:#960050;background-color:#1e0010">Players</span> <span style="color:#960050;background-color:#1e0010">action</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="changing-the-status-of-a-cell-during-the-simulation">Changing the status of a Cell during the simulation</h3>
+<p>Running Conway Game Of Life requires evaluating each cell in the grid to see how many of its neighbours are alive and then applying the rules to determine if the cell stays alive, becomes alive or is marked as dead.</p>
+<p>You may noticed in the variable JSON that the mutation, to change a single cell from alive to dead and vice a versa, uses a list which appears odd as there is only one entry for that particular operation. But it&rsquo;s useful for the bulk changes that will be needed when the simulation is running. Here our code will execute the <em>Find how many Neighbours are alive query</em> and then loop around the list of cells building up two lists of cells; those to mark alive and those who will be dead. The lists can be then used with mutation <em>Alive or Dead Cells</em> with a different variable JSON document to what we used before.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">where:</span> <span style="color:#960050;background-color:#1e0010">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">id:</span> <span style="color:#960050;background-color:#1e0010">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#960050;background-color:#1e0010">in:</span> <span style="color:#960050;background-color:#1e0010">[</span> <span style="color:#960050;background-color:#1e0010">string,</span> <span style="color:#960050;background-color:#1e0010">a</span> <span style="color:#960050;background-color:#1e0010">list</span> <span style="color:#960050;background-color:#1e0010">of</span> <span style="color:#960050;background-color:#1e0010">Cell</span> <span style="color:#960050;background-color:#1e0010">IDs</span> <span style="color:#960050;background-color:#1e0010">]</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">},</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">update:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">alive:</span> <span style="color:#960050;background-color:#1e0010">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#960050;background-color:#1e0010">set:</span> <span style="color:#960050;background-color:#1e0010">boolen,</span>  <span style="color:#960050;background-color:#1e0010">true</span> <span style="color:#960050;background-color:#1e0010">or</span> <span style="color:#960050;background-color:#1e0010">false</span> <span style="color:#960050;background-color:#1e0010">depending</span> <span style="color:#960050;background-color:#1e0010">on</span> <span style="color:#960050;background-color:#1e0010">rule</span> <span style="color:#960050;background-color:#1e0010">outcome</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span>
+</span></span></code></pre></div><p>This allows for bulk updates rather than doing them on a cell by cell basis.</p>
+<h2 id="delete">Delete</h2>
+<p>The outcome I&rsquo;m looking for is to wipe everything so that the Player can start again. The simplest way of doing this is a delete using a mutation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>mutation deleteEntireGrid {
+</span></span><span style="display:flex;"><span>    deleteCells {
+</span></span><span style="display:flex;"><span>      relationshipsDeleted
+</span></span><span style="display:flex;"><span>      nodesDeleted
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>deleteCells, relationshipsDeleted and nodesDeleted all come from the GraphQL library with the latter two returning totals for each of those categories. As I want to remove everything, a where filter is not used. Which brings me to a word of caution; this will delete <strong>everything</strong> in Neo4j , all of the Cells and all of the NEIGHBOUR_OF relationships will be gone. Use this type of operation with care</p>
+<h2 id="and-breathe-with-me">And breathe with me</h2>
+<p>That&rsquo;s the GraphQL ready. Now for the hard part, well at least for me, coding all of this in JS &amp; React.</p>
+<p>Mm. I wonder how good ChatGPT actually is &hellip;.</p>
+<p>Laters</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/aura"
+      >Aura</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/graphql"
+      >GraphQL</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/conway"
+      >Conway</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

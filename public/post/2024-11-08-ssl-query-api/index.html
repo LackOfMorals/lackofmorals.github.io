@@ -1,0 +1,485 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>SSL for Neo4j so the Query API can use it  - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="A guide to using SSL with Neo4j Query API
+To save my fingers hammering out letters to form the words that describe why, lets just accecpt that using SSL is a good thing.
+If you&rsquo;re using Aura then you can skip reading my prose and do something more interesting instead as Aura only uses SSL.  For everyone else you will need to configure SSL.
+The following is a guide to doing this with LetsEncrypt, a free source of certificates, and an AWS EC2 running docker with Neo4j.  I run that combination on a frequent basis - it&rsquo;s my goto for trying stuff out." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">SSL for Neo4j so the Query API can use it </h1><div class="text-xs antialiased opacity-60"><time>Nov 8, 2024</time></div></header>
+
+  <section><h1 id="a-guide-to-using-ssl-with-neo4j-query-api">A guide to using SSL with Neo4j Query API</h1>
+<p>To save my fingers hammering out letters to form the words that describe why, lets just accecpt that using SSL is a good thing.</p>
+<p>If you&rsquo;re using Aura then you can skip reading my prose and do something more interesting instead as Aura only uses SSL.  For everyone else you will need to configure SSL.</p>
+<p>The following is a guide to doing this with LetsEncrypt, a free source of certificates, and an AWS EC2 running docker with Neo4j.  I run that combination on a frequent basis - it&rsquo;s my goto for trying stuff out.</p>
+<p>Neo4j supports SSL across these communication channels.</p>
+<ul>
+<li>bolt (port - 7687)</li>
+<li>https (port - 7473)</li>
+<li>cluster (ports - 5000, 6000, 7000, and 7688)</li>
+<li>backups (port - 6362)</li>
+</ul>
+<p>It&rsquo;s entirely possible to selectively turn on SSL - you don&rsquo;t have to do everything.</p>
+<p>I&rsquo;m going to look at Bolt + HTTPS.  Why both?  For reasons that I&rsquo;ve not yet discovered, to use HTTPS you also must have Bolt using SSL.</p>
+<p>Enabling HTTPS covers everything that uses HTTP operations including the Query API</p>
+<p>For this, I&rsquo;ll be using</p>
+<ul>
+<li>AWS</li>
+<li>GoDaddy for DNS</li>
+<li>Docker</li>
+<li>Lets Encrypt</li>
+</ul>
+<p>and a fair bit of typing at the command shell</p>
+<p>Lets get started</p>
+<h1 id="provision-and-configure-an-ec2-image-with-elastic-ip-address">Provision and configure an EC2 image with elastic IP address</h1>
+<p>You will need to provision an EC2 machine for running Neo4j.  Ideally this would be circa 4gb with a couple of vCPU or better.  Give it 250Gb of storage.</p>
+<p>An elastic IP address is being used to avoid IP address changes on restarts etc.. as this gets messy with then having to adjust the public DNS entries.</p>
+<p>I&rsquo;m using AWS Linux 2 for the image.</p>
+<p><strong>Note</strong>: Do not use aws linux 2023 as it does not fully support snapd which is used to install certbot for certificate generation with Lets Encrypt</p>
+<h2 id="adjust-security-group">Adjust security group</h2>
+<p>Once the EC2 machine is provisioned, adjust the security group to allow all inbound TCP from your IP address to the EC2 machine</p>
+<p>Then connect using SSH to the EC2 Machine</p>
+<h2 id="install-any-updates">Install any updates</h2>
+<p>Type at the command prompt on the EC2 machine</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo yum update -y
+</span></span></code></pre></div><h2 id="install-docker">Install Docker</h2>
+<p>Type at the command prompt on the EC2 machine</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo yum install docker -y
+</span></span></code></pre></div><h2 id="enable-docker-service-at-ami-boot-time">Enable docker service at AMI boot time</h2>
+<p>Type at the command prompt on the EC2 machine</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo chkconfig docker on
+</span></span></code></pre></div><h2 id="start-the-docker-service">Start the docker service</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo service docker start
+</span></span></code></pre></div><h2 id="add-the-ec2-user-to-the-dockergroup">Add the ec2-user to the dockergroup</h2>
+<p>This allows ec2-user to execute Docker commands without using sudo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo usermod -a -G docker ec2-user
+</span></span></code></pre></div><h2 id="log-out-log-back-in">Log out, log back in</h2>
+<p>Confirm  docker commands can be run without sudo - this will throw an error if the user was not added or not logged out and back in</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>docker info
+</span></span></code></pre></div><p>You should see a data set that contains information about the version of Docker that has been installed</p>
+<h1 id="update-dns">Update DNS</h1>
+<p>I&rsquo;m assuming that you&rsquo;ve already got DNS configured somewhere.  To that configuration you need to add an &lsquo;A&rsquo; record using the elastic IP address of your EC2 host and give it a hostname.  When creating a certificate for our EC2 machine, Certbot will lookup our entry and will fail if DNS resolution fails.   If you do not have a DNS provider, you can use the free DuckDNS service.  I&rsquo;d avoid doing this for any production as DuckDNS system contains many entries that are used for malware. Be careful.</p>
+<h1 id="lets-encrypt">Lets Encrypt</h1>
+<p>Let&rsquo;s Encrypt is a free, automated, and open certificate authority (CA), run for the public&rsquo;s benefit. It is a service provided by the Internet Security Research Group (ISRG).  You can read more about Let&rsquo;s Encrypt on their website <a href="https://letsencrypt.org/about/">Lets Encrypt</a> website.</p>
+<p>Lets Encrpt offers a CLI, Certbot , that takes care of getting a certificate for us and also can be used for renewals, something I discuss at the end.</p>
+<p>Go ahead and SSH to the EC2 machine</p>
+<h2 id="pre-installation-requirement">Pre-installation requirement</h2>
+<p>Certbot uses the snap system for installation.  There are other methods but this is what we are using here.  We&rsquo;ll need to install snap first.</p>
+<p>On the EC2 machine, perform the following at the command prompt</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo yum update 
+</span></span><span style="display:flex;"><span>sudo wget -O /etc/yum.repos.d/snapd.repo <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    https://bboozzoo.github.io/snapd-amazon-linux/amzn2/snapd.repo
+</span></span><span style="display:flex;"><span>sudo yum install snapd -y
+</span></span><span style="display:flex;"><span>sudo systemctl enable --now snapd.socket
+</span></span><span style="display:flex;"><span>sudo systemctl start snapd
+</span></span></code></pre></div><h2 id="install-certbot">Install Certbot</h2>
+<p>On the EC2 machine, perform the following at the command prompt</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo snap install --classic certbot
+</span></span><span style="display:flex;"><span>sudo ln -s /snap/bin/certbot /usr/bin/certbot
+</span></span></code></pre></div><h2 id="allow-all-traffic-from-anywhere">Allow all traffic from anywhere</h2>
+<p>For the moment adjust inbound security group rules to allow HTTP from anywhere.  Certbot will fail if this step is not done.</p>
+<h2 id="obtain-a-certificate">Obtain a certificate</h2>
+<p>This is simply a matter of running Certbot from the command line with a few parameters and then answering a few basic prompts.</p>
+<p>You can leave out -v as this is just to provide verbose output so you can see what&rsquo;s going on in detail.</p>
+<p><strong>Note:</strong>  Make sure you include &ndash;key-type rsa in the Certbot command line as this is the certificate format expected by Neo4j</p>
+<p>On the EC2 machine, perform the following at the command prompt</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo certbot certonly --key-type rsa --standalone -d neo4j.giffard.xyz -v
+</span></span></code></pre></div><p>If everything works ok, you will see something like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>Saving debug log to /var/log/letsencrypt/letsencrypt.log
+</span></span><span style="display:flex;"><span>Plugins selected: Authenticator standalone, Installer None
+</span></span><span style="display:flex;"><span>Requesting a certificate for neo4j.giffard.xyz
+</span></span><span style="display:flex;"><span>Performing the following challenges:
+</span></span><span style="display:flex;"><span>http-01 challenge for neo4j.giffard.xyz
+</span></span><span style="display:flex;"><span>Waiting for verification...
+</span></span><span style="display:flex;"><span>Cleaning up challenges
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Successfully received certificate.
+</span></span><span style="display:flex;"><span>Certificate is saved at: /etc/letsencrypt/live/neo4j.giffard.xyz/fullchain.pem
+</span></span><span style="display:flex;"><span>Key is saved at:         /etc/letsencrypt/live/neo4j.giffard.xyz/privkey.pem
+</span></span><span style="display:flex;"><span>This certificate expires on 2025-02-05.
+</span></span><span style="display:flex;"><span>These files will be updated when the certificate renews.
+</span></span><span style="display:flex;"><span>Certbot has set up a scheduled task to automatically renew this certificate in the background.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>If you like Certbot, please consider supporting our work by:
+</span></span><span style="display:flex;"><span> * Donating to ISRG / Let&#39;s Encrypt:   https://letsencrypt.org/donate
+</span></span><span style="display:flex;"><span> * Donating to EFF:                    https://eff.org/donate-le
+</span></span><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span></code></pre></div><p>Keys from CertBot are stored at</p>
+<ul>
+<li>/etc/letsencrypt/live/neo4j.giffard.xyz/fullchain.pem</li>
+<li>/etc/letsencrypt/live/neo4j.giffard.xyz/privkey.pem</li>
+</ul>
+<h2 id="adjust-inbound-security-group-rules">Adjust inbound security group rules</h2>
+<p>Now Cerbot has run, you can put the inbound security rules back to allow only traffic from your IP address</p>
+<h2 id="adjust-certificates-file-permissions">Adjust certificates file permissions</h2>
+<p>We&rsquo;re going to use symlinks from our folders to the actual certs.  If we don&rsquo;t use symlinks, then we would need to copy the certs to the folders where Neo4j expects them to be. Symlinks avoids this.</p>
+<p>The permission change - Make sure all directories and files are &lsquo;others&rsquo; readable for letsencrpt folders &amp; files</p>
+<p>On the EC2 machine, perform the following at the command prompt</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo chmod -R o+rx /etc/letsencrypt/ *
+</span></span></code></pre></div><h2 id="install-neo4j-docker-image">Install Neo4j Docker image</h2>
+<p><strong>Note:</strong>  If you are not comfortable with the values used for the username &amp; password , change NEO4J_AUTH=neo4j/password to  something that works for you.</p>
+<p>On the EC2 machine, perform the following at the command prompt</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>docker run -dt <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --name<span style="color:#f92672">=</span>neo4jDb <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --publish<span style="color:#f92672">=</span>7474:7474 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --publish<span style="color:#f92672">=</span>7687:7687 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --publish<span style="color:#f92672">=</span>5001:5000 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --publish<span style="color:#f92672">=</span>80:80 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --publish<span style="color:#f92672">=</span>443:443 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --volume<span style="color:#f92672">=</span>$HOME/neo4j/data:/data <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --volume<span style="color:#f92672">=</span>$HOME/neo4j/conf:/conf <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --volume<span style="color:#f92672">=</span>$HOME/neo4j/logs:/logs <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --volume<span style="color:#f92672">=</span>$HOME/neo4j/certificates:/ssl <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --volume<span style="color:#f92672">=</span>/etc/letsencrypt:/etc/letsencrypt <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --env<span style="color:#f92672">=</span>NEO4J_ACCEPT_LICENSE_AGREEMENT<span style="color:#f92672">=</span>yes <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --env<span style="color:#f92672">=</span>NEO4J_AUTH<span style="color:#f92672">=</span>neo4j/password <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>   neo4j:enterprise
+</span></span></code></pre></div><p><strong>Note:</strong>  For a container to follow a symlink it must have access to the destination.  Here it means that we need to attach /etc/letsencrypt on the host to the container. This is why we have  &ndash;volume=/etc/letsencrypt:/etc/letsencrypt so the container can reach the certs.</p>
+<h2 id="check-neo4j-is-up">Check Neo4j is up</h2>
+<p>Use your browser to connect to the IP address of the EC machine like so</p>
+<p>http://EC2_DNS:7474</p>
+<p>This should show you the Browser console for Neo4j.  Check you can login with neo4j / password</p>
+<h1 id="switch-neo4j-to-use-ssl-certs">Switch Neo4j to use SSL certs</h1>
+<h2 id="folder-structure">Folder structure</h2>
+<p>Neo4j requires a certain folder structure to be configured for SSL certificates.  As mentioned at the beginning, Neo4j allows for SSL to enabled independently for various networking components and they can use different certificates.  The structure is</p>
+<table>
+  <thead>
+      <tr>
+          <th>Path</th>
+          <th>Purpose</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>/certificates/COMPONENT</td>
+          <td>The base directory under which cryptographic objects are searched for by default.</td>
+      </tr>
+      <tr>
+          <td>/certificates/COMPONENT/trusted</td>
+          <td>A directory populated with certificates of trusted parties.</td>
+      </tr>
+      <tr>
+          <td>/certificates/COMPONENT/revoked</td>
+          <td>A directory populated with certificate revocation lists (CRLs).</td>
+      </tr>
+  </tbody>
+</table>
+<p>Where COMPONENT is one from bolt, https, cluster or backup</p>
+<p>On the EC2 machine, perform the following at the command prompt to create the folder structure for bolt and https</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo mkdir -p ~/neo4j/certificates/https/trusted; sudo mkdir -p ~/neo4j/certificates/https/revoked
+</span></span><span style="display:flex;"><span>sudo mkdir -p ~/neo4j/certificates/bolt/trusted; sudo mkdir -p ~/neo4j/certificates/bolt/revoked
+</span></span></code></pre></div><h2 id="create-symlinks">Create Symlinks</h2>
+<p>The nice part about our symlink structure  is that our links are always pointing to the certs in the &ldquo;live&rdquo; directory, which themselves are symlinks to whatever the latest certbot has created.  For that reason, we are able to automate keeping certificates fresh with a cron job and certbot ( See end of this blog ).</p>
+<p>On the EC2 machine, perform the following at the command prompt</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>   sudo ln -s /etc/letsencrypt/live/neo4j.giffard.xyz/fullchain.pem  ~/neo4j/certificates/bolt/neo4j.cert
+</span></span><span style="display:flex;"><span>   sudo ln -s /etc/letsencrypt/live/neo4j.giffard.xyz/privkey.pem ~/neo4j/certificates/bolt/neo4j.key
+</span></span><span style="display:flex;"><span>   sudo ln -s /etc/letsencrypt/live/neo4j.giffard.xyz/fullchain.pem ~/neo4j/certificates/bolt/trusted/neo4j.cert 
+</span></span><span style="display:flex;"><span>   sudo ln -s /etc/letsencrypt/live/neo4j.giffard.xyz/fullchain.pem  ~/neo4j/certificates/https/neo4j.cert
+</span></span><span style="display:flex;"><span>   sudo ln -s /etc/letsencrypt/live/neo4j.giffard.xyz/privkey.pem ~/neo4j/certificates/https/neo4j.key
+</span></span><span style="display:flex;"><span>   sudo ln -s /etc/letsencrypt/live/neo4j.giffard.xyz/fullchain.pem ~/neo4j/certificates/https/trusted/neo4j.cert
+</span></span></code></pre></div><h1 id="confirm-synmlinks-can-be-followed">Confirm synmlinks can be followed</h1>
+<p>The symlinks need to be followed from within the container.   We can do this by getting an interactive shell in the container and trying to read the certs</p>
+<p>On the EC2 machine, perform the following at the command prompt</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>docker exec -it neo4jDb /bin/bash
+</span></span><span style="display:flex;"><span>cat /var/lib/neo4j/certificates/bolt/trusted/neo4j.cert
+</span></span><span style="display:flex;"><span>cat /var/lib/neo4j/certificates/https/trusted/neo4j.cert
+</span></span></code></pre></div><p>Enter <code>exit</code> to leave the container interactive shell</p>
+<p>After each cat you should see a wall of text that represents the certificate.   If you do not</p>
+<ul>
+<li>Check that the container has  &ndash;volume=/etc/letsencrypt:/etc/letsencrypt</li>
+<li>Check the file permissions.  Did you grant &lsquo;other&rsquo; to fhe file?</li>
+</ul>
+<h2 id="update-neo4jconf-file-to-use-certificates">Update neo4j.conf file to use certificates</h2>
+<p>Using your favourite text editor, change the neo4j.conf file located in $HOME/neo4j/conf:/conf on the EC2 machine</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span># Bolt SSL configuration
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.bolt.enabled=true
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.bolt.base_directory=certificates/bolt
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.bolt.private_key=neo4j.key
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.bolt.public_certificate=neo4j.cert
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.bolt.client_auth=NONE
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.bolt.trusted_dir=trusted
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.bolt.revoked_dir=revoked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Https SSL configuration
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.https.enabled=true
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.https.base_directory=certificates/https
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.https.private_key=neo4j.key
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.https.public_certificate=neo4j.cert
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.https.client_auth=NONE
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.https.trusted_dir=trusted
+</span></span><span style="display:flex;"><span>dbms.ssl.policy.https.revoked_dir=revoked
+</span></span></code></pre></div><p>Change network connector settings  to use  SSL for bolt and https with https being accessed on port 443. The use of port 80 for http will be disabled.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>#*****************************************************************
+</span></span><span style="display:flex;"><span># Network connector configuration
+</span></span><span style="display:flex;"><span>#*****************************************************************
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Bolt connector
+</span></span><span style="display:flex;"><span>server.bolt.enabled=true
+</span></span><span style="display:flex;"><span>server.bolt.tls_level=REQUIRED
+</span></span><span style="display:flex;"><span>server.bolt.listen_address=:7687
+</span></span><span style="display:flex;"><span>server.bolt.advertised_address=:7687
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># HTTP Connector. There can be zero or one HTTP connectors.
+</span></span><span style="display:flex;"><span>server.http.enabled=false
+</span></span><span style="display:flex;"><span>#server.http.listen_address=:80
+</span></span><span style="display:flex;"><span>#server.http.advertised_address=:80
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># HTTPS Connector. There can be zero or one HTTPS connectors.
+</span></span><span style="display:flex;"><span>server.https.enabled=true
+</span></span><span style="display:flex;"><span>server.https.listen_address=:443
+</span></span><span style="display:flex;"><span>server.https.advertised_address=:443
+</span></span></code></pre></div><h2 id="restart-neo4j-docker-container">Restart neo4j docker container</h2>
+<p>For the changes made in neo4j.conf to take effect, the Neo4j container needs to be restarted</p>
+<p>On the EC2 machine, type this at a command prompt</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>docker restart neo4jDb
+</span></span></code></pre></div><p>We now should have a neo4j system running in AWS using SSL</p>
+<h2 id="confirm-use-of-ssl">Confirm use of SSL</h2>
+<p>Use your browser to connect using HTTPS</p>
+<p>HTTPS://EC2_DNS/browser</p>
+<h1 id="query-api-with-ssl">Query API with SSL</h1>
+<p>This just requires use of HTTPS rather than HTTP in the URL.  Using curl on our local machine to connect to the EC2 we can confirm this</p>
+<p>Swap out EC2_DNS, YOUR_NEO4j_USERNAME, and YOUR_NEO4j_PASSWORD for your values</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>curl --location <span style="color:#e6db74">&#39;https://EC2_DNS/db/neo4j/query/v2&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--header <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--header <span style="color:#e6db74">&#39;Accept: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>-u YOUR_NEO4j_USERNAME: YOUR_NEO4j_PASSWORD<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--data <span style="color:#e6db74">&#39;{ &#34;statement&#34;: &#34;MATCH (n) RETURN n LIMIT 1&#34; }&#39;</span>
+</span></span></code></pre></div><p>This should return a single entry from your graph across a HTTPS connection</p>
+<h1 id="renewing-letsencrypt-certificates-on-a-schedule">Renewing LetsEncrypt certificates on a schedule</h1>
+<p>The nice part about our symlink structure above is that our links are always pointing to the certs in the &ldquo;live&rdquo; directory, which themselves are symlinks to whatever the latest certbot has created.  For that reason, we are able to automate keeping certificates fresh with a cron job and certbot.</p>
+<p>By running certbot with a renew flag, you can update certificates to push out the expiry date. Certbot will only do this if the certificate is expired.</p>
+<p>You can check that this will work by running on the EC2 machine</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>sudo certbot renew --dry-run
+</span></span></code></pre></div><p>And check that the output has no errors.</p>
+<p>For a new cert to work, you will need to restart Neo4j.  certbot does allow for this by using &ndash;deploy-hook option that enables certbot to run a command.  With our example that uses a docker container to run Neo4j , we would create a cron job that runs fairly frequently to check if the certs need renewing that runs certbot like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>sudo certbot renew --deploy-hook &#34;docker restart neo4jDb&#34;
+</span></span></code></pre></div></section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devpm"
+      >DevPM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/queryapi"
+      >QueryAPI</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/aura"
+      >Aura</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/ssl"
+      >SSL</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

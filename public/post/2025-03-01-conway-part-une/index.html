@@ -1,0 +1,379 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>About that Conway Game Of Life - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Lets figure out the GraphQL for Conway - Part One
+It would be advisable to grab an adult beverage before you start reading as this is a longer than usual post.
+Ready? Then lets begin.
+In his blog post Christoffer Bergman describes implementing Conways Game of Life in Cypher. I&rsquo;m going to base my attempt at Conway Game Of Life on his work but using GraphQL instead of Cypher. To do that I&rsquo;m going to need a GraphQL schema and a GraphQL service. Then I can experiment with GraphQL Queries / Mutations to figure out what is needed to implement the game." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">About that Conway Game Of Life</h1><div class="text-xs antialiased opacity-60"><time>Mar 1, 2025</time></div></header>
+
+  <section><h1 id="lets-figure-out-the-graphql-for-conway---part-one">Lets figure out the GraphQL for Conway - Part One</h1>
+<p>It would be advisable to grab an adult beverage before you start reading as this is a longer than usual post.</p>
+<p>Ready? Then lets begin.</p>
+<p>In his <a href="https://medium.com/neo4j/a-cypher-game-of-life-53b5faf04caa/">blog post</a> Christoffer Bergman describes implementing Conways Game of Life in Cypher. I&rsquo;m going to base my attempt at Conway Game Of Life on his work but using GraphQL instead of Cypher. To do that I&rsquo;m going to need a GraphQL schema and a GraphQL service. Then I can experiment with GraphQL Queries / Mutations to figure out what is needed to implement the game.</p>
+<p>For the GraphQL service I will be using the GraphQL for Aura Beta which will need a schema, also known as Type Definitions and that&rsquo;s the goal of this post.</p>
+<p>You may guess from those words that this will be a fairly long entry.</p>
+<p>I&rsquo;d go get another adult beverage from the fridge.</p>
+<h2 id="eyes-open">Eyes open</h2>
+<p>Christoffer used a Neo4j schema with a Cell node that uses a boolean property, alive, to represent the cells state ( true = alive and false = dead ). A Spatial coordinate is used to represent a Cells position in the grid with Cells being connected to each other using a NEIGHBOUR_OF relationship.</p>
+<p>I will represent this in GraphQL &lsquo;as is&rsquo; apart from an adjustment for a Cells position to use x and y properties as it makes GraphQL operations somewhat easier. I&rsquo;ll also add in an ID for good measure. My GraphQL schema looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>type Cell @node {
+</span></span><span style="display:flex;"><span> cellsConnected: [Cell!]! @relationship(type: &#34;NEIGHBOUR_OF&#34;, direction: IN)
+</span></span><span style="display:flex;"><span> connectedCells: [Cell!]! @relationship(type: &#34;NEIGHBOUR_OF&#34;, direction: OUT)
+</span></span><span style="display:flex;"><span> alive: Boolean!
+</span></span><span style="display:flex;"><span> id: String!
+</span></span><span style="display:flex;"><span> x: BigInt!
+</span></span><span style="display:flex;"><span> y: BigInt!
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I would like to say I wrote this but I didn&rsquo;t. Instead I ran Cypher against an Aura instance to create Cells and then place them into a grid using the NEIGHBOUR_OF relationship. THis allowsed to me to use a modified version of the GraphQL Introspector to generate the GraphQL schema. I will also be using the same Aura DB with GraphQL for Aura which means I have some data already present to try out. Win win really.</p>
+<h2 id="look-what-you-made-me-do">Look what you made me do</h2>
+<p>As I&rsquo;m using Aura I will need an edition that allows for GraphQL. If you&rsquo;re already using Aura Professional, Business Critical or Virtual Dedicated Cloud account, then you are good to go. If you don&rsquo;t have one of these, then sign up for an Aura Profressional Trial account as the GraphQL for Neo4j AuraDB Beta is not avaiable on Aura Free.</p>
+<p><strong>Signing up for an Aura Pro Trial</strong></p>
+<ul>
+<li>Head over to <a href="https://login.neo4j.com/u/signup/">Signing up for AuraDB</a> and complete that process.</li>
+<li>Create an instance but choose Aura Professional &lsquo;Try For Free&rsquo;
+<img src="/img/graphql-aura-beta/tryAuraProFree.png" alt=""></li>
+<li>Select your cloud provider , the 4Gb instance, suggested name and accept the terms
+<img src="/img/graphql-aura-beta/AuraProInstance.png" alt=""></li>
+<li>Wait for the instance to be deployed and , <strong>IMPORTANT BIT</strong>, make sure you save the connection information.</li>
+</ul>
+<h2 id="i-knew-you-were-trouble">I knew you were trouble</h2>
+<p>Now that we have a deployed Aura DB, let run some Cypher against it to create Cells and link them together. This will enable the GraphQL Introspector to infer a GraphQL Schema.</p>
+<p>First create a few cells with the properties we want to give us a 10x10 grid.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>UNWIND range(1,10) as x
+</span></span><span style="display:flex;"><span>    UNWIND range (1,10) as y
+</span></span><span style="display:flex;"><span>    CREATE (c:Cell {id:x + &#39;_&#39; + y, x: x, y: y, alive: False})
+</span></span><span style="display:flex;"><span>RETURN COUNT(c)
+</span></span></code></pre></div><p>Then join a cells together with it&rsquo;s immediate neighbours using the NEIGHBOUR_OF relationship whilst avoiding joining a cell to itself.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>MATCH(ac:Cell)
+</span></span><span style="display:flex;"><span>UNWIND ac AS c
+</span></span><span style="display:flex;"><span>CALL (c) {
+</span></span><span style="display:flex;"><span>    MATCH (c2:Cell)
+</span></span><span style="display:flex;"><span>    WHERE c2.x-1&lt;=c.x&lt;=c2.x+1
+</span></span><span style="display:flex;"><span>    AND c2.y-1&lt;=c.y&lt;=c2.y+1
+</span></span><span style="display:flex;"><span>    AND c.id &lt;&gt; c2.id
+</span></span><span style="display:flex;"><span>    MERGE (c)-[:NEIGHBOUR_OF]-&gt;(c2)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="shake-it-off">Shake it off</h2>
+<p>The GraphQL schema was generated using the Introspect tool which I had adapted to use the GraphQL v7 library used by the GraphQL for Neo4j AuraDB. If you want to see how to modify the Introspector and build your own, see this <a href="https://www.pm50plus.com/2025/02/25/graphql-aura-v7-library.html">blog post</a>.</p>
+<p>I have createad a GitHUb repo with everything already done. To use this , do the following</p>
+<ul>
+<li>Clone the repo</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>git clone https://github.com/LackOfMorals/my-graphql-introspector.git
+</span></span></code></pre></div><ul>
+<li>Install dependencies</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>cd my-graphql-introspector
+</span></span><span style="display:flex;"><span>npm install
+</span></span></code></pre></div><ul>
+<li>Set connection to your AuraDB by creating a .env file at the root of the installation folder my-graphql-introspector. Replace values for NEO4J_URI, NEO4J_USR and NEO4J_PWD with those values that match your configuraiton.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>NEO4J_URI=neo4j://localhost:7687
+</span></span><span style="display:flex;"><span>NEO4J_USR=neo4j
+</span></span><span style="display:flex;"><span>NEO4J_PWD=password
+</span></span></code></pre></div><ul>
+<li>Run the Introspector</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>node ./src/intro.csj
+</span></span></code></pre></div><p>If everything has been configured correctly you will see the GraphQL schema which means we&rsquo;re now ready to deploy GraphQL for AuraDB Beta.</p>
+<h2 id="blank-space">Blank space</h2>
+<p>Jump back into the Aura Console.</p>
+<p>Note: You will need the username and password for your Aura DB instance that we just used in the previous step with the GraphQL Instrospector.</p>
+<ul>
+<li>
+<p>From the left hand side of the Aura Console, select <em>Data APIs Beta</em> and then <em>Create API</em>
+<img src="/img/graphql-aura-beta/DataAPI.png" alt=""></p>
+</li>
+<li>
+<p>There&rsquo;s a number of boxes to fill out and it doens&rsquo;t fit nicely into a single screenshot. I&rsquo;ve broken these out into seperate steps.</p>
+</li>
+<li>
+<p><em>Details</em></p>
+<ul>
+<li>API Name: a friendly name</li>
+<li>Instance: From the drop down, select the name of the Aura DB to use with GraphQL. Choose the one that was used with Cypher / Introspector</li>
+<li>Instance username: The username for the Instance you selected</li>
+<li>Instance password: The password for the Instance you selected</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/graphql-aura-beta/DataAPIDetails.png" alt=""></p>
+<ul>
+<li>
+<p><em>Type Definitions</em>
+Copy and paste the GraphQL schema that came from the Introspection or just use the one at begining of this blog post. Do not select <em>Enable GraphQL subgraph</em>
+<img src="/img/graphql-aura-beta/DataAPITypeDefs.png" alt=""></p>
+</li>
+<li>
+<p><em>CORS policy</em>
+<img src="/img/graphql-aura-beta/DataAPICors.png" alt=""></p>
+</li>
+<li>
+<p>By default, as part of security layers around a GraphQL Data API, a very restrictive CORS policy excludes all communications coming from a browser. This will be problematic for any browser based application. For more on CORs, AWS has a good write up here: - <a href="https://aws.amazon.com/what-is/cross-origin-resource-sharing/#:~:text=Cross%2Dorigin%20resource%20sharing%20(CORS)%20is%20an%20extension%20of,that%20are%20public%20or%20authorized">What is Cross-Origin Resource Sharing?</a>. We will need to adjust the CORs policy.</p>
+</li>
+<li>
+<p>As all of my development is using the vite framework on node.js, the browser will be using <a href="http://localhost:5173">http://localhost:5173</a>. This URL will need adding to the CORS policy. Do this by selecting <em>Add allowed origin</em> and entering the URL used by your browser.</p>
+</li>
+</ul>
+<p><img src="/img/graphql-aura-beta/DataAPICORSlocalhost.png" alt=""></p>
+<ul>
+<li>
+<p><em>Authentication providers</em>
+<img src="/img/graphql-aura-beta/DataAPIAuthProviders.png" alt=""></p>
+</li>
+<li>
+<p>API key and secure JWT are supported for authentication to the GraphQL Data API. Authentication is always required. I&rsquo;m going to use an API key.</p>
+<ul>
+<li>Select <em>Add authenticaton provider</em></li>
+<li>Choose <em>API key</em> from the drop down</li>
+<li>Enter a friendly name for the API key. The key itself will automatically be generated when the GraphQL Data API itself is created at the end of this process.</li>
+</ul>
+</li>
+<li>
+<p><em>Sizing</em>
+There will be a number of different sizes at different charging rates for GraphQL Data API when its fully released. The beta is free and uses a fixed size.</p>
+</li>
+</ul>
+<p><img src="/img/graphql-aura-beta/DataAPISizing.png" alt=""></p>
+<p>That&rsquo;s everything. Select <em>Create</em></p>
+<p>Note: There&rsquo;s a little defect that occasionally crops up that results in having to re-enter the Instance username and Instance password when there is no need to do so. This usally happens when something is not right at time of first creation or making an modification to an existing one. We&rsquo;ll fix that before release. Hopefully. For now, just be aware of this undocumented feature that may not be supported in future versions.</p>
+<p>If everything has been entered and validated you will see a window appear with the URL and API Key for the GraphQL Data API. Make sure you save this information in a safe place as there is no way to recover the API Key. If you do misplace the key, a new one will need to be furnished.</p>
+<p>Deployment will take a few minutes. As this post is going on for way longer than I intended, now is would be a good time for a cup of tea. Or another adult beverage.</p>
+<h2 id="cruel-summer">Cruel Summer</h2>
+<p>In the Aura console under <em>Data APIs</em> you should now see the GraphQL Data API with a status of <em>Ready</em>. We&rsquo;ll now run a GraphQL Query, that returns the Cells we created earlier using Cypher, to test everything is working. curl will be used for this.</p>
+<ul>
+<li>Replace
+<ul>
+<li>YOUR_GRAPHQL_DATA_API_URL with your URL for the GraphQL Data API</li>
+<li>YOUR_API_KEY with your API key</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>curl --location  &#39;YOUR_GRAPHQL_DATA_API_URL&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;x-api-key: YOUR_API_KEY&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{&#34;query&#34;:&#34;query getAllCells {\n    cells {\n      alive\n      id\n      x\n      y\n    }\n  }&#34;,&#34;variables&#34;:{}}&#39;
+</span></span></code></pre></div><p>You should see a JSON response with the data.</p>
+<h2 id="is-it-over-now">Is it over now?</h2>
+<p>For now, yes, that&rsquo;s it. We have a working GraphQL Data API which we can now use to figure out the various GraphQL Queries and Mutations to use with Conway Game Of Life.</p>
+<p>Which we&rsquo;ll do in the next blog .</p>
+<p>Until then</p>
+<p>Laters</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/aura"
+      >Aura</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/graphql"
+      >GraphQL</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

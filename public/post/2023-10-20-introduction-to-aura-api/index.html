@@ -1,0 +1,400 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>It is all about the REST - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="It is all about the REST
+
+Neo4j DB as a Service ( DBaaS ) , Aura, now has a RESTful like API for provisioning. The full details of the API in long form are in the documentation; in short it&rsquo;s a set of endpoints that provide for CRUD operations. You can try the Aura API from the documentation. Here we&rsquo;re going to dig in and write code to do the needful." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">It is all about the REST</h1><div class="text-xs antialiased opacity-60"><time>Oct 20, 2023</time></div></header>
+
+  <section><h1 id="it-is-all-about-the-rest">It is all about the REST</h1>
+<p><img src="/img/mySleepingCat.png" alt="My sleeping cat"></p>
+<p>Neo4j DB as a Service ( DBaaS ) , Aura, now has a RESTful like API for provisioning. The full details of the API in long form are in the <a href="https://neo4j.com/docs/aura/platform/api/specification/">documentation</a>; in short it&rsquo;s a set of endpoints that provide for CRUD operations. You can try the Aura API from the documentation. Here we&rsquo;re going to dig in and write code to do the needful.</p>
+<p>At the time of writing ( Friday 20th October ) the API is for Aura Enterprise customers and I&rsquo;m reliably informed that the audience will be expanded in the next couple of months.</p>
+<p>To show how the Aura API can be used, we&rsquo;ll create a basic Python application that creates a new Aura instance.</p>
+<p>We&rsquo;ll walk through the various bits of Python code before putting it together. If you just want the code, jump to the bottom of this post where you can download it.</p>
+<p>This is not a short read and you would be advised to have a bio break, get a hot beverage and settle in for some rough and ready coding.</p>
+<h2 id="to-the-aura-console">To the Aura Console</h2>
+<p>To get started with the Aura API you&rsquo;ll need to obtain a client id and client secret. BTW - I&rsquo;m assuming that you already have an Aura Enterprise account.</p>
+<p>After you have logged in , drive the mouse pointer to the top right of the Aura of the console and click on your account name</p>
+<p><img src="/img/aura/auraConsoleAcccount.png" alt="Aura Account"></p>
+<p>Then choose <em>Account Details</em> and then <em>Create</em>. This will bring up the dialog for a new client id and client secret. Make sure you copy these down and store them securely.</p>
+<p>Armed with these two pieces of information we can now move onto the Aura API.</p>
+<h2 id="let-me-see-some-id">Let me see some ID</h2>
+<p>Aura API is protected against people with flexbile morals by a time limited OAuth token which is obtained by using the client id and client secret. OAuth is a well documented mechanism to use for this and covering that is beyond the confines of this blog post. Go Google it if you&rsquo;re interested.</p>
+<p>Once we have an OAuth token, and it&rsquo;s only valid for a limited time, we can go ahead and use the Aura API.</p>
+<p><strong>Important</strong> You must send the OAuth token with <em>every</em> request that you make.</p>
+<pre tabindex="0"><code>def get_oauth_token(aura_client_id,aura_client_secret):
+    &#34;&#34;&#34;
+    Returns oauth token for use with Aura API
+
+    params:
+    client_id , required, string client id obtained from Aura console
+    client_secret, required, string client secret obtained from Aura console
+
+    &#34;&#34;&#34;
+
+    headers = {
+        &#34;Content-Type&#34;: &#34;application/x-www-form-urlencoded&#34;,
+    }
+    data = {&#34;grant_type&#34;: &#34;client_credentials&#34;}
+    url = &#34;https://api.neo4j.io/oauth/token&#34;
+
+    response = requests.request(
+        &#34;POST&#34;,
+        url,
+        headers=headers,
+        data=data,
+        auth=HTTPBasicAuth(aura_client_id,aura_client_secret),
+        timeout=10
+    )
+    try:
+        response.raise_for_status()
+    except Exception as e:
+        print(&#34;Authentication request was not succesful.&#34;)
+        raise e
+
+    return response.json()[&#34;access_token&#34;]
+</code></pre><p>Now we can get the OAuth token, what&rsquo;s next?</p>
+<h2 id="endpoints--oh-the-endpoints">Endpoints , oh the endpoints</h2>
+<p>If you did take a look at the Aura documentation, you&rsquo;ll notice that there&rsquo;s several endpoints that available for various operations. For our purposes, we&rsquo;ll need to use just two:-</p>
+<ul>
+<li>/tenants</li>
+<li>/instances</li>
+</ul>
+<p>As we have two endpoints to use, it will be helpful to have a function that takes care of network communication otherwise we&rsquo;ll be duplicating code. Also you can use this yourself , although you may want to make some improvements.</p>
+<p>We&rsquo;ll write a function that takes the Aura endpoint URL we want to talk to, the HTTP method, our oauth token and then return the response as a Python dictionary.</p>
+<pre tabindex="0"><code>def call_endpoint(aura_endpoint, method, aura_token):
+    base_url = &#34;https://api.neo4j.io/v1&#34;
+    full_url = f&#34;{base_url}{aura_endpoint}&#34;
+
+    headers = {
+        &#34;Content-Type&#34;: &#34;application/json&#34;,
+        &#34;Authorization&#34;: f&#34;Bearer {aura_token}&#34;
+    }
+
+    response = requests.request(method, full_url, headers=headers, timeout=10)
+
+    try:
+        response.raise_for_status()
+    except Exception as e:
+        print(&#34;Request was not succesful.&#34;)
+        raise e
+
+    return response.json()
+</code></pre><h2 id="you-cant-park-there">You can&rsquo;t park there</h2>
+<p>Creating an instance requires a number of items to be given , one of which is the ID of the tenant for the instance. This makes sure we create the Aura instance in the right place. Could be awkward if they started turning up in random tenants within our Aura organisation; the explaining would be needed.</p>
+<p>We&rsquo;ll use the /tenants endpoint which returns all tenants with ID. With that we can look up the tenant ID based on the tenant name that we want to use. To find the tenant name , just look in the Aura console at top. Using the screenshot in this post, this would be &lsquo;MyTenant&rsquo;</p>
+<p>Lets write a function to get the tenant list and return the id based on the tenant name.</p>
+<pre tabindex="0"><code>def get_tenant_id(tenant_name,token):
+    &#34;&#34;&#34;
+    For a given tenant name, return it&#39;s id
+
+    params:
+    tenant_name, required, string, the name of the tenant to retrieve the id for
+    &#34;&#34;&#34;
+    aura_tenants = call_endpoint(&#39;/tenants&#39;, &#39;GET&#39;, token)
+
+    for entry in aura_tenants[&#39;data&#39;]:
+        if entry[&#39;name&#39;] == tenant_name:
+            tenant_id = entry[&#39;id&#39;]
+        else:
+            tenant_id = &#39;Not found&#39;
+
+    return tenant_id
+</code></pre><p>Notice that we&rsquo;re passing the token , something that we&rsquo;ll need to do for every endpoint that we use</p>
+<p>With the ID, we can now create the Aura instance.</p>
+<p>You can guess what&rsquo;s coming next</p>
+<h2 id="yet-another-function">Yet another function</h2>
+<p>This will create an Aura instance to a pre-determined specification. We&rsquo;ll need to pass the tenant name, oauth token and the name we want for our new instance.</p>
+<p>To use the endpoint for creating an instance, we will need</p>
+<ul>
+<li>Instance name</li>
+<li>The cloud provider</li>
+<li>Cloud provider reqion to use</li>
+<li>Memory</li>
+<li>Tenant ID</li>
+<li>Type of Aura instance</li>
+<li>Neo4j version</li>
+</ul>
+<p>Tenant ID will be obtained from get_tenant_id. Everything else will come from the supplied parameters or be set directly within the function.</p>
+<pre tabindex="0"><code>def create_instance(aura_token, aura_tenant, aura_instance_name):
+    &#34;&#34;&#34;
+    Creates an Aura instance in the given tenant.
+    Aura instance will have 2Gb memory, 1 CPU and 4Gb of storage using Google Cloud in europe-west1
+
+    params:
+    aura_token, string , required, a valid oauth token for Aura
+    aura_tenant, string, the name of the tenant to create the instance in
+    &#34;&#34;&#34;
+
+    # Get the tenant_id
+    tenant_id = get_tenant_id(aura_tenant, aura_token)
+
+    if tenant_id != &#39;Not found&#39;:
+        spec = {
+            &#34;version&#34;: &#34;5&#34;,
+            &#34;region&#34;: &#34;europe-west1&#34;,
+            &#34;memory&#34;: &#34;2GB&#34;,
+            &#34;name&#34;: aura_instance_name,
+            &#34;type&#34;: &#34;enterprise-db&#34;,
+            &#34;tenant_id&#34;: tenant_id,
+            &#34;cloud_provider&#34;: &#34;gcp&#34;
+        }
+
+        create_response = call_endpoint(&#39;/instances&#39;,&#39;POST&#39;,aura_token,data=json.dumps(spec))
+
+        return create_response
+
+    return
+</code></pre><p>If everthing works, and why would it not, then the endpoint returns a JSON document with the details for our new instance. Our Python code translates this into a Python dictionary.</p>
+<p>About time we put this together</p>
+<h2 id="main-event">Main event</h2>
+<p>Here&rsquo;s the main function that calls the functions and prints out the result from creating a new instance</p>
+<pre tabindex="0"><code>def main():
+    # Get an oauth token
+    aura_api_token = get_oauth_token(&#39;YOUR CLIENT ID&#39;, &#39;YOUR CLIENT SECRET&#39;)
+    # create the new instance
+    new_instance_response = create_instance(aura_api_token,&#39;YOUR TENANT NAME&#39;,&#39;YOUR INSTANCE NAME&#39;)
+
+    #Print out the results
+    if &#39;data&#39; in new_instance_response:
+        print(f&#34;Instance ID {new_instance_response[&#39;data&#39;][&#39;id&#39;]}&#34;)
+        print(f&#34;Username {new_instance_response[&#39;data&#39;][&#39;username&#39;]}&#34;)
+        print(f&#34;Password {new_instance_response[&#39;data&#39;][&#39;password&#39;]}&#34;)
+        print(f&#34;Connection URI {new_instance_response[&#39;data&#39;][&#39;connection_url&#39;]}&#34;)
+    else:
+        print(&#39;Bad things happened&#39;)
+</code></pre><h2 id="thats-it-folks">That&rsquo;s it folks</h2>
+<p>The only thing left to do is to put all of this inside a Python application</p>
+<p>You can copy and paste the functions after the imports but before the call to main(). Hint: There&rsquo;s a big gap - put them there !</p>
+<p>If you can&rsquo;t be bothered then the entire Python code can be download : <a href="/code/2023-10-20_code.py">Create an new instance</a></p>
+<pre tabindex="0"><code>from requests.auth import HTTPBasicAuth
+import requests
+import json
+
+# Paste the functions from this point
+
+
+
+
+# But before here
+main()
+</code></pre><p>If you&rsquo;ve kept going to the end, I hope this has been useful to you</p>
+<p>To demonstrate what can be done with the Aura API, we&rsquo;ve built a CLI tool for Aura on top of it. You can download the Aura CLI from <a href="https://neo4j.com/labs/aura-cli/">Neo4j Labs</a></p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/python"
+      >Python</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/rest"
+      >REST</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Using token with Query API - an example with SSO - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="The trinity of SSO, Neo4j and a web application
+Consider a web application that consumes data from Neo4j.   This will require the web application to authenticate and retrieve that data using credentials that are accepted by Neo4j.  If our users needed to remember one set of credentials for the web application, another set for Neo4j and then enter those at the correct moment, it&rsquo;s going to be a jarring user experience." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Using token with Query API - an example with SSO</h1><div class="text-xs antialiased opacity-60"><time>Oct 16, 2024</time></div></header>
+
+  <section><h1 id="the-trinity-of-sso-neo4j-and-a-web-application">The trinity of SSO, Neo4j and a web application</h1>
+<p>Consider a web application that consumes data from Neo4j.   This will require the web application to authenticate and retrieve that data using credentials that are accepted by Neo4j.  If our users needed to remember one set of credentials for the web application, another set for Neo4j and then enter those at the correct moment, it&rsquo;s going to be a jarring user experience.</p>
+<p>Can we imporove the user experience with joined up authentication?  Well yes we can.  Like this</p>
+<p>Our web application invites them to Login
+<img src="/img/tokensWithQueryAPI/WebAppLoginPage.png" alt=""></p>
+<p>They are taken to Okta to enter their credentials
+<img src="/img/tokensWithQueryAPI/OktaLoginPage.jpeg" alt=""></p>
+<p>They are returned back to our web application and see that the data is loading
+<img src="/img/tokensWithQueryAPI/WebAppLoading.png" alt=""></p>
+<p>The web application gets the information from Neo4j and populates the table with Movies information
+<img src="/img/tokensWithQueryAPI/WebAppTable.png" alt=""></p>
+<p>I&rsquo;d wager this is an improvement - entering a single set of credentials made everything flow seamlessly.</p>
+<hr>
+<h2 id="how-does-that-work">How does that work?</h2>
+<p>Here&rsquo;s an abstract description of what&rsquo;s going on behind the scenes between our web application, Neo4j and Okta.</p>
+<ol>
+<li>The user goes to our web  application</li>
+<li>The user selects login and they are taken to a sign in screen provided by Okta</li>
+<li>They enter their username and password</li>
+<li>Okta authenticates the user</li>
+<li>Okta sends a JSON Web Token (JWT) that contains the user&rsquo;s authentication information , ID_TOKEN and often an ACCESS_TOKEN , back to our web application</li>
+<li>Our web application verifies the received JWT.</li>
+<li>If all is ok with the JWT the user is given access to the page that will display a table that will be populated by information from Neo4j.</li>
+<li>The web application extracts the ID_TOKEN from the JWT and uses it with the Query API to retrieve information from Neo4j,</li>
+<li>Neo4j takes the ID_TOKEN and validates it with Okta</li>
+<li>If the ID_TOKEN is valid and contains the correct access level, Neo4j returns the requested information back to our web application</li>
+<li>The web application fills the table with the information from Neo4j</li>
+</ol>
+<p>To gets this to work , we will need</p>
+<ul>
+<li>A free Okta developer account.</li>
+<li>Neo4j Enterprise running in Docker locally with the Movies example graph</li>
+<li>Docker installed</li>
+<li>Text editor</li>
+<li>Beverage of choice</li>
+</ul>
+<hr>
+<h2 id="run-neo4j-docker-image-locally">Run Neo4j Docker image locally</h2>
+<p>Install Neo4j Docker image</p>
+<table>
+  <thead>
+      <tr>
+          <th><code>NOTE</code></th>
+          <th>If you are not comfortable with the values used for the username &amp; password , change NEO4J_AUTH=neo4j/password to  something that works for you.</th>
+      </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<p>The neo4j docker image will use folders in the home directory.  Create those first</p>
+<pre tabindex="0"><code>mkdir -p ~/neo4j/conf
+mkdir -p ~/neo4j/data
+mkdir -p ~/neo4j/logs
+</code></pre><p>Tell docker to download and run Neo4j</p>
+<pre tabindex="0"><code>docker run -dt \
+    --name=neo4jDb \
+    --publish=7474:7474 \
+    --publish=7687:7687 \
+    --volume=$HOME/neo4j/data:/data \
+    --volume=$HOME/neo4j/conf:/conf \
+    --volume=$HOME/neo4j/logs:/logs \
+    --env=NEO4J_ACCEPT_LICENSE_AGREEMENT=yes \
+    --env=NEO4J_AUTH=neo4j/password \
+   neo4j:enterprise
+</code></pre><p>Test it</p>
+<p>Use your browser to check Neo4j is up
+<a href="http://localhost:7474/browser">http://localhost:7474/browser</a></p>
+<p>This should show you the Browser console for Neo4j.  Auth using the username and password from NEO4J_AUTH values and then load the Movies example graph</p>
+<hr>
+<h2 id="okta-configuration">Okta configuration</h2>
+<table>
+  <thead>
+      <tr>
+          <th><code>NOTE</code></th>
+          <th>You can use a <em>free</em> okta developer account.</th>
+      </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<p>Create a single page application, SPA, with these settings</p>
+<p><strong>General</strong></p>
+<p>General Settings - enable</p>
+<ul>
+<li>Authorization code</li>
+<li>Refresh Token</li>
+</ul>
+<p><strong>Login</strong></p>
+<p>Sign-in redirect URIs</p>
+<ul>
+<li><a href="http://localhost:7474/browser/?idp_id=okta&amp;auth_flow_step=redirect_uri">http://localhost:7474/browser/?idp_id=okta&amp;auth_flow_step=redirect_uri</a>
+<ul>
+<li>Allows use of SSO with Neo4j Browser console.  This is also how we will check SSO with Neo4j is working correctly.</li>
+</ul>
+</li>
+<li><a href="http://localhost:3000/login/callback">http://localhost:3000/login/callback</a>
+<ul>
+<li>Is for our  web app that will initially sign-in to okta to get token before passing the id_token part onto Neo4j for auth with the Query API.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Federation Broker Mode</strong></p>
+<p>We&rsquo;re going to let all of our Okta users have this app and determine what they can do by use of Group membership.  We will set Federation Broker Mode to Enabled to grant access.</p>
+<p>You may not want this for Production and assign users manually in Okta to this application.</p>
+<p><strong>Sign-On</strong></p>
+<p>OpenID Connect ID Token</p>
+<p>IMPORTANT:  Groups are used to determine our access in Neo4j.  Make sure this is done.</p>
+<p>This will send all of the groups that an Okta user is a member of.  The regex filter can be changed to restrict that to relevant ones.</p>
+<ul>
+<li>Groups claim type: Filter</li>
+<li>Groups claim filter:  groups  Matches regex .*</li>
+</ul>
+<p><strong>User Authentication</strong></p>
+<p>For connivence , our users will auth to Okta using their username / password.  For production consider MFA or similar to strengthen security</p>
+<ul>
+<li>Authentication policy: Password only</li>
+</ul>
+<p>Once Okta is configured, make a note of the following</p>
+<ul>
+<li>Client ID from General -&gt; Client Credentials</li>
+<li>Audience from Sign On -&gt; OpenID Connect ID Token</li>
+<li>Your account Okta domain -&gt; Select your okta account from the top right corner.  You will see the email address that you use with Okta and immediately underneath there is your okta domain e.g dev-86754251.okta.com.</li>
+</ul>
+<p>These will be needed to configure our web app and Neo4j.</p>
+<p><strong>Okta groups</strong></p>
+<p>The Neo4j SSO setup maps Okta groups to profiles found in Neo4j.  This example maps one Okta group, neo4jDba , to the Neo4j admin profile.  You are entirely free to create new Neo4j profiles and map Okta groups to them.  If you do this remember to adjust the Neo4j SSO configuration accordingly.   You will need to add your Okta users to those groups so that they then have the desired access for Neo4j.</p>
+<ul>
+<li>In Okta, select Directory from the left hand navigration column and then Groups</li>
+<li>Select Add Group and enter neo4jDba for the name.   ( Optionally ) enter a description.  Then select Save</li>
+<li>Click on the newly created group neo4jDba and then select Assign People</li>
+<li>From the list of Okta users, add a user by clicking on the plus sign</li>
+<li>When finished select Done</li>
+</ul>
+<h2 id="setup-sso-for-neo4j">Setup SSO for Neo4j</h2>
+<p>Edit neo4j.conf and add this in the ODIC section swapping out these values for yours from Okta.</p>
+<ul>
+<li>YOUR_OKTA_ACCOUNT_FQDN</li>
+<li>YOUR_AUDIENCE_ID_FROM_OKTA</li>
+<li>YOUR_CLIENT_ID_FROM_OKTA</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Okta settings
+</span></span><span style="display:flex;"><span>dbms.security.authentication_providers=oidc-okta,native
+</span></span><span style="display:flex;"><span>dbms.security.authorization_providers=oidc-okta,native
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.display_name=Okta
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.auth_flow=pkce
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.well_known_discovery_uri=https://YOUR_OKTA_ACCOUNT_FQDN/.well-known/openid-configuration
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.audience=YOUR_AUDIENCE_ID_FROM_OKTA
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.claims.groups=groups
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.params=client_id=YOUR_CLIENT_ID_FROM_OKTA;response_type=code;scope=openid email groups
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.config=code_challenge_method=S256;token_type_principal=id_token;token_type_authentication=id_token
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.claims.username=sub
+</span></span><span style="display:flex;"><span>dbms.security.oidc.okta.authorization.group_to_role_mapping=neo4jDba=admin
+</span></span><span style="display:flex;"><span>dbms.security.logs.oidc.jwt_claims_at_debug_level_enabled=true
+</span></span></code></pre></div><p>Save the file and then restart Neo4j.</p>
+<p>Open your browser with this address <a href="http://localhost:7474/browser">http://localhost:7474/browser</a></p>
+<p>From the drop down box , Authentication type, select Single Sign on</p>
+<p>A button called Okta should appear.  Select that button.</p>
+<p>You should be taken to Okta and see a page similar to this</p>
+<p>Enter your okta user credentials then select Sign in</p>
+<p>If everything has been configured correctly you are taken back to the Neo4j browser and will be logged in.</p>
+<hr>
+<h2 id="get-the-web-application">Get the Web application</h2>
+<p>The web application is found at github here:- <a href="https://github.com/LackOfMorals/query_api_bearer_token.git">https://github.com/LackOfMorals/query_api_bearer_token.git</a></p>
+<p>Use git to create a folder for our web application, moviesWebApp , and clone the repo into it</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/LackOfMorals/query_api_bearer_token.git moviesWebApp
+</span></span></code></pre></div><p>Move into the newly created folder and install needed dependencies</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd moviesWebApp
+</span></span><span style="display:flex;"><span>npm install
+</span></span></code></pre></div><p>Edit srv/config.jsx and adjust the variables below for Okta</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>const CLIENT_ID = &#34;YOUR_OKTA_CLIENT_ID&#34;;
+</span></span><span style="display:flex;"><span>const ISSUER = &#34;https://YOUR_OKTA_ACCOUNT_FQDN&#34;;
+</span></span><span style="display:flex;"><span>const OKTA_TESTING_DISABLEHTTPSCHECK = true;
+</span></span><span style="display:flex;"><span>const REDIRECT_URI = `${window.location.origin}/login/callback`;
+</span></span></code></pre></div><p>Save the file when the edits have been made</p>
+<p>Start up the web application</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm start
+</span></span></code></pre></div><p>Your default web browser will load and show the page below.  If not, check the steps have been followed.</p>
+<hr>
+<h2 id="extra">Extra</h2>
+<p>It is possible to obtain the ID_TOKEN from your browser after authenticating into Okta.  This is then used with curl for authenticating with the Query API</p>
+<p>We&rsquo;ll use Chrome for this</p>
+<p>Enter <a href="http://localhost:7474">http://localhost:7474</a> for the address.  When the Neo4j browser console loads, select Okta
+<img src="/img/tokensWithQueryAPI/Neo4jBrowser.png" alt=""></p>
+<p>Before doing anything else, from the Chrome menu , View -&gt; Developer -&gt; Developer Tools
+Select <strong>Network</strong> and then enter token for the filter</p>
+<p><img src="/img/tokensWithQueryAPI/ChromeDevToolsFilterToken.png" alt=""></p>
+<p>Back in the main window of Chrome, select the Okta button and complete the authorisation process.  You will be returned back to Neo4j Browser page and should see  the token at the bottom</p>
+<p><img src="/img/tokensWithQueryAPI/ChromeFilterToken.png" alt=""></p>
+<p>Now select <strong>token</strong> and then <strong>preview</strong></p>
+<p>Right click on id_token and select <strong>Copy value</strong></p>
+<p>Paste this into a text editor</p>
+<p>You can now use this value with curl for the query API.  Replace ID_TOKEN for your value</p>
+<pre tabindex="0"><code>curl -X POST https://neo4j.giffard.xyz/db/neo4j/query/v2 \
+-H &#34;Authorization: Bearer ID_TOKEN&#34; \
+-H &#34;Content-Type: application/json&#34; \
+-d &#39;{
+  &#34;statement&#34;: &#34;MATCH (n) RETURN n&#34;
+}&#39; | jq .
+</code></pre><hr>
+<h2 id="closing-remarks">Closing remarks</h2>
+<p>This is a really basic example of using SSO for seamless authentication between two different applications.  There&rsquo;s more to do;  improve security by using SSL with Neo4j ( a blog post for another day ),  avoid jumping over to Okta for entering credentials, use Neo4j JS driver with the token instead of the Query API , the GraphQL library and a whole bunch of other things .</p>
+<p>The next blog post will go into more detail about how the web app works with the Query API &amp; SSO</p>
+<p>Laters</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/queryapi"
+      >QueryAPI</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/sso"
+      >SSO</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/token"
+      >Token</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

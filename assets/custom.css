@@ -1,0 +1,87 @@
+/* Post list page layout */
+.post-list-wrap {
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.post-list {
+  flex: 1;
+  min-width: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.post-row {
+  display: flex;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1.25rem 0;
+}
+
+.post-date {
+  width: 11rem;
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.post-title {
+  font-weight: 500;
+  color: #000;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.post-title:hover {
+  opacity: 0.5;
+}
+
+/* Year navigation */
+.year-nav {
+  position: sticky;
+  top: 3.5rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.25rem;
+  font-size: 0.875rem;
+  padding-top: 0.25rem;
+}
+
+.year-link {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.4);
+  transition: color 0.2s;
+}
+
+.year-link:hover {
+  color: #000;
+}
+
+.year-link-active {
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+}
+
+/* Dark mode */
+.dark .post-list,
+.dark .post-row {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .post-date,
+.dark .year-link {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.dark .post-title,
+.dark .year-link-active {
+  color: #fff;
+}
+
+.dark .year-link:hover {
+  color: #fff;
+}

@@ -1,0 +1,341 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Doing more with less - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Episode 3: Like what you&rsquo;re done with that rabbit hole
+Previously I wrote about the architectural pattern I was intending use for this adventure and I did make a start; honest.
+I took initial steps to move communications into two functions, one for tfl and the other for Neo4j but&hellip;
+Along came a squirrel.
+
+Not a real one like that in the picture and really not this one 1 but a virtual one wearing a large badge of distraction that read &lsquo;I wonder if I could get all the information needed from tfl API in fewer calls?&rsquo;" />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Doing more with less</h1><div class="text-xs antialiased opacity-60"><time>Nov 13, 2023</time></div></header>
+
+  <section><h1 id="episode-3-like-what-youre-done-with-that-rabbit-hole">Episode 3: Like what you&rsquo;re done with that rabbit hole</h1>
+<p>Previously I wrote about the architectural pattern I was intending use for this adventure and I did make a start; honest.</p>
+<p>I took initial steps to move communications into two functions, one for tfl and the other for Neo4j but&hellip;</p>
+<p>Along came a squirrel.</p>
+<p><img src="/img/tflTube/squirrel_snow.jpg" alt="Gosh it&rsquo;s cute"></p>
+<p>Not a real one like that in the picture and really not this <a href="https://www.independent.co.uk/life-style/food-and-drink/brewdog-worlds-strongest-beer-squirrel-bottle-the-end-of-history-a7436201.html">one</a> <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> but a virtual one wearing a large badge of distraction that read <em>&lsquo;I wonder if I could get all the information needed from tfl API in fewer calls?&rsquo;</em></p>
+<p>Whilst quickly backfilling the justification with a dab of being efficient, I fired up PostMan<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> and dived into the responses from tfl API endpoints.</p>
+<h2 id="curiouser-and-curiouser">Curiouser and curiouser</h2>
+<p>To recap, we had identified three tfl API endpoints for this little endeavour. One to retrieve all of the tube lines, another to give stations on a tube line and the third would provide the information to sequence stations in the correct order.</p>
+<p>Could we reduce this to only two tfl API calls and be a bit more efficient?</p>
+<p>Is there a tfl endpoint that can give us all of the stationss a tube line and the order in which they occur in a single response?</p>
+<p>Looking at the response from <a href="https://api.tfl.gov.uk/Line/TUBE_LINE/Route/Sequence/inbound">https://api.tfl.gov.uk/Line/TUBE_LINE/Route/Sequence/inbound</a> , we can see a glint of hope</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;stations&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.MatchedStop, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;stationId&#34;</span>: <span style="color:#e6db74">&#34;940GZZLUBKE&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;icsId&#34;</span>: <span style="color:#e6db74">&#34;1000016&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;topMostParentId&#34;</span>: <span style="color:#e6db74">&#34;940GZZLUBKE&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;modes&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;bus&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;tube&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;stopType&#34;</span>: <span style="color:#e6db74">&#34;NaptanMetroStation&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;zone&#34;</span>: <span style="color:#e6db74">&#34;4&#34;</span>,
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>There&rsquo;s an array that contains station details! With the route sequences that follow later in the response, shown below, it looks like ( maybe ) we have what we need.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;orderedLineRoutes&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.OrderedRoute, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Ealing Broadway  &amp;harr;  Epping &#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;naptanIds&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUEBY&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUWTA&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUNAN&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUEAN&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUWCY&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUSBC&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUHPK&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUNHG&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUQWY&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLULGT&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUMBA&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;940GZZLUBND&#34;</span>,
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<h2 id="why-sometimes-ive-believed-as-many-as-six-impossible-things-before-breakfast">Why, sometimes I&rsquo;ve believed as many as six impossible things before breakfast</h2>
+<p>After experimenting with this, I noticed that several stations were missing. It felt like getting close to the top of Everest only to discover that someone had nicked the summit. Honestly, some people will steal anything.</p>
+<p>Not to be put off, I carried on scrolling my way through the entire response, which felt very much like doom scrolling or whatever the cool kids do, something else made its presence felt. Thankfully not the rather spicy food I had consumed the previous evening on a night out <sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> but this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;stopPointSequences&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.StopPointSequence, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;lineId&#34;</span>: <span style="color:#e6db74">&#34;central&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;lineName&#34;</span>: <span style="color:#e6db74">&#34;Central&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;direction&#34;</span>: <span style="color:#e6db74">&#34;inbound&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;branchId&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;nextBranchIds&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;prevBranchIds&#34;</span>: [],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;stopPoint&#34;</span>: [
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.MatchedStop, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;stationId&#34;</span>: <span style="color:#e6db74">&#34;940GZZLUEPG&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;icsId&#34;</span>: <span style="color:#e6db74">&#34;1000076&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;topMostParentId&#34;</span>: <span style="color:#e6db74">&#34;940GZZLUEPG&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;modes&#34;</span>: [
+</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">&#34;tube&#34;</span>
+</span></span><span style="display:flex;"><span>                    ],
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;stopType&#34;</span>: <span style="color:#e6db74">&#34;NaptanMetroStation&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;zone&#34;</span>: <span style="color:#e6db74">&#34;6&#34;</span>,
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Much checking and then some more checking, I found all of the stations for the tube line are here.</p>
+<p>This means with one call , we can get all of the stations, their details and the sequence.</p>
+<p>My goal of using fewer tfl calls was complete.</p>
+<h2 id="the-best-way-to-explain-it-is-to-do-it">The best way to explain it is to do it</h2>
+<p>Nothing is that straight foward though and this new approach required a re-write of our Python code to wrangle the response to get the information we need. The Psuedo code looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Get the list of tube lines <span style="color:#f92672">from</span> tfl api endpoint
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>For each tube line
+</span></span><span style="display:flex;"><span>    Make a request to  https:<span style="color:#f92672">//</span>api<span style="color:#f92672">.</span>tfl<span style="color:#f92672">.</span>gov<span style="color:#f92672">.</span>uk<span style="color:#f92672">/</span>Line<span style="color:#f92672">/</span>TUBE_LINE<span style="color:#f92672">/</span>Route<span style="color:#f92672">/</span>Sequence<span style="color:#f92672">/</span>inbound
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    With the response
+</span></span><span style="display:flex;"><span>        For each set of stop points <span style="color:#f92672">in</span> stopPointSequence
+</span></span><span style="display:flex;"><span>            For each station <span style="color:#f92672">in</span> the set of stop points
+</span></span><span style="display:flex;"><span>                Build up a list of station data
+</span></span><span style="display:flex;"><span>            Send the station data <span style="color:#66d9ef">for</span> the stop point to Neo4j
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        For each route
+</span></span><span style="display:flex;"><span>            For each station <span style="color:#f92672">in</span> the route
+</span></span><span style="display:flex;"><span>                Build a list that links the stations together
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Use the list to establish relationships between the stations <span style="color:#f92672">in</span> Neo4j
+</span></span></code></pre></div><p>You can download the entire Python code that useds one less call and has the two functions for comms with tfl and Neo4j here <a href="/code/2023-10-13_code.py">Episode 3</a></p>
+<p>There&rsquo;s some basic error handling included when making network calls with tfl and Neo4j. More to do there in the future.</p>
+<h3 id="no-no-sentence-firstverdict-afterwards">No, no! Sentence first—verdict afterwards.&quot;</h3>
+<p>If you run the code you should have the entire London Tube network in Neo4j. There&rsquo;s more code work to move further towards the pattern I want to use but the basics are there.</p>
+<p>Thanks for joining me on this journey - it&rsquo;s looking increasingly like it&rsquo;s not going to be the fastest trip but we are dealing with the U.K public transport system and nothing happens quickly in that domain.</p>
+<p>Until the next time, laters</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Brewdog have run some headline grabbing marketing activities. This particular one involved rewarding people who had contributed more than £16,000 in one of their crowdfunding series with a beer package in a <a href="https://www.independent.co.uk/life-style/food-and-drink/brewdog-worlds-strongest-beer-squirrel-bottle-the-end-of-history-a7436201.html">dead squirrel.</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p><a href="https://www.postman.com">PostMan</a> is a great tool for working with APIs and I&rsquo;m selling it short using those words as an elivator pitch. <a href="https://insomnia.rest">Insomnia</a> does very similar tasks if you want an alternative.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>I didn&rsquo;t go out out, just out. See <a href="https://youtu.be/Q5k8Su_ek2k?si=wnlduzmi55bMejjL">Are you out or out out ?</a>&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/python"
+      >Python</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/rest"
+      >REST</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

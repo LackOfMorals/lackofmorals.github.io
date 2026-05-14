@@ -1,0 +1,475 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Conway Game Of Life application - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Conway Game Of Life
+A common piece of advice on how to best learn a new development language is to build an application. For example, you often see variants on &lsquo;hello world&rsquo; to start with and then folks try progressively more challenging endeavours. This technique follows the well trodden path of crawl, walk, run and, maybe, matharons ( I guess the equivalent in these times of AI assistants would be taking a metaphorical taxi to speed up the journey )." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Conway Game Of Life application</h1><div class="text-xs antialiased opacity-60"><time>Apr 3, 2025</time></div></header>
+
+  <section><h2 id="conway-game-of-life">Conway Game Of Life</h2>
+<p>A common piece of advice on how to best learn a new development language is to build an application. For example, you often see variants on &lsquo;hello world&rsquo; to start with and then folks try progressively more challenging endeavours. This technique follows the well trodden path of crawl, walk, run and, maybe, matharons ( I guess the equivalent in these times of AI assistants would be taking a metaphorical taxi to speed up the journey ).</p>
+<p>I&rsquo;m not sure where Creating Conway Game of Life as your first ever React project would be placed on that road - likely at the far end where you&rsquo;re sweating , exhausted and general just want to take yourself off to a dark room for several hours to comtemplate your life choices.</p>
+<p>Did I mention my experience of JS is somewhat basic ?</p>
+<p>For those of you who already have experience in this area, there are likely to be moments of &lsquo;Why did you do that?!!&rsquo;. Afterall , a little knowledge is dangerous.</p>
+<p>But remember what we are always told - it is all about the outcome.</p>
+<p><img src="/img/conway-app/firstload.png" alt="Conway ready to start"></p>
+<p>Here&rsquo;s my journey</p>
+<h2 id="an-overview">An overview</h2>
+<p>Lets follow tradition and start at the beginning with a brief description of the expectations for this application.</p>
+<p>On initial page load, the user sees a pre-define grid where all of the cells are dead. They can change the size of the grid by using the sliders on the sidebar, toggle cells between alive / dead with a mouse click, and , once they are happy with everything, commence the simulation by selecting &lsquo;start&rsquo;. Whilst the simulation is running, the grid cannot be modified. The simulation will run until the user selects &lsquo;stop&rsquo; which will allow changes to be performed again.</p>
+<p>Neo4j is acting as a backend storage and being accessed using GraphQL. This comes into effect once the user has selected &lsquo;start&rsquo; with any existing grid being removed and replaced by the one chosen by the user. From that point onwards each iteration of the simulation will</p>
+<ul>
+<li>read the entire grid from the database</li>
+<li>obtain a list of cells with any alive neighbours from the database</li>
+<li>With these details, apply the Conway Game of Life rules</li>
+<li>Take the results and writes them back to the database before updating the UI</li>
+</ul>
+<p>This process continues until the user select &lsquo;Stop&rsquo;</p>
+<h2 id="the-approach">The Approach</h2>
+<p>Armed with the aforementioned description and with reference to , what has been described as &rsquo;expressive&rsquo; , my drawing of the UX, I commenced with exploring methods to achieve what was needed.</p>
+<p>I started with the UX. With a lot of reference to documentation, blogs and other research into React, I took to having a main component that laid out the browser window with two sub-components that provided for the sidebar and displaying of the grid.</p>
+<blockquote>
+<p>With hindsight and with the knowledge I have gained, I would look into using react context as state is drilled down a couple of levels.</p>
+</blockquote>
+<p>I ended up with three components for the UX</p>
+<ul>
+<li>main.jsx my top level component that sets out the browser and holds state*</li>
+<li>sidebar.jsx: deals with user controls to resize the grid, start and stop the simulation.</li>
+<li>displayGrid.jsx: everything for displaying the grid using ForceGraph2D</li>
+</ul>
+<blockquote>
+<p>As information would need to flow between sub-components, state was pulled up into main to allow for this . For example, when a user changes the size of the grid using slide controllers, that detail needs to get to the grid component from the sidebar component. Moving state into main provides that ability. After finishing this first version, I came across React Context which has possibilities here.</p>
+</blockquote>
+<p>Running the simulation along with various GraphQL activity, is held within other files that I&rsquo;ll come to in a bit. I did this to keep the aforementioned components focused on UX activity. Speaking of UX, I used TailWindCSS for all of the styling , controls etc.. Lots of documentation and examples made it an appealing choice.</p>
+<p>To get started on the React project, I used Vite</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>npm create vite@latest conway-game-of-life
+</span></span></code></pre></div><p>I choose to use JavaScript rather than TypeScript. My peers had strongly advised me to use TypeScript and I did try. But, wow, that&rsquo;s a very steep learning curve. Once I understand JavaScript better I will move as TypeScript would have saved me a couple of times from type related mistakes. And it aligns nicely with GraphQL being strongly typed.</p>
+<h2 id="graphql">GraphQL</h2>
+<p>In many ways, this was the easiest bit with only one minor change from what I had written about in a previous post covering GraphQL needed for this project. To help with debugging, I have two mutations - one that changes cells to alive, and another to dead - rather than do this in one. Tracing what is going on in the browser development tools is easier when you have clear naming in the network requests being made.</p>
+<p>Here are the GraphQL queries and mutations I used.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JS" data-lang="JS"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">deleteGrid</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;mutation deleteEntireGrid { deleteCells { relationshipsDeleted nodesDeleted }}&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">createGrid</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;mutation createCells($input: [CellCreateInput!]!) { createCells(input: $input) { cells { id alive } }}&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">joinCells</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mutation MyMutation { joinCellsTogetherIntoGrid }&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">getCellWithAliveConnectedCells</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;query aliveCellsWithAliveNeighours { cells { id alive x y connectedCells(where: { alive: { eq: true } }) { id } } }&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">setCellToAlive</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;mutation changeCellToAlive($where: CellWhere) { updateCells(where: $where, update: {alive: {set: true}} ) { cells { id alive } } }&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">setCellToDead</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;mutation changeCellToDead($where: CellWhere) { updateCells(where: $where, update: {alive: {set: false}} ) { cells { id alive } } }&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">readCellsOnGrid</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;query getEntireGrid { cells { alive id x y } }&#34;</span>;
+</span></span></code></pre></div><p>With this current version , there&rsquo;s more information being returned in some cases than <em>maybe</em> necessary but that can be tweaked in the future.</p>
+<p>There are a number of well known clients for GraphQL that are available for React, such as those from Apollo, Relay, urql and others. I didn&rsquo;t use any of these as I had a lot of new stuff to learn and I was already familar with using fetch().</p>
+<p>I placed this into it&rsquo;s own function like so</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">UseGraphQLAPI</span>(<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">variables</span>) {
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Read our environment variables from the .env file in the root
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// of this project.  This is done for us by Vite
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">GRAPHQL_URI</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">import</span>.<span style="color:#a6e22e">meta</span>.<span style="color:#a6e22e">env</span>.<span style="color:#a6e22e">VITE_GRAPHQL_URL</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">GRAPHQL_URL_API_KEY</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">import</span>.<span style="color:#a6e22e">meta</span>.<span style="color:#a6e22e">env</span>.<span style="color:#a6e22e">VITE_GRAPHQL_URL_API_KEY</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fetchGraphQL</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">variables</span> <span style="color:#f92672">=</span> {}) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#a6e22e">GRAPHQL_URI</span>, {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;POST&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;Content-Type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;application/json&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;x-api-key&#34;</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">GRAPHQL_URL_API_KEY</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({ <span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">variables</span> }),
+</span></span><span style="display:flex;"><span>      });
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>();
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">errors</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#34;GraphQL Errors:&#34;</span>, <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">errors</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;GraphQL Error&#34;</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">data</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">error</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#34;Error in fetchGraphQL:&#34;</span>, <span style="color:#a6e22e">error</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">error</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetchGraphQL</span>(<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">variables</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Vite reads .env file for us to obtain the values for where our GraphQL endpoint is and the authentication information needed to access it. Making error handling a bit more friendly is an area for more work as it just throws an error at the moment.</p>
+<h2 id="passing-state-around">passing state around</h2>
+<p>In main.jsx we see</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span> <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">params</span>, <span style="color:#a6e22e">setParams</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cellsWidth</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cellsHeight</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cellSpacing</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">50</span>,
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">running</span>, <span style="color:#a6e22e">setRunning</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">conwayGraph</span>, <span style="color:#a6e22e">setConwayGraph</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#a6e22e">buildForceGraphGrid</span>(<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellsWidth</span>, <span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellsHeight</span>, <span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellSpacing</span>));
+</span></span></code></pre></div><p>These get used and mutated in various places within components / functions underneath main.jsx. This is why state has been pulled up from them to allow for this.</p>
+<p><img src="/img/conway-app/conway%20staret.drawio.png" alt="State pulled up and flows"></p>
+<p>I did encounter a situation where the state change of running from false to true did not happen quickly enough resulting in the simulation never running. After some scratching of head, I asked ChatGPT and it pointed me in the direction of useRef and useEffect.</p>
+<blockquote>
+<p>ChaptGPT has been really efficient at finding issues and explaining what to do about them - most of the time. The answers still need verifying but I found it to be an effective teacher when learning a new language and got me unblocked a couple of times</p>
+</blockquote>
+<p>You can see this in startSim.jsx here</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">runningRef</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useRef</span>(<span style="color:#a6e22e">running</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">useEffect</span>(() =&gt; {
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">runningRef</span>.<span style="color:#a6e22e">current</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">running</span>;
+</span></span><span style="display:flex;"><span>}, [<span style="color:#a6e22e">running</span>]);
+</span></span></code></pre></div><p>This worked but I&rsquo;m not 100% clear as to why and I&rsquo;m still reading up on useRef vs useState.</p>
+<p>ChatGPT also recommended using <code>await new Promise((resolve) =&gt; setTimeout(resolve, 100));</code> to provide React with time to do other things - like update state - and avoid the appearance of hanging.</p>
+<h2 id="forcegraph2d">Forcegraph2d</h2>
+<p>My meanderings around the internet led me to ForceGraph2D for taking care of showing the grid. If you&rsquo;re considering using this - and it&rsquo;s a good choice - then here&rsquo;s where I ended up at</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">ForceGraph2D</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">graphData</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">conwayGraph</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ref</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">fgRef</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">linkColor</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#e6db74">&#34;#00c7e3&#34;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">linkWidth</span><span style="color:#f92672">=</span>{<span style="color:#ae81ff">4</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">nodeRelSize</span><span style="color:#f92672">=</span>{<span style="color:#ae81ff">8</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">enableNodeDrag</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">false</span>} <span style="color:#75715e">// Stops individual cells being moved around
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">d3VelocityDecay</span><span style="color:#f92672">=</span>{<span style="color:#ae81ff">0</span>} <span style="color:#75715e">// Avoid this being a force layout
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">cooldownTicks</span><span style="color:#f92672">=</span>{<span style="color:#ae81ff">0</span>} <span style="color:#75715e">// Using zero stops the grid jumping around
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">nodeAutoColorBy</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">null</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">panInteraction</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">false</span>} <span style="color:#75715e">// Should stop panning but didn&#39;t
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">d3AlphaMin</span><span style="color:#f92672">=</span>{<span style="color:#ae81ff">1</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">zoom</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">false</span>}  <span style="color:#75715e">// Should prevent zoom but didn&#39;t
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">onEngineStop</span><span style="color:#f92672">=</span>{() =&gt; <span style="color:#a6e22e">fgRef</span>.<span style="color:#a6e22e">current</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">zoomToFit</span>(<span style="color:#ae81ff">400</span>)}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">onNodeClick</span><span style="color:#f92672">=</span>{(<span style="color:#a6e22e">node</span>) =&gt; {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">ToggleCellState</span>({ <span style="color:#a6e22e">node</span> });
+</span></span><span style="display:flex;"><span>        }}
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">nodeCanvasObject</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">drawNode</span>} <span style="color:#75715e">// Node rendering function to override default
+</span></span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">/&gt;</span>
+</span></span></code></pre></div><p>You&rsquo;ll notice from the comments that several settings didn&rsquo;t do exactly what I expected. I never got to the bottom of this but are worthy of further exploration.</p>
+<p>By pure chance, having cell x y properties helped with the rectangular layout.</p>
+<p>As I wanted to be able to dynamically change colour when a user selected a node to toggle it between alive / dead , I used a custom rendering function along with another function that handles changing the grid when that event happens. In both cases, due to my lack of familairity with ForceGraph2D, I asked ChatGPT how to do this. The resulting code needed a bit of tweaking but what you see is what ChatGPT suggested.</p>
+<p>Even with the yet to be solved issues around panning / zoom, I still recommend using ForceGraph2D with graphs. It was really quick to get going with. D3.js is one of the alternatives but seemed to have, for me anyway, a steeper learning curve.</p>
+<p>Lots of possibilities with this library for another time.</p>
+<h2 id="mainjsx">main.jsx</h2>
+<p>Nothing amazing going on here. The inital grid displayed is handled by <code>buildForceGraphGrid</code> that returns an object in the format that ForceGraph2D requires.</p>
+<h2 id="sidebarjsx">sidebar.jsx</h2>
+<p>Provides the left hand nav bar using various CSS from TailWindCSS.</p>
+<p>The sliders that control grid height and width are enabled / disabled based on the value of running. This is achieved by use of <code>disabled={running}</code> property and a change of appearance using CSS</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span><span style="color:#a6e22e">className</span><span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">!</span><span style="color:#a6e22e">running</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;w-full&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;bg-gray-300 cursor-not-allowed opacity-50 w-full&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This technique is used where a control should be disabled when the simulation is running and enabled when it is not.</p>
+<p>The &lsquo;start&rsquo; and &lsquo;stop&rsquo; buttons do what they suggest. When &lsquo;start&rsquo; is selected, the startSim component is called.</p>
+<h2 id="startsim">startSim</h2>
+<p>Here we control the simulation with useState being called to trigger re-render of the grid to show what&rsquo;s happening on each iteration.</p>
+<p>A try / await block ensures that things happen in the order they need to e.g delete the currently stored grid and then create a new one.</p>
+<p>A while loop is used to continous iterate until running becomes false. This carries the risk of making the UX un-responsive which is why there are several <code>await new Promise((resolve) =&gt; setTimeout(resolve, 100));</code> statements at various points to mitigate this eventuality and allow React to do it&rsquo;s own work.</p>
+<p>It was within this bit of the code that I stumbled across the way Javascript passes arguments to a function. You may notice</p>
+<p><img src="/img/conway-app/controls-disabled.png" alt="Controls disabled"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">nextGraphIteration</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">simulation</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">structuredClone</span>(<span style="color:#a6e22e">cellsAliveNeightbours</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">structuredClone</span>(<span style="color:#a6e22e">cellsWithStatus</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">structuredClone</span>(<span style="color:#a6e22e">conwayGraph</span>.<span style="color:#a6e22e">links</span>)
+</span></span><span style="display:flex;"><span>          );
+</span></span></code></pre></div><p>where <em>structuredClone</em> is being used to take a copy of objects as I had discovered the hard way that Javascript passes objects by reference and not by value. I don&rsquo;t think they are needed anymore as I made changes in <em>nextGraphIteration</em> but that&rsquo;s for another day.</p>
+<p>Conway Game Of Life rules are processed in simulation.js rather than here. This was to try and keep startSim readable and made sense to move a discreate bit of functionality into it&rsquo;s own file.</p>
+<h2 id="simulationjs">simulation.js</h2>
+<p>It&rsquo;s entirely possible to process each iteration in the GraphQL Type Definitions using @CYPHER directive and some Cypher so that Neo4j DB does all of the hard work and avoids looping around cells like is done here. For now that seems a bit like cheating.</p>
+<p><em>nextGraphIteration</em> takes in objects that have</p>
+<ul>
+<li>An array of cells, each with it&rsquo;s immediate alive neighbours from a GraphQL query</li>
+<li>The existing Grid from a GraphQL query</li>
+<li>The existing links between cells from conwayGraph</li>
+</ul>
+<p>It then returns</p>
+<ul>
+<li>the new grid to be displayed using ForceGraph2D</li>
+<li>An array that has the cells to change to alive</li>
+<li>An array that has the cells to change to dead</li>
+</ul>
+<p>By looping around the list of cells and it&rsquo;s alive neighbours, we check to see if alive neighbour count will cause each cell to become alive, dead or stay as it is.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">alive</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">cellAliveNeighbourCount</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">alive</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">request_where_dead</span>.<span style="color:#a6e22e">id</span>.<span style="color:#66d9ef">in</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">alive</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">request_where_dead</span>.<span style="color:#a6e22e">id</span>.<span style="color:#66d9ef">in</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">alive</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">request_where_alive</span>.<span style="color:#a6e22e">id</span>.<span style="color:#66d9ef">in</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">alive</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">request_where_alive</span>.<span style="color:#a6e22e">id</span>.<span style="color:#66d9ef">in</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">alive</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">request_where_dead</span>.<span style="color:#a6e22e">id</span>.<span style="color:#66d9ef">in</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">alive</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// cell is currently dead.  Can it become alive?
+</span></span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">cellAliveNeighbourCount</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">alive</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">request_where_alive</span>.<span style="color:#a6e22e">id</span>.<span style="color:#66d9ef">in</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">existingCell</span>.<span style="color:#a6e22e">id</span>);
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span></code></pre></div><p>The equivalent Cypher looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>MATCH (cell:Cell)
+</span></span><span style="display:flex;"><span>OPTIONAL MATCH (cell)-[:NEIGHBOUR_OF]-(:Cell {state: &#34;alive&#34; })
+</span></span><span style="display:flex;"><span>WITH cell, COUNT(*) AS liveNeighbours
+</span></span><span style="display:flex;"><span>SET cell.state =
+</span></span><span style="display:flex;"><span>CASE liveNeighbours
+</span></span><span style="display:flex;"><span> WHEN &lt;= 1 THEN &#34;dead&#34;
+</span></span><span style="display:flex;"><span> WHEN &gt;= 4 THEN &#34;dead&#34;
+</span></span><span style="display:flex;"><span> WHEN = 3 THEN &#34;alive&#34;
+</span></span><span style="display:flex;"><span> ELSE cell.state
+</span></span><span style="display:flex;"><span>END
+</span></span></code></pre></div><p>I&rsquo;ll let you decide between the two.</p>
+<p>Back in startSim, the database gets updated using the mtwo mutations and then conwayGraph gets changed, all using the return from <em>nextGraphIteration</em></p>
+<p>The process continues until running gets changed to false.</p>
+<h2 id="displaygridjsx">displayGrid.jsx</h2>
+<p>displayGird.jsx is ( mostly ) focused on showing the grid using ForceGraph2D, something I have already commented on.</p>
+<p>I&rsquo;d like to see if I can move the code for re-sizing to sidebar so displayGrid.jsx just does what it says. But that&rsquo;s for another day.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span>  <span style="color:#75715e">// If the slides are used to re-size the grid, this will detect it
+</span></span></span><span style="display:flex;"><span>  <span style="color:#75715e">// and re-draw our newly sized grid
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">useEffect</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">running</span>) <span style="color:#66d9ef">return</span>; <span style="color:#75715e">// don&#39;t do this if sim is running
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">newSizeGraph</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">resizeGrid</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellsWidth</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellsHeight</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellSpacing</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">conwayGraph</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setConwayGraph</span>(<span style="color:#a6e22e">newSizeGraph</span>);
+</span></span><span style="display:flex;"><span>  }, [<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellsHeight</span>, <span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellsWidth</span>, <span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">cellSpacing</span>]);
+</span></span></code></pre></div><p><em>resizeGrid</em> takes the current grid, conwayGraph, with new height, width and spacing and returns a new version using those settings. The code for this was supplied by ChatGPT - I was in a bit of hurry at this point and short of time. It worked with only minor tweaks. Kinda of impressed with ChatGPT.</p>
+<h2 id="wrapping-this-up">Wrapping this up</h2>
+<p>My code worked, I got a lot out of this exercise and I have even more respect for folks that are involved with frontend development.</p>
+<p>For my fellow PMs, go try your hand at coding - any coding. Start with something straight forward and feel free to stop after your first &lsquo;Hello World&rsquo;. But if you do pursue it, and no one is going to expect you to start submitting product ready Pull Requests, you&rsquo;ll gain deeper understanding and empathy with your engineering peers and with your customers. It&rsquo;s another step towards becoming a well rounded PM.</p>
+<p>Enjoy</p>
+<p><a href="https://github.com/LackOfMorals/conway-game-of-life.git">GitHub repo for Conway Game of Life</a></p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/aura"
+      >Aura</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/graphql"
+      >GraphQL</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/conway"
+      >Conway</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

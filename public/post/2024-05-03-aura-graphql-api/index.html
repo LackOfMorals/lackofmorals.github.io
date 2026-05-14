@@ -1,0 +1,297 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Using the forthcoming Aura GraphQL API - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Using the forthcoming Aura GraphQL API
+Much later this year you&rsquo;ll be able to us GraphQL API with our Aura platform - yep, you read that correctly, we&rsquo;ve got the builders in to add an extension.
+We&rsquo;ve done this as it removes the requirement for customers to provision, configure, and then maintain a graphql server for the purposes of hosting a graphQL API - we&rsquo;re taking care of all of that in the Aura platform.  Additionally, it also ensures the GraphQL API is next door, figratively speaking, to the Aura instance avoiding the transist of information across the occasionally choppy waters of the internet which improves responsiveness and security." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Using the forthcoming Aura GraphQL API</h1><div class="text-xs antialiased opacity-60"><time>May 3, 2024</time></div></header>
+
+  <section><h1 id="using-the-forthcoming-aura-graphql-api">Using the forthcoming Aura GraphQL API</h1>
+<p>Much later this year you&rsquo;ll be able to us GraphQL API with our Aura platform - yep, you read that correctly, we&rsquo;ve got the builders in to add an extension.</p>
+<p>We&rsquo;ve done this as it removes the requirement for customers to provision, configure, and then maintain a graphql server for the purposes of hosting a graphQL API - we&rsquo;re taking care of all of that in the Aura platform.  Additionally, it also ensures the GraphQL API is next door, figratively speaking, to the Aura instance avoiding the transist of information across the occasionally choppy waters of the internet which improves responsiveness and security.</p>
+<p>In short, it&rsquo;s going to be much easier to take advantage of the benefits of GraphQL with Aura based DBs</p>
+<p>We are running an invitation only early access program for this at the moment and will be opening it up later this Summer before the <em>estimated</em> full release towards the end of the year.</p>
+<p>Let me know if you want in by filling out this <a href="https://forms.gle/3WSWtwjuj44k5LZR6">Google form</a></p>
+<h2 id="a-web-app-with-aura-graphql-api">A web app with Aura GraphQL API</h2>
+<p>Lets see how this upcoming feature can be used for which we&rsquo;ll need some code.</p>
+<p>I&rsquo;ve recently embarked on learning more about React so lets take that route.  First thought we&rsquo;ll need the GraphQL API.</p>
+<h3 id="provisioning-the-graphql-api-for-aura">Provisioning the GraphQL API for Aura</h3>
+<p>This is performed by using of the Aura CLI, something I have written about <a href="https://www.pm50plus.com/2023/11/30/cli.html">before</a>.  We&rsquo;ve extended the Aura CLI for this purpose with a new command group ( BTW it&rsquo;s not visible unless you&rsquo;re in the EAP). The command group is &lsquo;data-apis&rsquo; which could be suggestive of more API types,  say REST or gRPC, as a possibility in the future but I couldn&rsquo;t possibly comment on that.</p>
+<p>Using the Aura CLI, we provision the GraphQL API like so</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>aura data-apis create --name &lt;friendly-name&gt; --instance-id &lt;aura-instance-id&gt; <span style="color:#ae81ff">\ </span>
+</span></span><span style="display:flex;"><span>--instance-username &lt;aura-instance-user&gt;  --instance-password &lt;aura-instance-password&gt; <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--type-definitions &lt;path-to-type-defs&gt; --wait
+</span></span></code></pre></div><p>I&rsquo;ve used Type Definitions generated from introspection of the sample Movie graph database using our <a href="https://graphql-toolbox.neo4j.io/">GraphQL Toolbox</a>.</p>
+<h3 id="using-graphql-api-with-react">Using GraphQL API with React</h3>
+<p>Ther eare a number of ways to hook up a web app to a GraphQL API.  I&rsquo;m using React with Javascript for which there are many pre-built modules available for this, such as :-</p>
+<ul>
+<li><a href="https://commerce.nearform.com/open-source/urql/">urql</a></li>
+<li><a href="https://www.apollographql.com/docs/react/api/core/ApolloClient/">Apollo Client</a></li>
+<li><a href="https://relay.dev/docs/tutorial/graphql/">relay</a></li>
+</ul>
+<p>I&rsquo;ve used <code>fetch</code> which is built in.  I&rsquo;m taking that path as I can better illustrate what&rsquo;s required for using the Aura GraphQL API.  For anything more serious, I&rsquo;d suggest you use one of the others I just mentioned.</p>
+<p>Here&rsquo;s the code that talks to the GraphQL API which is part of a function <code>useGraphQLAPI</code>.  It takes a parameter, <code>query</code>, which has the GraphQL query that will be used.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span><span style="color:#a6e22e">useEffect</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fetchData</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span>() =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>( <span style="color:#e6db74">&#34;&lt;YOUR URL TO THE AURA GRAPHQL API&gt;&#34;</span> ,
+</span></span><span style="display:flex;"><span>          {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">method</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;POST&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">headers</span> <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>              <span style="color:#e6db74">&#34;Content-Type&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;application/json&#34;</span>,
+</span></span><span style="display:flex;"><span>              <span style="color:#e6db74">&#34;x-api-key&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;&lt;YOUR GRAPHQL API KEY&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>              },
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({<span style="color:#a6e22e">query</span>})
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">json</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>();
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">200</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">setListMovies</span>(<span style="color:#a6e22e">json</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">setReadyForRender</span>(<span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fetchData</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  }, [<span style="color:#a6e22e">query</span>]);
+</span></span></code></pre></div><p>Note the x-api-key key value in the header.  This is used to allow access to GraphQL API and must be used in every request.</p>
+<p>The GraphQL query itself is defined like so</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JavaScript" data-lang="JavaScript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">MOVIES_QUERY</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`query {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          movies( options: { limit: 10 }, where: {title_CONTAINS: &#34;`</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">movieSearchName</span> <span style="color:#f92672">+</span>  <span style="color:#e6db74">`&#34; } ) {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            movieId
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            released
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            title
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    `</span>;
+</span></span></code></pre></div><p><code>movieSearchName</code> is the variable that holds the name of the Movie that we&rsquo;re looking for.  You&rsquo;ll note that the GraphQL query gets 10 movies whose title contains whatever the value of <code>movieSearchName</code> is set to.</p>
+<p>I&rsquo;ve used <code>setReadyForRender</code> as a flag that informs React what to render on the screeen.  Initially this will be &ldquo;Loading&hellip;.&rdquo; , where <code>setReadyForRender</code> is False,  to indicate data is being retrieved .  When data has been obtained, <code>setReadyForRender</code> becomes True and we display a table filled with the said data.</p>
+<p>If you&rsquo;re wanting to try this yourself, and franky why wouldn&rsquo;t you, you can download the <a href="../code/2024-05-03-using-aura-graphql-api_code.zip">application</a> , unzip it and then nstall using <code>npm install</code>.  Make sure you change the values in MovieTable.js to be the ones used by your Aura GraphQL API which is also where you&rsquo;ll find the code snippets above.</p>
+<p>When you&rsquo;re ready, do a <code>npm start</code> and be stunned by the brilliance of the UX.</p>
+<p>It&rsquo;s all amaze balls I know and will surely set me on the road to billionaire status with one or more super yatchs and perhaps an island somewhere warm.</p>
+<p>Laters</p>
+<p>JG</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/graphql"
+      >GraphQL</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/api"
+      >API</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

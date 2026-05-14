@@ -1,0 +1,57 @@
+{{- define "main" -}}
+
+{{- $allYears := slice -}}
+{{- range where site.RegularPages "Section" "post" -}}
+  {{- if not (in $allYears .Date.Year) -}}
+    {{- $allYears = $allYears | append .Date.Year -}}
+  {{- end -}}
+{{- end -}}
+{{- $allYears = sort $allYears "value" "desc" -}}
+
+{{- $currentYear := now.Year -}}
+{{- $yearPages := slice -}}
+{{- range where site.RegularPages "Section" "post" -}}
+  {{- if eq .Date.Year $currentYear -}}
+    {{- $yearPages = $yearPages | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- $paginator := .Paginate $yearPages -}}
+
+<div class="not-prose post-list-wrap">
+
+  <div class="post-list">
+    {{- range $paginator.Pages -}}
+    <div class="post-row">
+      <time class="post-date">{{- .Date | time.Format "2006-01-02" -}}</time>
+      <a href="{{- .Permalink -}}" class="post-title">{{- .Title -}}</a>
+    </div>
+    {{- end -}}
+
+    {{- if eq (len $yearPages) 0 -}}
+    <p style="padding:1.5rem 0;color:rgba(0,0,0,.4)">No posts yet for {{ $currentYear }}.</p>
+    {{- end -}}
+
+    {{- if gt $paginator.TotalPages 1 -}}
+    <nav class="mt-14 flex">
+      {{- if $paginator.HasPrev -}}
+      <a class="btn" href="{{- $paginator.Prev.URL -}}">← {{- i18n "prev_page" -}}</a>
+      {{- end -}}
+      {{- if $paginator.HasNext -}}
+      <a class="btn ml-auto" href="{{- $paginator.Next.URL -}}">{{- i18n "next_page" -}} →</a>
+      {{- end -}}
+    </nav>
+    {{- end -}}
+  </div>
+
+  <nav class="year-nav">
+    {{- range $allYears -}}
+    <a
+      href="{{- if eq . $currentYear }}/{{- else }}/year/{{- . -}}/{{- end -}}"
+      class="{{- if eq . $currentYear }}year-link-active{{- else }}year-link{{- end -}}"
+    >{{- . -}}</a>
+    {{- end -}}
+  </nav>
+
+</div>
+
+{{- end -}}

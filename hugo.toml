@@ -1,4 +1,4 @@
-baseURL = 'https://www.pm50plus.co.uk/'
+baseURL = 'https://www.gfvaa.com'
 locale = 'en-us'
 title = 'Work In Progress'
 
@@ -18,13 +18,13 @@ title = 'Work In Progress'
   
   github = 'LackOfMorals'                 # github.com/YOUR_GITHUB_ID
   instagram = 'body_by_dad'           # instagram.com/YOUR_INSTAGRAM_ID
-  linkedin = 'YOUR_LINKEDIN_ID'             # linkedin.com/in/YOUR_LINKEDIN_ID
-  bluesky = 'YOUR_BLUESKY_ID'               # https://bsky.app/profile/YOUR_BLUESKY_ID
+  linkedin = 'jgiffard'             # linkedin.com/in/YOUR_LINKEDIN_ID
+  # bluesky = 'YOUR_BLUESKY_ID'               # https://bsky.app/profile/YOUR_BLUESKY_ID
   rss = true                                # show rss icon
 
   # home page profile
   avatar = 'GRAVATAR_EMAIL'                 # gravatar email or image url
-  name = 'YOUR_NAME'
+  name = 'Jonathan Giffard aka JG'
   bio = 'YOUR_BIO'
 
 
@@ -35,10 +35,10 @@ title = 'Work In Progress'
   gravatarCdn = 'GRAVATAR_CDN_LINK'         # e.g. 'https://cdn.v2ex.com/gravatar/'
   math = true                               # enable KaTeX math typesetting globally
   localKatex = false                        # use local KaTeX js/css instead of CDN
-  graphCommentId = "YOUR_GRAPH_COMMENT_ID"  # use graph comment (disqus alternative)
+  # graphCommentId = "YOUR_GRAPH_COMMENT_ID"  # use graph comment (disqus alternative)
   favicon = "favicon.ico"                   # customize the default favicon
   appleTouchIcon = "apple-touch-icon.png"   # customize the default Apple touch icon
 
   # RTL supprot
-  direction = "rtl"                         # RTL support for Right-to-left languages
+  direction = "ltr"                         # RTL support for Right-to-left languages
 

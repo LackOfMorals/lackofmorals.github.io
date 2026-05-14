@@ -1,0 +1,465 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Neo4j Cluster built with containers - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Build a Neo4j cluster
+Most of time having a single copy of Neo4j running is suitable for what I need to do.  There are occasions where only a cluster will do and, as it&rsquo;s not something that happens that often, I&rsquo;ve written down the steps i follow that results in a 3 member cluster which is front end by a load balancer - HA Proxy.
+I&rsquo;m aware that you also go down the Kubernetes route for this but it seems overkill for a 3 node cluster with static membership." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Neo4j Cluster built with containers</h1><div class="text-xs antialiased opacity-60"><time>Jan 2, 2025</time></div></header>
+
+  <section><h1 id="build-a-neo4j-cluster">Build a Neo4j cluster</h1>
+<p>Most of time having a single copy of Neo4j running is suitable for what I need to do.  There are occasions where only a cluster will do and, as it&rsquo;s not something that happens that often, I&rsquo;ve written down the steps i follow that results in a 3 member cluster which is front end by a load balancer - HA Proxy.</p>
+<p>I&rsquo;m aware that you also go down the Kubernetes route for this but it seems overkill for a 3 node cluster with static membership.</p>
+<p>Of course I could be wrong and I leave that judgement to you, my dear reader.</p>
+<h2 id="pre-reqs">Pre-reqs</h2>
+<ul>
+<li>A Mac</li>
+<li><a href="https://podman.io/">podman</a>* for the containers</li>
+<li>neo4j enterprise</li>
+<li><a href="https://www.haproxy.org/">haproxy</a>**</li>
+<li>A text editor.  nano is my go to but others are available</li>
+</ul>
+<p>*Why podman?  It works and it&rsquo;s free  ( at the time of writing ) from the restrictions that docker has .  The command line is compatible with that of docker .</p>
+<p>**The ports on the containers are kept within a dedicated network.  HAProxy acts as a proxy, exposing the ports for Neo4j in an expected way i.e as if it is a single copy of Neo4j running. If we didn&rsquo;t do this and exposed the containers directly , we would have to use different ports.  This makes it complex.  As a side benefit, we also get load balancing across the containers.</p>
+<h2 id="folder-structures">Folder structures</h2>
+<p>There&rsquo;s a folder layout to create.  This has one folder for each container with all of the folders under a single parent, neo4j-cluster, which itself will be in the Home folder.  If you want another location, thats fine but remember to adjust other references to these in each step.</p>
+<p>To create the folders in the home folder, run these commands at the command prompt ( use of -p will create the entire paths in one go and save a bit of key pressing )</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>mkdir -p ~/neo4j-cluster/node01/conf;mkdir -p ~/neo4j-cluster/node01/data;mkdir -p ~/neo4j-cluster/node01/logs
+</span></span><span style="display:flex;"><span>mkdir -p ~/neo4j-cluster/node02/conf;mkdir -p ~/neo4j-cluster/node02/data;mkdir -p ~/neo4j-cluster/node02/logs
+</span></span><span style="display:flex;"><span>mkdir -p ~/neo4j-cluster/node03/conf;mkdir -p ~/neo4j-cluster/node03/data;mkdir -p ~/neo4j-cluster/node03/logs
+</span></span><span style="display:flex;"><span>mkdir -p ~/neo4j-cluster/haproxy01
+</span></span></code></pre></div><h2 id="configuration-files">Configuration files</h2>
+<h3 id="neo4j">neo4j</h3>
+<p>Each neo4j cluster member will need it&rsquo;s own, slightly different, configuration file.  The file for node01 will act as the template.</p>
+<p>Using a text editor, open neo4j.conf file and make these changes</p>
+<p>For Initial DBMS Settings, add this line</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>initial.dbms.default_primaries_count<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+</span></span></code></pre></div><p>This will make sure any newly created DB will be copied across all three members of this cluster.   See <a href="https://neo4j.com/docs/operations-manual/current/clustering/databases/">https://neo4j.com/docs/operations-manual/current/clustering/databases/</a></p>
+<p>In network connector section, add this line</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>server.default_advertised_address<span style="color:#f92672">=</span>node01.dns.podman
+</span></span></code></pre></div><p>In the cluster section, replace the content with these lines</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span><span style="color:#75715e">#*****************************************************************</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Cluster Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#*****************************************************************</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncomment and specify these lines for running Neo4j in a cluster.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># See the cluster documentation at https://neo4j.com/docs/ for details.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># A comma-separated list of endpoints which a server should contact in order to discover other cluster members. It must</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># be in the host:port format. For each machine in the cluster, the address will usually be the public ip address of</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># that machine. The port will be the value used in the setting &#34;server.discovery.advertised_address&#34; of that server.</span>
+</span></span><span style="display:flex;"><span>dbms.cluster.discovery.endpoints<span style="color:#f92672">=</span>node01.dns.podman:5000,node02.dns.podman:5000,node03.dns.podman:5000
+</span></span><span style="display:flex;"><span>dbms.cluster.discovery.log_level<span style="color:#f92672">=</span>DEBUG
+</span></span><span style="display:flex;"><span>dbms.cluster.discovery.resolver_type<span style="color:#f92672">=</span>LIST
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Host and port to bind the cluster member discovery management communication.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This is the setting to add to the collection of addresses in dbms.cluster.discovery.endpoints.</span>
+</span></span><span style="display:flex;"><span>server.discovery.listen_address<span style="color:#f92672">=</span>:5000
+</span></span><span style="display:flex;"><span>server.discovery.advertised_address<span style="color:#f92672">=</span>:5000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Network interface and port for the transaction shipping server to listen on.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Please note that it is also possible to run the backup client against this port so always limit access to it via the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># firewall and configure an ssl policy.</span>
+</span></span><span style="display:flex;"><span>server.cluster.listen_address<span style="color:#f92672">=</span>:6000
+</span></span><span style="display:flex;"><span>server.cluster.advertised_address<span style="color:#f92672">=</span>:6000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Network interface and port for the RAFT server to listen on.</span>
+</span></span><span style="display:flex;"><span>server.cluster.raft.listen_address<span style="color:#f92672">=</span>:7000
+</span></span><span style="display:flex;"><span>server.cluster.raft.advertised_address<span style="color:#f92672">=</span>:7000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Network interface and port for server-side routing within the cluster. This allows requests to be forwarded</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># from one cluster member to another, if the requests can&#39;t be satisfied by the first member (e.g. write requests</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># received by a non-leader).</span>
+</span></span><span style="display:flex;"><span>server.routing.listen_address<span style="color:#f92672">=</span>:7688
+</span></span><span style="display:flex;"><span>server.routing.advertised_address<span style="color:#f92672">=</span>:7688
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># List a set of names for groups to which this server should belong. This</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># is a comma-separated list and names should only use alphanumericals</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># and underscore. This can be used to identify groups of servers in the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># configuration for load balancing and replication policies.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># The main intention for this is to group servers, but it is possible to specify</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># a unique identifier here as well which might be useful for troubleshooting</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or other special purposes.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#server.groups=</span>
+</span></span></code></pre></div><p>Save this file as neo4j.conf in ~/neo4j-cluster/node01/conf</p>
+<p>Then change</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>server.default_advertised_address<span style="color:#f92672">=</span>node01.dns.podman
+</span></span></code></pre></div><p>to</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>server.default_advertised_address<span style="color:#f92672">=</span>node02.dns.podman
+</span></span></code></pre></div><p>Save this file as neo4j.conf in ~/neo4j-cluster/node02/conf</p>
+<p>Finally do the same for node03 by changing</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>server.default_advertised_address<span style="color:#f92672">=</span>node02.dns.podman
+</span></span></code></pre></div><p>to</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>server.default_advertised_address<span style="color:#f92672">=</span>node03.dns.podman
+</span></span></code></pre></div><p>Save this file as neo4j.conf in ~/neo4j-cluster/node03/conf</p>
+<p>To save time, you can download this <a href="/code/neo4j_cluster_conf_files.zip">zip</a> file that contains each of the neo4j configuration files</p>
+<p><strong>Note:</strong>  You might have noticed these lines</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>dbms.cluster.discovery.endpoints<span style="color:#f92672">=</span>node01.dns.podman:5000,node02.dns.podman:5000,node03.dns.podman:5000
+</span></span><span style="display:flex;"><span>dbms.cluster.discovery.resolver_type<span style="color:#f92672">=</span>LIST
+</span></span></code></pre></div><p>Neo4j documentation says this about this configuration line
+<em>&ldquo;In order to join a running cluster, any new member must know the addresses of at least some of the other servers in the cluster. This information is necessary to connect to the servers, run the discovery protocol, and obtain all the information about the cluster.&rdquo;</em></p>
+<p>Essentially I&rsquo;ve chosen to supply a fixed lists of cluster members with their FQDNS entries.   This is absolutely fine for my purposes as the cluster membership never changes.   If you&rsquo;re not in this scenario, make sure you read up on how cluster members find each other <a href="https://neo4j.com/docs/operations-manual/current/clustering/setup/discovery/">https://neo4j.com/docs/operations-manual/current/clustering/setup/discovery/</a></p>
+<h3 id="haproxy">haproxy</h3>
+<p>To replicate the load across our neo4j cluster members, haproxy is setup to use a  basic round robin mechanism where each request is passed on in turn. haproxy is also configured to present a single IP address that represents the entire cluster so our client can use that rather than each IP address.</p>
+<p>haproxy configuration has been divided into a frontend, where requests come in and are then sent onto the backend, the neo4j servers.  You can put place various settings that control the flow from frontend to backend.  The following file is rather simple and is just enough for what is needed here</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>global
+</span></span><span style="display:flex;"><span>  master-worker
+</span></span><span style="display:flex;"><span>  log stdout format raw local0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Some default options that are used</span>
+</span></span><span style="display:flex;"><span>defaults load_balancer_defaults
+</span></span><span style="display:flex;"><span>  log global
+</span></span><span style="display:flex;"><span>  option redispatch
+</span></span><span style="display:flex;"><span>  option dontlognull
+</span></span><span style="display:flex;"><span>  timeout http-request 30s
+</span></span><span style="display:flex;"><span>  timeout connect 10s
+</span></span><span style="display:flex;"><span>  timeout client 30s
+</span></span><span style="display:flex;"><span>  timeout server 30s
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">###### Frontend ######</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Frontend is where requests come into haproxy</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Some of the configuration is taken from load_balancer_defaults </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Neo4j load balanced browser access</span>
+</span></span><span style="display:flex;"><span>frontend neo4j_http from load_balancer_defaults
+</span></span><span style="display:flex;"><span>  bind :7474
+</span></span><span style="display:flex;"><span>  mode http
+</span></span><span style="display:flex;"><span>  option httplog 
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#Capture information about http requests in the log file</span>
+</span></span><span style="display:flex;"><span>  http-request capture req.hdr<span style="color:#f92672">(</span>User-Agent<span style="color:#f92672">)</span> len <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>  http-request capture req.body id <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>  default_backend neo4j_http_servers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Neo4j load balanced bolt access</span>
+</span></span><span style="display:flex;"><span>frontend lb_bolt from load_balancer_defaults
+</span></span><span style="display:flex;"><span>  mode tcp
+</span></span><span style="display:flex;"><span>  option tcplog
+</span></span><span style="display:flex;"><span>  bind :7687
+</span></span><span style="display:flex;"><span>  default_backend neo4j_bolt_servers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">###### Backend ######</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Backend where haproxy sends requests from the frontend</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># haproxy will check each server is there by use of the &#39;check&#39; option at the end </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># of each server line</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Backend neo4j for http .  includes browser and http / query api</span>
+</span></span><span style="display:flex;"><span>backend neo4j_http_servers from load_balancer_defaults
+</span></span><span style="display:flex;"><span>  mode http
+</span></span><span style="display:flex;"><span>  option httplog
+</span></span><span style="display:flex;"><span>  balance roundrobin
+</span></span><span style="display:flex;"><span>  server http01 node01.dns.podman:7474 check
+</span></span><span style="display:flex;"><span>  server http02 node02.dns.podman:7474 check
+</span></span><span style="display:flex;"><span>  server http03 node03.dns.podman:7474 check
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Backend load balanced bolt access</span>
+</span></span><span style="display:flex;"><span>backend neo4j_bolt_servers
+</span></span><span style="display:flex;"><span>  mode tcp
+</span></span><span style="display:flex;"><span>  server bolt01 node01.dns.podman:7687 check
+</span></span><span style="display:flex;"><span>  server bolt02 node02.dns.podman:7687 check
+</span></span><span style="display:flex;"><span>  server bolt03 node03.dns.podman:7687 check
+</span></span></code></pre></div><p>Save this file in the haproxy folder as haproxy.cfg</p>
+<h2 id="create-a-network-for-the-cluster-members">Create a network for the cluster members</h2>
+<p>The containers will use their own network with communications between themselves and the host handled by haproxy.  To that end,  the network will need to be created.</p>
+<p>If this network is already in use, adjust as needed</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>podman network create --subnet 192.168.99.0/24 neo4jCluster
+</span></span></code></pre></div><h2 id="run-the-containers">Run the containers</h2>
+<h3 id="neo4j-1">neo4j</h3>
+<p>Each neo4j cluster member will be started one by one
+<strong>node01</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>podman run -dt <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --name<span style="color:#f92672">=</span>node01 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --hostname node01.dns.podman <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --volume<span style="color:#f92672">=</span>$HOME/neo4j-cluster/node01/data:/data <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --volume<span style="color:#f92672">=</span>$HOME/neo4j-cluster/node01/conf:/conf <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --volume<span style="color:#f92672">=</span>$HOME/neo4j-cluster/node01/logs:/logs <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --env<span style="color:#f92672">=</span>NEO4J_ACCEPT_LICENSE_AGREEMENT<span style="color:#f92672">=</span>yes <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --env NEO4J_AUTH<span style="color:#f92672">=</span>neo4j/password <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --user<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>id -u<span style="color:#66d9ef">)</span><span style="color:#e6db74">:</span><span style="color:#66d9ef">$(</span>id -g<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    --net neo4jCluster <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    neo4j:enterprise
+</span></span></code></pre></div><p><strong>node02</strong></p>
+<pre tabindex="0"><code>podman run -dt \
+    --name=node02 \
+    --hostname node02.dns.podman \
+    --volume=$HOME/neo4j-cluster/node02/data:/data \
+    --volume=$HOME/neo4j-cluster/node02/conf:/conf \
+    --volume=$HOME/neo4j-cluster/node02/logs:/logs \
+    --env=NEO4J_ACCEPT_LICENSE_AGREEMENT=yes \
+    --env NEO4J_AUTH=neo4j/password \
+    --user=&#34;$(id -u):$(id -g)&#34; \
+    --net neo4jCluster \
+    neo4j:enterprise
+</code></pre><p><strong>node03</strong></p>
+<pre tabindex="0"><code>podman run -dt \
+    --name=node03 \
+    --hostname node03.dns.podman \
+    --volume=$HOME/neo4j-cluster/node03/data:/data \
+    --volume=$HOME/neo4j-cluster/node03/conf:/conf \
+    --volume=$HOME/neo4j-cluster/node03/logs:/logs \
+    --env=NEO4J_ACCEPT_LICENSE_AGREEMENT=yes \
+    --env NEO4J_AUTH=neo4j/password \
+    --user=&#34;$(id -u):$(id -g)&#34; \
+    --net neo4jCluster \
+    neo4j:enterprise
+</code></pre><p><strong>haproxy</strong></p>
+<pre tabindex="0"><code>podman run -dt \
+--name haproxy01 \
+--hostname haproxy01.dns.podman \
+--volume=$HOME/neo4j-cluster/haproxy01:/usr/local/etc/haproxy:rw \
+--net neo4jCluster \
+-p 7474:7474 \
+-p 7687:7687 \
+--user=&#34;$(id -u):$(id -g)&#34; \
+haproxy:alpine
+</code></pre><h2 id="cluster-checks">Cluster checks</h2>
+<h3 id="browser">Browser</h3>
+<p>Enter <a href="http://localhost:7474">http://localhost:7474</a> in your browser.  You should be shown the browser interface</p>
+<p>Set</p>
+<ul>
+<li>Connect URL : bolt://localhost:7687</li>
+<li>Authentication type: Username / password</li>
+<li>Username: neo4j</li>
+<li>Password: password</li>
+</ul>
+<p>Select &lsquo;Connect&rsquo; to login.</p>
+<p>If everything is ok, then you will be logged into neo4j</p>
+<p>In the browser, type :sysinfo
+In Databases, you should see all three containers listed as shown in the screenshot below</p>
+<p><img src="/img/BrowserScreenshot.png" alt=""></p>
+<h3 id="query-api">Query API</h3>
+<p>To test the Query API, enter this curl command at the command line which will return information about the neo4j user</p>
+<pre tabindex="0"><code>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+--header &#39;Content-Type: application/json&#39; \
+--data &#39;{ &#34;statement&#34;: &#34;SHOW CURRENT USER&#34; }&#39; \
+--user neo4j:password
+</code></pre><h3 id="bolt">Bolt</h3>
+<p>Logging from the browser console has tested that bolt communications work.  This means that any application using our platform drivers should also work as well.</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devpm"
+      >DevPM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/cluster"
+      >Cluster</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/containers"
+      >Containers</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

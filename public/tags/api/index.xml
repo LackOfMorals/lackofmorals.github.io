@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>API on Work In Progress</title>
+    <link>http://localhost:1313/tags/api/</link>
+    <description>Recent content in API on Work In Progress</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 03 May 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/api/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Using the forthcoming Aura GraphQL API</title>
+      <link>http://localhost:1313/post/2024-05-03-aura-graphql-api/</link>
+      <pubDate>Fri, 03 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-05-03-aura-graphql-api/</guid>
+      <description>&lt;h1 id=&#34;using-the-forthcoming-aura-graphql-api&#34;&gt;Using the forthcoming Aura GraphQL API&lt;/h1&gt;&#xA;&lt;p&gt;Much later this year you&amp;rsquo;ll be able to us GraphQL API with our Aura platform - yep, you read that correctly, we&amp;rsquo;ve got the builders in to add an extension.&lt;/p&gt;&#xA;&lt;p&gt;We&amp;rsquo;ve done this as it removes the requirement for customers to provision, configure, and then maintain a graphql server for the purposes of hosting a graphQL API - we&amp;rsquo;re taking care of all of that in the Aura platform.  Additionally, it also ensures the GraphQL API is next door, figratively speaking, to the Aura instance avoiding the transist of information across the occasionally choppy waters of the internet which improves responsiveness and security.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Starting out with the Aura API</title>
+      <link>http://localhost:1313/post/2023-12-19-aura-api/</link>
+      <pubDate>Tue, 19 Dec 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2023-12-19-aura-api/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/plane_window.png&#34; alt=&#34;Turning left when boarding&#34;&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;api&#34;&gt;API&lt;/h1&gt;&#xA;&lt;p&gt;When thinking about Application Programming Interfaces, or APIs as they are known as, you can imagine them as helpers that perform a requested, specific,  task and return a response.  They are the building blocks from which applications are composed from.  There&amp;rsquo;s many different types of APIs and in this post I&amp;rsquo;m looking at those which are called across networks - Web APIs. If you&amp;rsquo;re regular reader then you&amp;rsquo;ve seen these before where I&amp;rsquo;ve used APIs from Transport For London to obtain information about the London Tube network.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

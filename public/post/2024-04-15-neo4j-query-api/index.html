@@ -1,0 +1,293 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Introducing the new Query API in Neo4j 5.19 - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="We built a thing
+I&rsquo;ve been lucky enough to work with our Neo4j Engineers to create a new API for Neo4j that allows the execution of Cypher statements in the form of network requests without requiring a driver to be installed. There was thought given ( briefly ) to asking the Internet for a what to call this but that doesn&rsquo;t always turn out well. In the end we went with the simple approach of naming it after what it does and called it the Query API. It&rsquo;s available now with Neo4j 5.19 and will be coming to Aura , our cloud service, in early Summer this year.  For those of you who are using the existing HTTP API, it&rsquo;s not retiring anytime soon and will be kept updated with fixes for critical defects and security vulnerabilities.  You&rsquo;ll be able to choose which one to use." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Introducing the new Query API in Neo4j 5.19</h1><div class="text-xs antialiased opacity-60"><time>Apr 15, 2024</time></div></header>
+
+  <section><h1 id="we-built-a-thing">We built a thing</h1>
+<p>I&rsquo;ve been lucky enough to work with our Neo4j Engineers to create a new API for Neo4j that allows the execution of Cypher statements in the form of network requests without requiring a driver to be installed. There was thought given ( briefly ) to asking the Internet for a what to call this but that doesn&rsquo;t <a href="https://en.wikipedia.org/wiki/Boaty_McBoatface#Naming">always turn out well</a>. In the end we went with the simple approach of naming it after what it does and called it the <strong>Query API</strong>. It&rsquo;s available now with Neo4j 5.19 and will be coming to Aura , our cloud service, in early Summer this year.  For those of you who are using the existing HTTP API, it&rsquo;s not retiring anytime soon and will be kept updated with fixes for critical defects and security vulnerabilities.  You&rsquo;ll be able to choose which one to use.</p>
+<h2 id="say-hello-to-the-new-query-api">Say hello to the new Query API</h2>
+<p>Since the early days of Neo4j it has been possible to use the <a href="https://neo4j.com/docs/http-api/current/">HTTP API</a> , to send Cypher and get back the results without requiring installation of a driver.  The current HTTP API has proven popular and provide several benefits for our Developer community:-</p>
+<ul>
+<li>It&rsquo;s convenient for experimenting, works on platforms where a Driver might not be available</li>
+<li>Avoids having to install and maintain Drivers</li>
+<li>Works well where the rich feature set offered by Drivers is not required.</li>
+</ul>
+<p>Although the HTTP API has withstood the passage of time rather well, it is not entirely immune to ageing.   After much consideration, it was decided to invest in building a new API that retained the benefits of the HTTP API, designed with modern architectural patterns and technology, be consistent in its usage, and work with Aura, something the HTTP API does not do. I&rsquo;m forever greatful to the Engineers who made that feature list a reality</p>
+<p>Lets start to explore the approach taken by the Query API with an example, based on our Movies sample dataset.</p>
+<h2 id="first-steps-with-the-query-api">First steps with the Query API</h2>
+<p>To try out the Query API you will need the following.</p>
+<ul>
+<li>Neo4j 5.19 running locally ( community or Enterprise ). Using <a href="https://neo4j.com/download/">Neo4j Desktop</a> or a <a href="https://neo4j.com/docs/operations-manual/current/docker/">Docker container</a> will be easiest way to do this</li>
+<li>The username is neo4j with the password set to password</li>
+<li>The database with the Movies Graph Database dataset is called neo4j</li>
+<li>You have curl installed and are somewhat familiar with it</li>
+</ul>
+<p>The Query API is off by default so we will need to turn it on.  Shtudown Neo4j and use your favourite text editor to open the neo4j.conf file.  WHen you have the neo4j.conf file open, search for this line</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>server.http.enabled=true
+</span></span></code></pre></div><p>Immediately after this line , add the line to enable the Query API.</p>
+<ul>
+<li>If you are using Neo4j community , add</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>server.http_enabled_modules=TRANSACTIONAL_ENDPOINTS,UNMANAGED_EXTENSIONS,BROWSER,QUERY_API_ENDPOINTS
+</span></span></code></pre></div><ul>
+<li>If you are using Neo4j Enterprise, add</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>server.http_enabled_modules=TRANSACTIONAL_ENDPOINTS,UNMANAGED_EXTENSIONS,BROWSER,ENTERPRISE_MANAGEMENT_ENDPOINTS,QUERY_API_ENDPOINTS
+</span></span></code></pre></div><p>Save the file and startup Neo4j.  Once Neo4j is back running, go to the command prompt. Copy &amp; paste the following then press enter</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-BASH" data-lang="BASH"><span style="display:flex;"><span>curl - location <span style="color:#e6db74">&#39;http://127.0.0.1:7474/db/neo4j/query/v2&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> - header <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> - header <span style="color:#e6db74">&#39;Accept: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> - header <span style="color:#e6db74">&#39;Authorization: Basic bmVvNGo6cGFzc3dvcmQ=&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> - data <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;statement&#34;: &#34;MATCH (nineties:Movie) WHERE nineties.released &gt;= 1990 AND nineties.released &lt; 2000 RETURN nineties.title &#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}&#39;</span>
+</span></span></code></pre></div><p>We&rsquo;ve just use the Query API to ask Neo4j for all of the movies that were released between 1990 and 2000.  If all is working as we expect, you should see this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{<span style="color:#f92672">&#34;data&#34;</span>:{<span style="color:#f92672">&#34;fields&#34;</span>:[<span style="color:#e6db74">&#34;nineties.title&#34;</span>],<span style="color:#f92672">&#34;values&#34;</span>:[<span style="color:#e6db74">&#34;The Matrix&#34;</span>,<span style="color:#e6db74">&#34;The Devil&#39;s Advocate&#34;</span>,<span style="color:#e6db74">&#34;A Few Good Men&#34;</span>,<span style="color:#e6db74">&#34;As Good as It Gets&#34;</span>,<span style="color:#e6db74">&#34;What Dreams May Come&#34;</span>,<span style="color:#e6db74">&#34;Snow Falling on Cedars&#34;</span>,<span style="color:#e6db74">&#34;You&#39;ve Got Mail&#34;</span>,<span style="color:#e6db74">&#34;Sleepless in Seattle&#34;</span>,<span style="color:#e6db74">&#34;Joe Versus the Volcano&#34;</span>,<span style="color:#e6db74">&#34;When Harry Met Sally&#34;</span>,<span style="color:#e6db74">&#34;That Thing You Do&#34;</span>,<span style="color:#e6db74">&#34;The Birdcage&#34;</span>,<span style="color:#e6db74">&#34;Unforgiven&#34;</span>,<span style="color:#e6db74">&#34;Johnny Mnemonic&#34;</span>,<span style="color:#e6db74">&#34;The Green Mile&#34;</span>,<span style="color:#e6db74">&#34;Hoffa&#34;</span>,<span style="color:#e6db74">&#34;Apollo 13&#34;</span>,<span style="color:#e6db74">&#34;Twister&#34;</span>,<span style="color:#e6db74">&#34;Bicentennial Man&#34;</span>,<span style="color:#e6db74">&#34;A League of Their Own&#34;</span>]},<span style="color:#f92672">&#34;bookmarks&#34;</span>:[<span style="color:#e6db74">&#34;FB:kcwQQdg6mV80SxC+JcAk3s1YyRWQ&#34;</span>]}<span style="color:#960050;background-color:#1e0010">%</span>
+</span></span></code></pre></div><p>If you didn&rsquo;t get this, check that you have everything setup as described earlier and you have made the changes to the neo4j.conf file.</p>
+<h2 id="digging-into-the-request-we-just-made">Digging into the request we just made</h2>
+<p>All of the requests to the Query API require authorization. This needs the header key, Authorization , to have a value of</p>
+<p><code>Basic ( Base64 encoded &lt;Neo4j username&gt;:&lt;Neo4j password&gt; )</code></p>
+<p>You can see this in the curl command we used used here:-</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>- header &#39;Authorization: Basic bmVvNGo6cGFzc3dvcmQ=&#39;
+</span></span></code></pre></div><p>There&rsquo;s many ways to base 64 encode  <code>&lt;Neo4j username&gt;:&lt;Neo4j password&gt; </code> .  If you want to quickly try this, there&rsquo;s a website , <a href="https://www.base64encode.org">https://www.base64encode.org</a>, that will do this for you.</p>
+<p>With our setup - username of neo4j and a password of password -  we enter neo4j:password into the Encode box , select <em>Encode</em> and the base 64 encoded is then diplayed -   bmVvNGo6cGFzc3dvcmQ=</p>
+<p>The other part of the curl statement that is of interest is where have the Cypher request</p>
+<pre tabindex="0"><code>- data &#39;{
+&#34;statement&#34;: &#34;MATCH (nineties:Movie) WHERE nineties.released &gt;= 1990 AND nineties.released &lt; 2000 RETURN nineties.title &#34;
+}&#39;
+</code></pre><p>This is the body of the request and is where the Query API looks for what it needs to do. In our example case, it&rsquo;s a single Cypher statement</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>MATCH (nineties:Movie) WHERE nineties.released &gt;= 1990 AND nineties.released &lt; 2000 RETURN nineties.title
+</span></span></code></pre></div><p>The Query API only accepts a single Cypher statement in a request. If you have several statements you want to perform you will need to send one request per statement or make use the Cypher CALL subquery facility.</p>
+<h2 id="next-steps">Next steps</h2>
+<p>In our next update on the Query API , we&rsquo;ll cover off</p>
+<ul>
+<li>using parameters</li>
+<li>execute the Cypher statement as a different Neo4j user to the one you used for authorisation</li>
+<li>When using Neo4j clusters, use the leader ( for writes ) or a follower ( for reads ). With server side routing enabled, this is taken care of automatically but there can be scenarios where you want to control this.</li>
+</ul>
+<p>Until then, please try out the Query API and let us know how you get on.</p>
+<p>Laters</p>
+<p>JG</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/queryapi"
+      >QueryAPI</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

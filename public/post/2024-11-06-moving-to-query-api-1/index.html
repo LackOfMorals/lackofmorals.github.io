@@ -1,0 +1,304 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Moving to Neo4j Query API - Partie Un  - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Considering a move to the Neo4j Query API - Partie Un
+If you&rsquo;re interested in transitioning to the Query API, this post will provide an overview of the key areas to consider and plan for. A follow up post post will dive deeper with a worked example. While there&rsquo;s no immediate pressure to move from the HTTP API, it&rsquo;s important to note that updates will be limited to critical security and defect fixes. All future development effort will be focused on the Query API." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Moving to Neo4j Query API - Partie Un </h1><div class="text-xs antialiased opacity-60"><time>Nov 6, 2024</time></div></header>
+
+  <section><h1 id="considering-a-move-to-the-neo4j-query-api---partie-un">Considering a move to the Neo4j Query API - Partie Un</h1>
+<p>If you&rsquo;re interested in transitioning to the Query API, this post will provide an overview of the key areas to consider and plan for. A follow up post post will dive deeper with a worked example. While there&rsquo;s no immediate pressure to move from the HTTP API, it&rsquo;s important to note that updates will be limited to critical security and defect fixes. All future development effort will be focused on the Query API.</p>
+<hr>
+<h2 id="embracing-differences">Embracing differences</h2>
+<p>In an ideal world, there would not be any differences between the HTTP and Query APIs. When designing the Query API data contracts, our primary goal was to make Developer outcomes easier to achieve compared to what had gone before. As we iterated our way along the design and development process, it quickly became apparent that changes would be needed to realise the benefits we set out to achieve. Lets delve more into what those changes are and what they mean to you.</p>
+<h3 id="url">URL</h3>
+<p>The most obvious change is with the URL. The path has changed to support Versioning ( covered in more detail next ) and introduces the name of API itself. The latter avoids a namespace collision to allow running of both API so you can gradually move over</p>
+<ul>
+<li>HTTP API: /db/{db name}</li>
+<li>Query API: /db/{db name}/query/v2</li>
+</ul>
+<h3 id="versioning">Versioning</h3>
+<p>The Query API will support the current version ( n ) and the immediately prior one ( n-1 ). This allows the introduction of new features that require breaking changes while ensuring applications continue without interruption. It also clearly identifies which Query API variant is being used. Following best practices, the version number is now in the URL
+/db/{db name}/query/v{major version number}</p>
+<h3 id="using-implicit-or-explicit-transactions">Using implicit or explicit transactions</h3>
+<p>Like the HTTP API, the Query API offers both implicit and explicit transactions. For the former, you supply a Cypher statement and the transaction is managed for you. With the latter you&rsquo;re in control of the transaction from start to finish.</p>
+<p>The HTTP API path for these operations is somewhat shy when it comes to showing intent. From the paths below, which does what?</p>
+<ul>
+<li>URL path : /db/{db name}/query/v{major version number}/tx</li>
+<li>URL path : /db/{db name}/query/v{major version number}/tx/commit</li>
+</ul>
+<p>You would use the top one for explicit and the bottom for implicit, something that is not immediately obvious.</p>
+<p>We took this approach with the Query API to improve clarity by taking advantage of most peoples use of tx for transactions</p>
+<ul>
+<li>implicit URL path : /db/{db name}/query/v{major version number}</li>
+<li>explicit URL path : /db/{db name}/query/v{major version number}/tx</li>
+</ul>
+<h3 id="a-single-cypher-statement-per-request">A single Cypher statement per request</h3>
+<p>On the face of it, having multiple Cypher statements in a single request has advantages; you get a lot done in one go and only take the hit from establishing a TCP connection once. The reality is that it was not used this way - it was harder to track down which Cypher statement had a syntax error or was otherwise not working as intended when there were many of them in a single request. With the vast majority of programming platforms allowing re-use of an existing TCP session which eliminated the time overhead of connection establishment, the advantages of many Cypher statements in a single request have faded away.</p>
+<p>It became clear that the simplicity offered from a single Cypher statement per request was the direction of travel to pursue. This also created the opportunity to improve information for errors and make better use of HTTP status codes.</p>
+<h3 id="response-notifications-has-a-category">Response Notifications has a category</h3>
+<p>This is an addition to the Notification section of a response and is there for classification purposes e.g performance. This is primarily intended for logging and subsequent analysis.</p>
+<h3 id="json-with-type-information">JSON with Type information</h3>
+<p>JSON allows for values a type from string, number, JSON object, array , boolean or null. The Neo4j type list is much more extensive covering many more types. The HTTP API has a content type that adds JSON type information to the returned JSON response - JOLT. Jolt, short for JSON Bolt, is a JSON-based format which encloses the response value&rsquo;s type together with the value inside a singleton object ( Bolt being the packet stream based protocol use by Neo4j server and platform drivers ).</p>
+<p>In all honesty, the feedback from Developers for JOLT can best be summarised as <em>&lsquo;Would not recommend&rsquo;</em> but there remained a desire for types.</p>
+<p>We like a challenge and commenced on a ground-up re-design for extending JSON with Neo4j type information. With the Query API you now <code>Accept: application/vnd.neo4j.query</code> to your request header and get back a JSON response that is decorated with Neo4j type information. More detail on this in in the <a href="https://neo4j.com/docs/query-api/current/result-formats/#_json_with_type_information">JSON with Type</a> documentation</p>
+<p>Feedback is encouraged.</p>
+<h3 id="response-changes">Response changes</h3>
+<p>It&rsquo;s morphed a bit from the response that you previously got from the HTTP API. The response has been organised into distinct areas within the JSON response with a top level that contains one or more these entries</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;data&#34;</span>:{},
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;counters&#34;</span>:[],
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;profiledQueryPlan&#34;</span>: {},
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;identifiers&#34;</span>:[],
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;children&#34;</span>:[],
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;notifications&#34;</span>:[{}],
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;errors&#34;</span>:[{}],
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;bookmarks&#34;</span>: []
+</span></span></code></pre></div><p>The top level entries change depending on the request, if an error occurred, information from the Neo4j server, and if the Cypher statement was to be profiled. Exact details for each of these can be found in the <a href="https://neo4j.com/docs/query-api/current/">documentation</a></p>
+<hr>
+<h2 id="whats-next">What&rsquo;s next?</h2>
+<p>There&rsquo;s three other points to consider when planning your migration</p>
+<ul>
+<li>
+<p>Be curious
+Althought this blog has covered the main areas of difference between the HTTP API and the Query API, do not assume that these are the <strong>only areas</strong> that you need to pay attention to. These are general points and each application will have it&rsquo;s own quirks. Be curious - go read your applications source code to learn more about how they are using the HTTP API</p>
+</li>
+<li>
+<p>Remember that the Tortoise won
+&ldquo;The Tortoise and the Hare&rdquo; is one of Aesop&rsquo;s Fables where the Hare looses the race due to foolish over confidence. A slow and steady migration is better than a hasty swap over. For self-managed customers, the HTTP API will be supported for a long time yet as part of the 5.26 LTS version of Neo4j, recieving updates for critical bugs and security defects.</p>
+</li>
+<li>
+<p>Dual running
+Self-managed customers can run both the HTTP and Query API at the sametime. Take advantage of this for back to back testing where results, performance, and security can be compared between the two APIs. It also allows for a gradual transistion with the HTTP being switched off when eveything has been moved across.</p>
+</li>
+<li>
+<p>Read the docs
+Do not forget to read the Query API documentation so that you are informed of what the API does and it does it! <a href="https://neo4j.com/docs/query-api/current/">Query API Documentation</a></p>
+</li>
+</ul>
+<p>As mentioned at the start of this blog, a follow up post will look at code changes to move a Python application from the HTTP API to the Query API.</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/queryapi"
+      >QueryAPI</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/aura"
+      >Aura</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

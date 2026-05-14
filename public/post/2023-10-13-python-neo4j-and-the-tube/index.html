@@ -1,0 +1,420 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Using Python and data from Tfl API - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Episode 1 : Back to school
+
+To become more familar with the TfL API and working with Neo4j programmatically , I&rsquo;m going to write some funky Python code to explore and learn more about them. In Agile terms, it&rsquo;s a Spike. The vast majority of this code is likely to be thrown away - no need to make it pretty , optimised or anything like that, just functional." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Using Python and data from Tfl API</h1><div class="text-xs antialiased opacity-60"><time>Oct 13, 2023</time></div></header>
+
+  <section><h1 id="episode-1--back-to-school">Episode 1 : Back to school</h1>
+<p><img src="/img/tflTube/tflStations.png" alt="London Tube Stations"></p>
+<p>To become more familar with the TfL API and working with Neo4j programmatically , I&rsquo;m going to write some funky Python code to explore and learn more about them. In Agile terms, it&rsquo;s a Spike. The vast majority of this code is likely to be thrown away - no need to make it pretty , optimised or anything like that, just functional.</p>
+<p>For the spike, I want to know more about</p>
+<ul>
+<li>How to use the Tfl API to get a list of tube lines</li>
+<li>Create entries in Neo4j using its Python driver</li>
+</ul>
+<h2 id="install-neo4j-locally">Install Neo4j locally</h2>
+<p>I&rsquo;m going to use Neo4j Desktop for this exercise. It&rsquo;s a local install with a nice UI attached that makes it easy to use and work with.</p>
+<p>Download Neo4j Desktop here:- <a href="">https://neo4j.com/download/</a> and install it.</p>
+<p>After the install has completed, launch Desktop and create a new project. Then click on the &lsquo;Add&rsquo; button to , err, add a local DBMS. Give the DBSM a name, a password ( remember this as we will need it shortly ), choose the latest version of Neo4j, then select &lsquo;Create&rsquo; and wait for the process to finish.</p>
+<p>Once that&rsquo;s done, go to the project and click on the dbms, then choose &lsquo;Start&rsquo;</p>
+<p>You now have a running Neo4j graphdatabase.</p>
+<h2 id="get-the-list-of-tube-lines-from-tfl">Get the list of tube lines from Tfl</h2>
+<p>I&rsquo;ve already created an account and obtained an API key to access Tfl API. If you haven&rsquo;t , go here <a href="">https://api-portal.tfl.gov.uk/</a> and then come back.</p>
+<p>Lets use some Python code that&rsquo;s going to connect to Tfl API and get the list of Tube lines.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Use python requests libary for our comms with Tfl</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> requests <span style="color:#f92672">import</span> Request, Session
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use the json libary for some formatting later</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use the Neo4j python driver</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> neo4j <span style="color:#f92672">import</span> GraphDatabase
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># A session will be used to avoid having to make a new connection with each request we make to Tfl.  Making a new connection takes time.</span>
+</span></span><span style="display:flex;"><span>tfl_session <span style="color:#f92672">=</span> Session()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># TLR uses an api key for auth</span>
+</span></span><span style="display:flex;"><span>app_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&lt;YOUR TFL API KEY&gt;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This goes in the request header and we&#39;ll set the content type to json</span>
+</span></span><span style="display:flex;"><span>headers <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;Content-Type&#34;</span>: <span style="color:#e6db74">&#34;application/json&#34;</span>, <span style="color:#e6db74">&#34;app_key&#34;</span>: app_key}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tfl base URI</span>
+</span></span><span style="display:flex;"><span>base_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://api.tfl.gov.uk&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Path the endpoint to get a list of Tube lines</span>
+</span></span><span style="display:flex;"><span>path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/line/mode/tube/status&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Put the base and path together</span>
+</span></span><span style="display:flex;"><span>full_url <span style="color:#f92672">=</span> base_url <span style="color:#f92672">+</span> path
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Prepare our request</span>
+</span></span><span style="display:flex;"><span>tfl_request <span style="color:#f92672">=</span> Request(<span style="color:#e6db74">&#39;GET&#39;</span>, full_url, headers<span style="color:#f92672">=</span>headers)<span style="color:#f92672">.</span>prepare()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Send the request to Tfl</span>
+</span></span><span style="display:flex;"><span>tfl_tube_lines <span style="color:#f92672">=</span> tfl_session<span style="color:#f92672">.</span>send(tfl_request)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If we got JSON back</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> tfl_tube_lines<span style="color:#f92672">.</span>json():
+</span></span><span style="display:flex;"><span>    print(json<span style="color:#f92672">.</span>dumps(tfl_tube_lines<span style="color:#f92672">.</span>json(), indent<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>))
+</span></span></code></pre></div><p>Assuming everything works, you will get output like from this from Tfl</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.Line, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;bakerloo&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Bakerloo&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;modeName&#34;</span>: <span style="color:#e6db74">&#34;tube&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;disruptions&#34;</span>: [],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;created&#34;</span>: <span style="color:#e6db74">&#34;2023-10-10T15:08:36.863Z&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;modified&#34;</span>: <span style="color:#e6db74">&#34;2023-10-10T15:08:36.863Z&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;lineStatuses&#34;</span>: [
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.LineStatus, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;id&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;statusSeverity&#34;</span>: <span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;statusSeverityDescription&#34;</span>: <span style="color:#e6db74">&#34;Good Service&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;created&#34;</span>: <span style="color:#e6db74">&#34;0001-01-01T00:00:00&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;validityPeriods&#34;</span>: []
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;routeSections&#34;</span>: [],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;serviceTypes&#34;</span>: [
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.LineServiceTypeInfo, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Regular&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;uri&#34;</span>: <span style="color:#e6db74">&#34;/Line/Route?ids=Bakerloo&amp;serviceTypes=Regular&#34;</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;crowding&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.Crowding, Tfl.Api.Presentation.Entities&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>etc<span style="color:#f92672">..</span>
+</span></span></code></pre></div><p>Next step will be to iterate through the list, extract the tube line id and then get use that to get the list of stations</p>
+<h2 id="obtain-the-list-of-stations-for-a-tube-line-from-tfl">Obtain the list of stations for a tube line from Tfl</h2>
+<p>Lets expand the code to go get those stations on a Tube line.</p>
+<p>Rather than print the response after the check to see if we got json back, we will iterate our way through each Tube line entry to obtain the Tube line id. This is used with the Tfl endpoint that returns stop points, or stations, for a line. We&rsquo;ll then print the output again to see what we have.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># If we got JSON back</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> tfl_tube_lines<span style="color:#f92672">.</span>json():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> entry <span style="color:#f92672">in</span> tfl_tube_lines<span style="color:#f92672">.</span>json():
+</span></span><span style="display:flex;"><span>        tfl_tube_id <span style="color:#f92672">=</span> entry[<span style="color:#e6db74">&#39;id&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Include the line as part of the endpoint that we will use to get the stations</span>
+</span></span><span style="display:flex;"><span>        path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/line/&#34;</span> <span style="color:#f92672">+</span> tfl_tube_id <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/stoppoints&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Set the full path</span>
+</span></span><span style="display:flex;"><span>        full_url <span style="color:#f92672">=</span> base_url <span style="color:#f92672">+</span> path
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Prepare our request</span>
+</span></span><span style="display:flex;"><span>        tfl_request <span style="color:#f92672">=</span> Request(<span style="color:#e6db74">&#39;GET&#39;</span>, full_url, headers<span style="color:#f92672">=</span>headers)<span style="color:#f92672">.</span>prepare()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Send the request to Tfl</span>
+</span></span><span style="display:flex;"><span>        tfl_tube_line_stations <span style="color:#f92672">=</span> tfl_session<span style="color:#f92672">.</span>send(tfl_request)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> tfl_tube_line_stations<span style="color:#f92672">.</span>json():
+</span></span><span style="display:flex;"><span>            print(json<span style="color:#f92672">.</span>dumps(tfl_tube_line_stations<span style="color:#f92672">.</span>json(), indent<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>))
+</span></span></code></pre></div><p>If all goes ok, and watch for those Python indents, our output will look similar to this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;status&#34;</span>: true,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;940GZZLUHSC&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;commonName&#34;</span>: <span style="color:#e6db74">&#34;Hammersmith (H&amp;C Line) Underground Station&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;placeType&#34;</span>: <span style="color:#e6db74">&#34;StopPoint&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;additionalProperties&#34;</span>: [
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.AdditionalProperties, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;Address&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;Address&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;sourceSystemKey&#34;</span>: <span style="color:#e6db74">&#34;StaticObjects&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;Hammersmith (H &amp; C),London Underground Ltd.,Beadon Road,London,W6 7AA&#34;</span>
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;$type&#34;</span>: <span style="color:#e6db74">&#34;Tfl.Api.Presentation.Entities.AdditionalProperties, Tfl.Api.Presentation.Entities&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;Address&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;PhoneNo&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;sourceSystemKey&#34;</span>: <span style="color:#e6db74">&#34;StaticObjects&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;0845 330 9880&#34;</span>
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;lat&#34;</span>: <span style="color:#ae81ff">51.493535</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;lon&#34;</span>: <span style="color:#f92672">-</span><span style="color:#ae81ff">0.225013</span>
+</span></span></code></pre></div><p>There&rsquo;s a lot of stuff returned from the Tfl endpoint, some of which will be useful - the name, id, and physical location information in the form of lat &amp; lon - and a lot that will not.</p>
+<p>If you look at the station list a bit more closely, we find two problems.</p>
+<p>The first is a tube line can have several routes - you can see this on the map where the Northen Line splits.</p>
+<p><img src="/img/tflTube/tubeMap.png" alt="London Tube Stations"></p>
+<p>Our second is the stations are not in sequence for a route on a line. This will make connecting them together tricky.</p>
+<p>We&rsquo;ll solve those next time.</p>
+<p>Lets go load this information into Neo4j</p>
+<h2 id="create-nodes-in-neo4j-with-the-python-driver">Create nodes in Neo4j with the Python driver</h2>
+<p>We&rsquo;re going to take each station and create an entry in Neo4j - a node - which will have two properties , the stations id and name.</p>
+<p>To make the connection to Neo4j, we&rsquo;ll need the address, user and password. As we&rsquo;re using the local Desktop version, this is straight forward. You can recall the password you created earlier ?</p>
+<p>Once we have established the connection we will use Cypher to create the entry. Cypher is the query language used by Neo4j and there&rsquo;s lots of materials to educate yourselve about it. Take one of the free courses at the Neo4j Graph Academy here:- <a href="">https://graphacademy.neo4j.com/</a> and read the docs here:- <a href="">https://neo4j.com/developer/cypher/</a></p>
+<p>We&rsquo;ll use MERGE as it will only create an entry if it doesn&rsquo;t already exists. This will avoid duplicates which is handy if there&rsquo;s an error and we need to run the code again.</p>
+<p>Change the code starting at the line &lsquo;if tfl_tube_line_stations.json():&rsquo;</p>
+<p>As this is Python - think indents !</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> tfl_tube_line_stations<span style="color:#f92672">.</span>json():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> station_entry <span style="color:#f92672">in</span> tfl_tube_line_stations<span style="color:#f92672">.</span>json():
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># These are the properties to add to our node entry in Neo4j</span>
+</span></span><span style="display:flex;"><span>                station_name <span style="color:#f92672">=</span> station_entry[<span style="color:#e6db74">&#39;commonName&#39;</span>]
+</span></span><span style="display:flex;"><span>                station_id <span style="color:#f92672">=</span> station_entry[<span style="color:#e6db74">&#39;id&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Detail to connect to our Neo4j database</span>
+</span></span><span style="display:flex;"><span>                neo4_uri <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;bolt://127.0.0.1:7687&#39;</span>
+</span></span><span style="display:flex;"><span>                neo4j_user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;neo4j&#39;</span>
+</span></span><span style="display:flex;"><span>                neo4j_password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&lt;YOUR NEO4J PASSWORD&gt;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Build the Cypher statement we will use to create the station entry as a node</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># We&#39;re using MERGE rather than CREATE to avoid creating duplicate stations.</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># I&#39;ve split it across several lines to try and make it easier to read</span>
+</span></span><span style="display:flex;"><span>                cypher_statement <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;MERGE ( `&#39;</span> <span style="color:#f92672">+</span> station_id <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;`:Station&#39;</span> <span style="color:#f92672">+</span> \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#e6db74">&#39; { id:&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#34;&#39;</span> <span style="color:#f92672">+</span> station_id <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#34;&#39;</span> <span style="color:#f92672">+</span> \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#e6db74">&#39;, name:&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#34;&#39;</span> <span style="color:#f92672">+</span> station_name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#34;&#39;</span> <span style="color:#f92672">+</span> \
+</span></span><span style="display:flex;"><span>                                   <span style="color:#e6db74">&#39;})&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Connect to Neo4j</span>
+</span></span><span style="display:flex;"><span>                neo4jDB_connection <span style="color:#f92672">=</span> GraphDatabase<span style="color:#f92672">.</span>driver(neo4_uri, keep_alive<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, auth<span style="color:#f92672">=</span>(neo4j_user, neo4j_password))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Send the Cypher statement</span>
+</span></span><span style="display:flex;"><span>                neo4j_response <span style="color:#f92672">=</span> neo4jDB_connection<span style="color:#f92672">.</span>execute_query(cypher_statement)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Check the response</span>
+</span></span><span style="display:flex;"><span>                print(neo4j_response<span style="color:#f92672">.</span>summary<span style="color:#f92672">.</span>metadata)
+</span></span></code></pre></div><p>If all goes well you should see entries like this appearing from the code</p>
+<pre tabindex="0"><code>{&#39;query&#39;: &#39;MERGE ( `940GZZLUWWL`:Station { id:&#34;940GZZLUWWL&#34;, name:&#34;Walthamstow Central Underground Station&#34;})&#39;, &#39;parameters&#39;: {}, &#39;server&#39;: &lt;neo4j.api.ServerInfo object at 0x105786fd0&gt;, &#39;database&#39;: None, &#39;t_first&#39;: 1, &#39;fields&#39;: [], &#39;qid&#39;: 0, &#39;stats&#39;: {&#39;contains-updates&#39;: True, &#39;labels-added&#39;: 1, &#39;nodes-created&#39;: 1, &#39;properties-set&#39;: 2}, &#39;type&#39;: &#39;w&#39;, &#39;t_last&#39;: 0, &#39;db&#39;: &#39;neo4j&#39;}
+{&#39;query&#39;: &#39;MERGE ( `940GZZLUBNK`:Station { id:&#34;940GZZLUBNK&#34;, name:&#34;Bank Underground Station&#34;})&#39;, &#39;parameters&#39;: {}, &#39;server&#39;: &lt;neo4j.api.ServerInfo object at 0x1057a1e50&gt;, &#39;database&#39;: None, &#39;t_first&#39;: 2, &#39;fields&#39;: [], &#39;qid&#39;: 0, &#39;type&#39;: &#39;w&#39;, &#39;t_last&#39;: 0, &#39;db&#39;: &#39;neo4j&#39;}
+{&#39;query&#39;: &#39;MERGE ( `940GZZLUWLO`:Station { id:&#34;940GZZLUWLO&#34;, name:&#34;Waterloo Underground Station&#34;})&#39;, &#39;parameters&#39;: {}, &#39;server&#39;: &lt;neo4j.api.ServerInfo object at 0x1057a9700&gt;, &#39;database&#39;: None, &#39;t_first&#39;: 1, &#39;fields&#39;: [], &#39;qid&#39;: 0, &#39;type&#39;: &#39;w&#39;, &#39;t_last&#39;: 0, &#39;db&#39;: &#39;neo4j&#39;}
+
+Process finished with exit code 0
+</code></pre><p>Finishing with an exit code of 0 indicates that times are good.</p>
+<p>We can now check if we have entries in Neo4j by going over to Neo4j Desktop and choosing the Open button. This will open the Neo4j browser window.</p>
+<p>Enter this cyhper statement</p>
+<pre tabindex="0"><code>MATCH (n) RETURN n
+</code></pre><p>And you should see a picture like the one at the top of this blog post.</p>
+<p>You can downlod the entire code from here:- <a href="/code/2023-10-13_code.py">Complete Python code</a></p>
+<p>Make sure to change the Tfl API Key to match your own along with password for Neo4j.</p>
+<h2 id="whats-next">What&rsquo;s next?</h2>
+<p>Another spike. We need to connect up the stations which means we&rsquo;ll be adding relationships between them. And there&rsquo;s the matter of getting them in the correct sequence on each route on a line.</p>
+<p>Then we really need to talk about the code that&rsquo;s been written and how we can structure it better. Some careful munnging together of Python Classes is going be a major factor in that.</p>
+<p>Until then, stay safe.</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/tfl"
+      >Tfl</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/python"
+      >Python</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

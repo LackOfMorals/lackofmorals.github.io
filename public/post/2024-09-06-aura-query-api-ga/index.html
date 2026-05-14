@@ -1,0 +1,407 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Aura welcomes Query API - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Querying your Aura Neo4j Database via HTTPS (Again)
+The HTTPS based Query API is now GA for Aura and Self-managed customers
+For almost 14 years you could query Neo4j via HTTP, originally with a REST API, later via Cypher, with a number of improvements (streaming, type representations etc). Since 2016 the focus has shifted to the binary Bolt protocol, advanced routing and native drivers. The existing HTTP APIs were still running for self-hosted customers but were lacking in features and because of those shortcomings, were not available in the Neo4j Aura Cloud Service. This is about to change now." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Aura welcomes Query API</h1><div class="text-xs antialiased opacity-60"><time>Sep 6, 2024</time></div></header>
+
+  <section><h1 id="querying-your-aura-neo4j-database-via-https-again">Querying your Aura Neo4j Database via HTTPS (Again)</h1>
+<p>The HTTPS based Query API is now GA for Aura and Self-managed customers
+For almost 14 years you could query Neo4j via HTTP, originally with a REST API, later via Cypher, with a number of improvements (streaming, type representations etc). Since 2016 the focus has shifted to the binary Bolt protocol, advanced routing and native drivers. The existing HTTP APIs were still running for self-hosted customers but were lacking in features and because of those shortcomings, were not available in the Neo4j Aura Cloud Service. This is about to change now.</p>
+<p>The new Query API has been in Beta for our self-managed customers with the April 2024 release of Neo4j 5.19. At the time, we also started it would be coming to Aura in the Summer of 2024. Today we&rsquo;re making good on that promise; Query API is now available on Aura across all tiers and cloud providers for production workloads. We&rsquo;re also pleased to announce that with Neo4j 5.23, self-managed customers can consider the Query API has exited Beta and is now ready for production workloads.</p>
+<p>The Query API uses secure HTTP(S) communications to make Cypher requests with a JSON document response. You can also request an extended JSON document that incorporates Type information. As there is no requirement to install and maintain drivers, the Query API will work across a wide range of platforms and in situations where you do not need the rich feature set available in our Drivers or can&rsquo;t install custom libraries or dependencies.</p>
+<p>Overall, the Query API is an easily accessible, secure, and efficient method to work with your Neo4j DBs in Aura.</p>
+<p>Let&rsquo;s walk through some of the functionality of this new capability for Aura.</p>
+<hr>
+<h2 id="making-your-first-query-api-call">Making your first Query API call</h2>
+<p>You will need an Aura instance to try out the Query API. If you already have one,  along with a set of credentials for it, then skip to &lsquo;Query API URL&rsquo;. If not then sign up for the Aura free tier.</p>
+<h3 id="create-an-aura-instance">Create An Aura Instance</h3>
+<ul>
+<li>
+<p>After logging into Aura, select AuraDB, Instances and then New Instance.</p>
+</li>
+<li>
+<p>From the various displayed options, choose the smallest instance size, provide a name, and select a region that works best for you.</p>
+</li>
+<li>
+<p>Make sure any checkbox is selected and choose Create</p>
+</li>
+<li>
+<p>You will be shown the credentials for the new Aura instance. Make sure you download these or record them. You will need these shortly.
+<em>Note: It&rsquo;s really important you do this. You&rsquo;ve been warned.</em></p>
+</li>
+</ul>
+<p>Now is a great time to make a pot of tea as its steeping time is roughly the same as how long it will take for the creation process to complete. <a href="https://medium.com/r/?url=https%3A%2F%2Fshopandonart.bigcartel.com%2Fproduct%2F50-shades-of-tea-print-pre-order">A poster</a> is available to help you decide on tea strength.</p>
+<h2 id="query-api-url">Query API URL</h2>
+<p>Communications for the Query API takes place on the standard HTTPS 443 port and uses a URL in the format of  <code>https://AURA_HOSTNAME/db/AURA_DATABASE_NAME/query/v2</code></p>
+<ul>
+<li>
+<p>AURA_HOSTNAME is found within the displayed Connection URI of an Aura Instance. In the Aura Console, select AuraDB, Instances and then look in the box for the Aura instance you will use with the Query API for Connection URI, like the one shown here in the red oval box.  The hostname is immediately after neo4j+s://</p>
+</li>
+<li>
+<p>AURA_DATABASE_NAME ( for now anyways ) will always be neo4j.</p>
+</li>
+</ul>
+<h2 id="authorisation">Authorisation</h2>
+<p>Authorisation is necessary for every request made to the Query API. Currently, this uses Basic Authentication - a base64 encoded hash of the database username and password. This is set in the header of the request under Authorization. There are plans to introduce the use of JWTs for this purpose later on.</p>
+<h2 id="your-first-query-api-request">Your first Query API request</h2>
+<p>You have everything needed to submit your first Query API request to Aura. Here&rsquo;s a simple example that will check everything is working. Substitute AURA_HOSTNAME and AURA_DB_PASSWORD for your values.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>curl --location <span style="color:#e6db74">&#39;https://AURA_HOSTNAME/db/neo4j/query/v2&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --user neo4j:AURA_DB_PASSWORD <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --header <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --header <span style="color:#e6db74">&#39;Accept: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --data <span style="color:#e6db74">&#39;{ &#34;statement&#34;: &#34;RETURN 1&#34; }&#39;</span>
+</span></span></code></pre></div><p>If all is well, you will see a response similar to this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&#34;data&#34;</span>: {<span style="color:#f92672">&#34;fields&#34;</span>:[<span style="color:#e6db74">&#34;1&#34;</span>],<span style="color:#f92672">&#34;values&#34;</span>:[<span style="color:#ae81ff">1</span>]},
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&#34;bookmarks&#34;</span>:[<span style="color:#e6db74">&#34;FB:kcwQlRkKozmpRoG708y0045J18kJmZA=&#34;</span>]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="a-basic-cypher-statement">A basic Cypher statement</h2>
+<p>Lets try getting data from the Aura instance using the CURL utility. You will use this Cypher statement to get 5 entries</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>MATCH (n) RETURN n LIMIT 5
+</span></span></code></pre></div><p>With the Query API, the Cypher statement is the value for the statement key. If you want to try this, substitute AURA_HOSTNAME and AURA_DB_PASSWORD for your values.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>curl --location <span style="color:#e6db74">&#39;https://AURA_HOSTNAME/db/neo4j/query/v2&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --user neo4j:AURA_DB_PASSWORD <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --header <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --header <span style="color:#e6db74">&#39;Accept: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --data <span style="color:#e6db74">&#39;{ &#34;statement&#34;: &#34;MATCH (n) RETURN n LIMIT 5&#34; }&#39;</span>
+</span></span></code></pre></div><p>Here&rsquo;s an example response from the example Movies dataset that has been formatted to improve readability.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;data&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;fields&#34;</span>: [
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;n&#34;</span>
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;values&#34;</span>: [
+</span></span><span style="display:flex;"><span>      [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;elementId&#34;</span>: <span style="color:#e6db74">&#34;4:751c0ff7-7a1a-448d-9d98-ffc4b4767fef:0&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;labels&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Person&#34;</span>
+</span></span><span style="display:flex;"><span>          ],
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Charlie&#34;</span>
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      ],
+</span></span><span style="display:flex;"><span>      [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;elementId&#34;</span>: <span style="color:#e6db74">&#34;4:751c0ff7-7a1a-448d-9d98-ffc4b4767fef:1&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;labels&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Movie&#34;</span>
+</span></span><span style="display:flex;"><span>          ],
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tagline&#34;</span>: <span style="color:#e6db74">&#34;Welcome to the Real World&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;The Matrix&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;released&#34;</span>: <span style="color:#ae81ff">1999</span>
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      ],
+</span></span><span style="display:flex;"><span>      [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;elementId&#34;</span>: <span style="color:#e6db74">&#34;4:751c0ff7-7a1a-448d-9d98-ffc4b4767fef:2&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;labels&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Person&#34;</span>
+</span></span><span style="display:flex;"><span>          ],
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Keanu Reeves&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;born&#34;</span>: <span style="color:#ae81ff">1964</span>
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      ],
+</span></span><span style="display:flex;"><span>      [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;elementId&#34;</span>: <span style="color:#e6db74">&#34;4:751c0ff7-7a1a-448d-9d98-ffc4b4767fef:3&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;labels&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Person&#34;</span>
+</span></span><span style="display:flex;"><span>          ],
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Carrie-Anne Moss&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;born&#34;</span>: <span style="color:#ae81ff">1967</span>
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      ],
+</span></span><span style="display:flex;"><span>      [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;elementId&#34;</span>: <span style="color:#e6db74">&#34;4:751c0ff7-7a1a-448d-9d98-ffc4b4767fef:4&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;labels&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Person&#34;</span>
+</span></span><span style="display:flex;"><span>          ],
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Laurence Fishburne&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;born&#34;</span>: <span style="color:#ae81ff">1961</span>
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      ]
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;bookmarks&#34;</span>: [
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;FB:kcwQdRwP93oaRI2dmP/EtHZ/78kAmJA=&#34;</span>
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The Query API only accepts a single Cypher statement in a request. If you have several statements you want to perform in a single request, consider using the Cypher CALL subquery facility or make multiple requests.</p>
+<hr>
+<h2 id="using-parameters">Using parameters</h2>
+<p>Parameterised queries open up many possibilities rather like a fresh hot cup of tea. You can avoid string building and having to escape problematic characters. Additionally, they make caching of execution plans much easier for the Aura DB itself, thus leading to significantly faster query execution times. Consider using parameterised queries as the default pattern when using Cypher in applications and not just with the Query API.</p>
+<p><em>Note: Definitely use parameterized queries for bulk data loading as they are much quicker than sending one request after another.</em></p>
+<p>A parameterised query is when placeholders (like $name) are used for parameters and the parameter values are supplied at execution time. The Query API supports the use of these with a request body that looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>&#39;statement&#39;: Parameterized Cypher statement that references values,
+</span></span><span style="display:flex;"><span>&#39;parameters&#39;: { &#34;key&#34; : [{Values}] }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Here&rsquo;s an example that loads two entries in a single request</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>curl --location <span style="color:#e6db74">&#39;&lt;https://c22b6d6e.databases.neo4j.io/db/neo4j/query/v2&gt;&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>-- user: neo4j:mypassword <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --header <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> --header <span style="color:#e6db74">&#39;Accept: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  --data <span style="color:#e6db74">&#39;{ &#34;statement&#34;:&#34;UNWIND $items as item MERGE (s:Station {id: item.id}) ON CREATE SET s.name=item.name&#34;, &#34;parameters&#34;: { &#34;items&#34; : [{&#34;id&#34;:&#34;123&#34;,&#34;name&#34;:&#34;station1&#34;},{&#34;id&#34;:&#34;456&#34;,&#34;name&#34;:&#34;station2&#34;}]}}&#39;</span>
+</span></span></code></pre></div><p>Let us dig into this a bit deeper and see what is going on, starting with the parameters.</p>
+<p><code>&quot;parameters&quot;: { &quot;items&quot; : [{&quot;id&quot;:&quot;123&quot;,&quot;name&quot;:&quot;station1&quot;},{&quot;id&quot;:&quot;456&quot;,&quot;name&quot;:&quot;station2&quot;}]}</code></p>
+<p>This is an array of JSON objects with each object having key:value pairs. The array is referenced by its key, items</p>
+<p>Onto the Cypher statement itself</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>UNWIND $items as item
+</span></span><span style="display:flex;"><span>MERGE (s:Station {id: item.id})
+</span></span><span style="display:flex;"><span>ON CREATE SET s.name=item.name
+</span></span></code></pre></div><p>We can see the key name from the parameters JSON object array is $items. The array is iterated with use of the Cypher UNWIND command with each entry in the array referenced by item. The values are accessed by using the reference with the wanted property e.g item.name</p>
+<p>Read more about using parameters in the <a href="https://neo4j.com/docs/query-api/current/">documentation</a> for the Query API.</p>
+<h2 id="other-things-you-can-do">Other things you can do</h2>
+<p>There are several other useful things you can do with the Query API in Aura</p>
+<ul>
+<li>You can execute a query under the security context of a different user</li>
+<li>Read your writes, also known as causal consistency</li>
+<li>Profile queries</li>
+<li>Retrieve query counters</li>
+</ul>
+<p>More detail about each of these is available in the <a href="https://neo4j.com/docs/query-api/current/">Query API documentation.</a>.</p>
+<hr>
+<h2 id="whats-next-for-the-query-api">What&rsquo;s next for the Query API?</h2>
+<p>Since the launch back in April, we&rsquo;ve been hard at work on several improvements and we are always interested in your opinions to make the Query API better ( You can supply feedback on the Community Site or in the Drivers area of Discord ) .
+Here&rsquo;s what we have on the roadmap at the moment</p>
+<ul>
+<li>Allow for management of transactions to allow for scenarios that require the successful execution of a group of statements where all succeed or none do with rollback support.</li>
+<li>Use secure JWT for auth</li>
+<li>Pagination of results</li>
+<li>General performance improvements</li>
+</ul>
+<p>We&rsquo;ll also come back with examples in Python and JS to further illustrate how to use the Query API in applications.</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/queryapi"
+      >QueryAPI</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

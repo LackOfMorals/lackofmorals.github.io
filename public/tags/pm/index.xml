@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PM on Work In Progress</title>
+    <link>http://localhost:1313/tags/pm/</link>
+    <description>Recent content in PM on Work In Progress</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 04 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/pm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Aura API Go client</title>
+      <link>http://localhost:1313/post/2026-01-04-aura-go-client/</link>
+      <pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2026-01-04-aura-go-client/</guid>
+      <description>&lt;h2 id=&#34;a-go-client-for-aura-api&#34;&gt;A Go client for Aura API&lt;/h2&gt;&#xA;&lt;p&gt;Over the last few weeks I&amp;rsquo;ve worked on creating a wrapper around the Aura API for use with Go. This is not wholly my own work; I&amp;rsquo;ve lifted the concept of using structs to model API request / responses from our Neo4j Labs Terraform Provider and embraced assistance from Claude to explore potential ideas, write tests and direct me when I got stuck.&lt;/p&gt;&#xA;&lt;p&gt;The Aura CLient ( I&amp;rsquo;m not that great with naming ) is ready for use - mostly. Did I mention that I&amp;rsquo;m a hobby coder ?&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MCP for Aura API - List instances</title>
+      <link>http://localhost:1313/post/2026-01-04-mcp-4-aura-journey-2/</link>
+      <pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2026-01-04-mcp-4-aura-journey-2/</guid>
+      <description>&lt;h2 id=&#34;mcp-for-aura-api---list-instances&#34;&gt;MCP for Aura API - List instances&lt;/h2&gt;&#xA;&lt;p&gt;The work from my &lt;a href=&#34;https://www.pm50plus.com/2025/12/16/mcp-4-aura-journey-1.html&#34;&gt;first step&lt;/a&gt; puts me in a positon to build the first tool - list instances. This MCP tool will&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Get a list of instances&lt;/li&gt;&#xA;&lt;li&gt;Obtain a summary set of data for each one&lt;/li&gt;&#xA;&lt;li&gt;Return the response as a JSON document to the LLM / Agent&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;All that is need is to write the tool handler and spec. Lets get into that&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Getting ready</title>
+      <link>http://localhost:1313/post/2025-12-16-mcp-4-aura-journey-1/</link>
+      <pubDate>Tue, 16 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-12-16-mcp-4-aura-journey-1/</guid>
+      <description>&lt;h2 id=&#34;mcp-4-aura-api---taking-the-first-step&#34;&gt;MCP 4 Aura API - taking the first step&lt;/h2&gt;&#xA;&lt;p&gt;As mentioned in my previous post, I&amp;rsquo;m basing my MCP for Aura API on the existing MCP for Neo4j. This post is all about stripping that down to get ready to then start writing the code I actually want.&lt;/p&gt;&#xA;&lt;h2 id=&#34;declutering&#34;&gt;Declutering&lt;/h2&gt;&#xA;&lt;p&gt;After forking &lt;a href=&#34;https://github.com/neo4j/mcp&#34;&gt;MCP for Neo4j&lt;/a&gt; and looking over the code, I now have this list of features that will not be needed and can be removed&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>PM tries to write MCP to control Aura infrastructure</title>
+      <link>http://localhost:1313/post/2025-12-12-mcp-bandwagon/</link>
+      <pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-12-12-mcp-bandwagon/</guid>
+      <description>&lt;h2 id=&#34;jumping-on-the-mcp-bandwagon&#34;&gt;Jumping on the MCP bandwagon&lt;/h2&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been learning Go over the last few months ( Its not a career change, just a desire to learn something new ). I&amp;rsquo;m now able do a pretty decent &amp;ldquo;Hello World&amp;rdquo;&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve also had the honour of working with some of Neo4j engineers to create and release MCP for Neo4j - which is written in Go - and proven to be popular.&lt;/p&gt;&#xA;&lt;p&gt;It&amp;rsquo;s that now would be a good moment to sup from the trough of MCP success and see if my Go is suffiicent to allow me to fork MCP for Neo4j and modify it to provide a LLM tools to manage Aura infrastructure.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>My reference python code for Neo4j</title>
+      <link>http://localhost:1313/post/2025-10-20-go-to-python/</link>
+      <pubDate>Mon, 20 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-10-20-go-to-python/</guid>
+      <description>&lt;h2 id=&#34;when-you-cant-connect&#34;&gt;When you can&amp;rsquo;t connect&lt;/h2&gt;&#xA;&lt;p&gt;Dear Reader,&lt;/p&gt;&#xA;&lt;p&gt;I find when having those &amp;lsquo;why can&amp;rsquo;t i connect to Neo4j&amp;rsquo; moments, having a reference code that you know works is rather useful.&lt;/p&gt;&#xA;&lt;p&gt;Here&amp;rsquo;s my reference Python code for that situatin in case anyone finds it useful&lt;/p&gt;&#xA;&lt;p&gt;There are two files, requirements.txt and the Python code, neo4jTest.py. These are given below. Save them both in the same folder.&lt;/p&gt;&#xA;&lt;p&gt;The requirements file which will install the latest version of the Neo4j Python driver. Save as requirements.txt&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>A guide to not loosing your shit over CORS</title>
+      <link>http://localhost:1313/post/2025-06-02-about-cors/</link>
+      <pubDate>Mon, 02 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-06-02-about-cors/</guid>
+      <description>&lt;h2 id=&#34;cors&#34;&gt;CORs?&lt;/h2&gt;&#xA;&lt;p&gt;Dear Reader,&lt;/p&gt;&#xA;&lt;p&gt;Take a moment and load web page in your browser. Then jump over into the browsers developer tools and look at all of the different domains that page is connecting to. This reflects the need of a web page to communicate across different domains to function properly ( although I&amp;rsquo;d bet a lot of what you can see right now is advertising or tracking ).&lt;/p&gt;&#xA;&lt;p&gt;Allowing cross domain connects can be of concern when it comes to security. But there&amp;rsquo;s something we can do about that. Enter &lt;strong&gt;CORS&lt;/strong&gt;—Cross-Origin Resource Sharing, a browser feature, that controls how and when web pages can make requests to domains other than their own.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Token for auth with GraphQL for AuraDB </title>
+      <link>http://localhost:1313/post/2025-05-23-graphql-jwks-part-2/</link>
+      <pubDate>Fri, 23 May 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-05-23-graphql-jwks-part-2/</guid>
+      <description>&lt;h1 id=&#34;an-introduction-to-using-jwts-with-graphql-for-auradb---part-two&#34;&gt;An introduction to using JWTs with GraphQL for AuraDB - Part Two&lt;/h1&gt;&#xA;&lt;p&gt;In &lt;a href=&#34;https://www.pm50plus.com/2025/05/16/graphql-jwks-part-1.html&#34;&gt;part one&lt;/a&gt; I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.&lt;/p&gt;&#xA;&lt;p&gt;This blog will look at using properties of a token to control access to the API and the data within.&lt;/p&gt;&#xA;&lt;p&gt;But I&amp;rsquo;m overreaching a bit as I&amp;rsquo;m assuming knowledge ( a trap so easier to stumble into when trying to convey information ) on the topic of JSON Web Token (JWT ).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Using token with GraphQL for AuraDB </title>
+      <link>http://localhost:1313/post/2025-05-16-graphql-jwks-part-1/</link>
+      <pubDate>Fri, 16 May 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-05-16-graphql-jwks-part-1/</guid>
+      <description>&lt;h1 id=&#34;an-introduction-to-using-jwts-with-graphql-for-auradb---part-one&#34;&gt;An introduction to using JWTs with GraphQL for AuraDB - Part One&lt;/h1&gt;&#xA;&lt;p&gt;There are two options ( we&amp;rsquo;re looking at another token based approach for the future ) to control access to a GraphQL for AuraDB endpoint&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;API Key&lt;/li&gt;&#xA;&lt;li&gt;JWT&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Using APIs keys are asimple, straight forward approach to control access to a GraphQL API and work really well for development environments. For production environments we recommend the use of a 3rd party indentity provider that manages tokens in the form of JWTs as these provide more flexibility when securing access to your GraphQL. Additionally, JWTs enable the use of rules within your type definitions for authentication and authorisation.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>PM Haku</title>
+      <link>http://localhost:1313/post/2025-05-12-pm-haku/</link>
+      <pubDate>Mon, 12 May 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-05-12-pm-haku/</guid>
+      <description>&lt;h1 id=&#34;haku&#34;&gt;Haku&lt;/h1&gt;&#xA;&lt;p&gt;If you find my usual writing hard to get on with, then consider the poems I that could attempt.&lt;/p&gt;&#xA;&lt;p&gt;Your typical &lt;a href=&#34;https://hitchhikers.fandom.com/wiki/Vogon_poetry&#34;&gt;Vogon&lt;/a&gt; would consider them excessive and get back to destroying planets for much need bypasses.&lt;/p&gt;&#xA;&lt;p&gt;So I asked a AI chat bot thingy to describe Product Management in the style of a Haku&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Features lost in launch&lt;/li&gt;&#xA;&lt;li&gt;Users want what isn&amp;rsquo;t there&lt;/li&gt;&#xA;&lt;li&gt;Dreams meet reality&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;I think the AI must have been trained on Vogon prose.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Neo4j Cluster built with containers</title>
+      <link>http://localhost:1313/post/2025-01-02-neo4j-cluster-containers/</link>
+      <pubDate>Thu, 02 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-01-02-neo4j-cluster-containers/</guid>
+      <description>&lt;h1 id=&#34;build-a-neo4j-cluster&#34;&gt;Build a Neo4j cluster&lt;/h1&gt;&#xA;&lt;p&gt;Most of time having a single copy of Neo4j running is suitable for what I need to do.  There are occasions where only a cluster will do and, as it&amp;rsquo;s not something that happens that often, I&amp;rsquo;ve written down the steps i follow that results in a 3 member cluster which is front end by a load balancer - HA Proxy.&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;m aware that you also go down the Kubernetes route for this but it seems overkill for a 3 node cluster with static membership.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>SSL for Neo4j so the Query API can use it </title>
+      <link>http://localhost:1313/post/2024-11-08-ssl-query-api/</link>
+      <pubDate>Fri, 08 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-11-08-ssl-query-api/</guid>
+      <description>&lt;h1 id=&#34;a-guide-to-using-ssl-with-neo4j-query-api&#34;&gt;A guide to using SSL with Neo4j Query API&lt;/h1&gt;&#xA;&lt;p&gt;To save my fingers hammering out letters to form the words that describe why, lets just accecpt that using SSL is a good thing.&lt;/p&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re using Aura then you can skip reading my prose and do something more interesting instead as Aura only uses SSL.  For everyone else you will need to configure SSL.&lt;/p&gt;&#xA;&lt;p&gt;The following is a guide to doing this with LetsEncrypt, a free source of certificates, and an AWS EC2 running docker with Neo4j.  I run that combination on a frequent basis - it&amp;rsquo;s my goto for trying stuff out.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Moving to Neo4j Query API - Partie Un </title>
+      <link>http://localhost:1313/post/2024-11-06-moving-to-query-api-1/</link>
+      <pubDate>Wed, 06 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-11-06-moving-to-query-api-1/</guid>
+      <description>&lt;h1 id=&#34;considering-a-move-to-the-neo4j-query-api---partie-un&#34;&gt;Considering a move to the Neo4j Query API - Partie Un&lt;/h1&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re interested in transitioning to the Query API, this post will provide an overview of the key areas to consider and plan for. A follow up post post will dive deeper with a worked example. While there&amp;rsquo;s no immediate pressure to move from the HTTP API, it&amp;rsquo;s important to note that updates will be limited to critical security and defect fixes. All future development effort will be focused on the Query API.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Explicit transactions with the Neo4j Query API coming shortly </title>
+      <link>http://localhost:1313/post/2024-10-31-query-api-tx/</link>
+      <pubDate>Thu, 31 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-10-31-query-api-tx/</guid>
+      <description>&lt;h1 id=&#34;explicit-transactions-with-neo4j-query-api&#34;&gt;Explicit transactions with Neo4j Query API&lt;/h1&gt;&#xA;&lt;p&gt;Over the last few months, we&amp;rsquo;ve been working hard (well, the engineers have — I&amp;rsquo;ve just been sipping tea and eating biscuits) to add support for Explicit Transactions to the Query API. I&amp;rsquo;m excited to announce that this feature will be available real soon for our self-managed and Aura customers.&lt;/p&gt;&#xA;&lt;p&gt;Up to now you gave the Query API a Cypher statement and it managed transaction  for you -  an Implicit Transaction.  Explicit Transactions hands over control of the transaction , from start to finish, to you.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Applications, Tokens and Neo4j Query API </title>
+      <link>http://localhost:1313/post/2024-10-24-app-token-query-api/</link>
+      <pubDate>Thu, 24 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-10-24-app-token-query-api/</guid>
+      <description>&lt;h1 id=&#34;applications-tokens-and-neo4j-query-api&#34;&gt;Applications, Tokens and Neo4j Query API&lt;/h1&gt;&#xA;&lt;h1 id=&#34;using-tokens-with-applications-and-neo4j-query-api-for-auth&#34;&gt;Using tokens with Applications and Neo4j Query API for auth&lt;/h1&gt;&#xA;&lt;p&gt;In a previous blog post I discussed a web application obtaining and using a token with Neo4j Query API as a result of a user successfully authenticating.  This entry looks at what would be involved for an application to obtain a token and use it with Neo4j Query API.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Plot spoiler&lt;/strong&gt; - it&amp;rsquo;s very similar.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dipping into the code from the trinity of SSO, Neo4j and a web application </title>
+      <link>http://localhost:1313/post/2024-10-17-token-query-api-the-code/</link>
+      <pubDate>Thu, 17 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-10-17-token-query-api-the-code/</guid>
+      <description>&lt;h1 id=&#34;commentary-on-the-web-application-code-used-in-sso-post&#34;&gt;Commentary on the web application code used in SSO post&lt;/h1&gt;&#xA;&lt;p&gt;As a follow on from my previous blog post, the trinity of SSO, Neo4j and a web application, this entry takes a deeper look at the code used for the web application to see how it all fits together.&lt;/p&gt;&#xA;&lt;p&gt;Given my JS / React knowledge is basic ( and I&amp;rsquo;m flattering myself there ) the more experienced of you are likely to be amused at my efforts.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Using token with Query API - an example with SSO</title>
+      <link>http://localhost:1313/post/2024-10-16-token-query-api/</link>
+      <pubDate>Wed, 16 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-10-16-token-query-api/</guid>
+      <description>&lt;h1 id=&#34;the-trinity-of-sso-neo4j-and-a-web-application&#34;&gt;The trinity of SSO, Neo4j and a web application&lt;/h1&gt;&#xA;&lt;p&gt;Consider a web application that consumes data from Neo4j.   This will require the web application to authenticate and retrieve that data using credentials that are accepted by Neo4j.  If our users needed to remember one set of credentials for the web application, another set for Neo4j and then enter those at the correct moment, it&amp;rsquo;s going to be a jarring user experience.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Aura welcomes Query API</title>
+      <link>http://localhost:1313/post/2024-09-06-aura-query-api-ga/</link>
+      <pubDate>Fri, 06 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-09-06-aura-query-api-ga/</guid>
+      <description>&lt;h1 id=&#34;querying-your-aura-neo4j-database-via-https-again&#34;&gt;Querying your Aura Neo4j Database via HTTPS (Again)&lt;/h1&gt;&#xA;&lt;p&gt;The HTTPS based Query API is now GA for Aura and Self-managed customers&#xA;For almost 14 years you could query Neo4j via HTTP, originally with a REST API, later via Cypher, with a number of improvements (streaming, type representations etc). Since 2016 the focus has shifted to the binary Bolt protocol, advanced routing and native drivers. The existing HTTP APIs were still running for self-hosted customers but were lacking in features and because of those shortcomings, were not available in the Neo4j Aura Cloud Service. This is about to change now.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Exploring impersonating with the Neo4j Query API</title>
+      <link>http://localhost:1313/post/2024-05-29-neo4j-query-impersonateuser/</link>
+      <pubDate>Wed, 29 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-05-29-neo4j-query-impersonateuser/</guid>
+      <description>&lt;h1 id=&#34;pretending-to-be-someone-else&#34;&gt;Pretending to be someone else&lt;/h1&gt;&#xA;&lt;p&gt;I recently watched a TV broadcast where someone self-identified as the U.k Prime Minster and claimed to have a plan to solve all of countries challenges.  But there were doubts in my mind as to his credibilty. Anyone who has visited the Unitied Kingdom ( and those of us who live here ) are well aware of the high probabilty for rain and yet this individual had not considered this possibility and they got drenced whilst shouting into the void.  This makes me doubt his capability for forward planning and his claim to be the Prime Minister seems to be very far fetched indeed.  Was this a prank and was it an impersonator out in the rain that day?  We may never know.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Using the forthcoming Aura GraphQL API</title>
+      <link>http://localhost:1313/post/2024-05-03-aura-graphql-api/</link>
+      <pubDate>Fri, 03 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-05-03-aura-graphql-api/</guid>
+      <description>&lt;h1 id=&#34;using-the-forthcoming-aura-graphql-api&#34;&gt;Using the forthcoming Aura GraphQL API&lt;/h1&gt;&#xA;&lt;p&gt;Much later this year you&amp;rsquo;ll be able to us GraphQL API with our Aura platform - yep, you read that correctly, we&amp;rsquo;ve got the builders in to add an extension.&lt;/p&gt;&#xA;&lt;p&gt;We&amp;rsquo;ve done this as it removes the requirement for customers to provision, configure, and then maintain a graphql server for the purposes of hosting a graphQL API - we&amp;rsquo;re taking care of all of that in the Aura platform.  Additionally, it also ensures the GraphQL API is next door, figratively speaking, to the Aura instance avoiding the transist of information across the occasionally choppy waters of the internet which improves responsiveness and security.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Using parameters with the Neo4j Query API</title>
+      <link>http://localhost:1313/post/2024-04-26-neo4j-query-parameters/</link>
+      <pubDate>Fri, 26 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-04-26-neo4j-query-parameters/</guid>
+      <description>&lt;h1 id=&#34;using-parameters-with-the-query-api&#34;&gt;Using parameters with the Query API&lt;/h1&gt;&#xA;&lt;p&gt;Imagine that you find yourself needing to perform bulk updates in some shape or form to Neo4j Graph database; it could be a data import, creating relationships between nodes, changing properties or anything else that requires a lot of mutations.&lt;/p&gt;&#xA;&lt;p&gt;As an example of this, consider the work from an earlier blog post where we represented the London Underground as a graph; Nodes are used for Tube stations and Relationships are the Tube lines that form the network.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Introducing the new Query API in Neo4j 5.19</title>
+      <link>http://localhost:1313/post/2024-04-15-neo4j-query-api/</link>
+      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-04-15-neo4j-query-api/</guid>
+      <description>&lt;h1 id=&#34;we-built-a-thing&#34;&gt;We built a thing&lt;/h1&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been lucky enough to work with our Neo4j Engineers to create a new API for Neo4j that allows the execution of Cypher statements in the form of network requests without requiring a driver to be installed. There was thought given ( briefly ) to asking the Internet for a what to call this but that doesn&amp;rsquo;t &lt;a href=&#34;https://en.wikipedia.org/wiki/Boaty_McBoatface#Naming&#34;&gt;always turn out well&lt;/a&gt;. In the end we went with the simple approach of naming it after what it does and called it the &lt;strong&gt;Query API&lt;/strong&gt;. It&amp;rsquo;s available now with Neo4j 5.19 and will be coming to Aura , our cloud service, in early Summer this year.  For those of you who are using the existing HTTP API, it&amp;rsquo;s not retiring anytime soon and will be kept updated with fixes for critical defects and security vulnerabilities.  You&amp;rsquo;ll be able to choose which one to use.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Amatuer developer tries building a web app</title>
+      <link>http://localhost:1313/post/2024-02-06-react/</link>
+      <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2024-02-06-react/</guid>
+      <description>&lt;h1 id=&#34;react&#34;&gt;React&lt;/h1&gt;&#xA;&lt;p&gt;During the day, and often onwards into the evening, I&amp;rsquo;m gainfully employed as a Product Manager at Neo4j.  My brief covers web services API strategy including delivery of our GraphQL libary.  Its very humbling to be able to work with a very smart collective of people on those efforts.&lt;/p&gt;&#xA;&lt;p&gt;Back in the day I had desires of being a professional software developer; even went as far as accumalating a  degree in software engineering ( it was a pass. See &amp;lsquo;Drinkers Degree&amp;rsquo; in any knowledge base ).  Turns out that was a perfect case of talent overreach but I&amp;rsquo;ve kept an interest and can produce a &amp;lsquo;Hello World&amp;rsquo; application in at least 2 languages.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

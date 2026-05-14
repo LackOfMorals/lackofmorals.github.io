@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Containers on Work In Progress</title>
+    <link>http://localhost:1313/tags/containers/</link>
+    <description>Recent content in Containers on Work In Progress</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 02 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/containers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Neo4j Cluster built with containers</title>
+      <link>http://localhost:1313/post/2025-01-02-neo4j-cluster-containers/</link>
+      <pubDate>Thu, 02 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/2025-01-02-neo4j-cluster-containers/</guid>
+      <description>&lt;h1 id=&#34;build-a-neo4j-cluster&#34;&gt;Build a Neo4j cluster&lt;/h1&gt;&#xA;&lt;p&gt;Most of time having a single copy of Neo4j running is suitable for what I need to do.  There are occasions where only a cluster will do and, as it&amp;rsquo;s not something that happens that often, I&amp;rsquo;ve written down the steps i follow that results in a 3 member cluster which is front end by a load balancer - HA Proxy.&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;m aware that you also go down the Kubernetes route for this but it seems overkill for a 3 node cluster with static membership.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

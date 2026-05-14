@@ -1,0 +1,271 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Exploring London tube as a graph - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Exploring London tube as a graph
+
+When I set out to do this, I had two main goals
+
+Learn more about practical applications of graph databases
+Improve my understanding of what it is like to work with graph databases from the perspective of a developer
+
+I&rsquo;ll need a data source to build the graph from. I picked the London Tube Network to use as it as the people who run it, Transport For London - TFL , have a well documented API that provides a wealth of information. And it&rsquo;s free for basic use. Also, looking at a map of the Tube, it&rsquo;s looks like a graph." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Exploring London tube as a graph</h1><div class="text-xs antialiased opacity-60"><time>Oct 3, 2023</time></div></header>
+
+  <section><h1 id="exploring-london-tube-as-a-graph">Exploring London tube as a graph</h1>
+<p><img src="/img/tflTube/tfl.png" alt="London Tube from graph database"></p>
+<p>When I set out to do this, I had two main goals</p>
+<ul>
+<li>Learn more about practical applications of graph databases</li>
+<li>Improve my understanding of what it is like to work with graph databases from the perspective of a developer</li>
+</ul>
+<p>I&rsquo;ll need a data source to build the graph from. I picked the London Tube Network to use as it as the people who run it, Transport For London - TFL , have a well documented API that provides a wealth of information. And it&rsquo;s free for basic use. Also, looking at a map of the Tube, it&rsquo;s looks like a graph.</p>
+<p>As to the developer experience side I&rsquo;ll be using Python as I&rsquo;ve played around with it for some time. I&rsquo;m now comfortable with using it , still got lots to learn though.</p>
+<p>Finally the graph database. I&rsquo;m extremely fortunate to work as a Product Manager at Neo4j , who it could be argued, invented graph databases. I&rsquo;ll use that.</p>
+<h2 id="receipe">Receipe</h2>
+<p>Neo4j Desktop Edition</p>
+<ul>
+<li>Why Desktop ? I work on this activity when able and frequently this is happens on a train whilst heading to / from Neo4j London office. Connectivity on a train is not great and suffers from frequent drop outs. The Desktop edition makes it easy to move this to our Neo4j AuraDB cloud SaaS offering in the future.</li>
+</ul>
+<p>Python 3</p>
+<ul>
+<li>I have a reasonable understanding. I would have attempted this in Rust for the hell of it but I&rsquo;m at a very early stage with that language</li>
+</ul>
+<p>TFL API</p>
+<ul>
+<li><a href="">https://api.tfl.gov.uk/</a></li>
+<li>There&rsquo;s a free tier thats rate limited but will work for what I need.</li>
+</ul>
+<p>Postman</p>
+<ul>
+<li><a href="">https://www.postman.com/home</a></li>
+<li>Great tool for working with APIs. If it&rsquo;s not for you, try Insomnia <a href="">https://insomnia.rest/</a></li>
+</ul>
+<h2 id="to-begin-figure-out-tfl-apis">To begin, figure out TFL APIs</h2>
+<p>I used postman extensively for this as it made examining the response payloads much more straightforward.</p>
+<p>There&rsquo;s a number of TFL endpoints that look like they return what is needed e.g you can get all of the lines from <a href="">https://api.tfl.gov.uk/line/mode/tube/status</a> and then call <a href="">https://api.tfl.gov.uk/line/line_id/stoppoints</a> for each line.</p>
+<p>In general, the TFL API returns a lot of information - and I mean a lot - most of which is not needed for our purposes. There are a number of endpoints that look like they return what is needed; you can get all of the lines from [https://api.tfl.gov.uk/line/mode/tube/status] and then call [https://api.tfl.gov.uk/line/{line id}/stoppoints] for each line.</p>
+<p>This gets us all of the stations on a line but they are not in sequence :(</p>
+<p>All is not lost as we can use other endpoints.</p>
+<ul>
+<li>
+<p>We get a list of tube lines from <a href="">https://api.tfl.gov.uk/line/mode/tube/status</a></p>
+</li>
+<li>
+<p>Then, for each line we can call <a href="">https://api.tfl.gov.uk/{line id}/Route/Sequence/line_direction</a> . This returns a JSON document in which we find a list of stations, in sequence, in [&ldquo;orderedLineRoutes&rdquo;] for each route.</p>
+</li>
+</ul>
+<p>Watch out for lines that can contain more than one route; we&rsquo;ll need to take that into account.</p>
+<p>In the next update, we&rsquo;ll go write some code.</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/tfl"
+      >Tfl</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

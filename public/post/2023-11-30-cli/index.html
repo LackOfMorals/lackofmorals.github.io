@@ -1,0 +1,375 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>There is a CLI for that - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Sometimes using a CLI is the only way
+We&rsquo;ve become sooo used to having a graphical user interface with swipy user-friendly experiences that we&rsquo;ve become remarkably complacent about the shadowy figures that lurk in the background, able to unleash their power at will1. I am, of course, describing command line interfaces whose ability to perform simple and complex actions quickly is unrivalled.
+
+Just be careful out there, with great power comes great responsibility; just ask anyone who has typed  &lsquo;rm -rf /&rsquo; on a Unix based computer. 2" />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">There is a CLI for that</h1><div class="text-xs antialiased opacity-60"><time>Nov 30, 2023</time></div></header>
+
+  <section><h1 id="sometimes-using-a-cli-is-the-only-way">Sometimes using a CLI is the only way</h1>
+<p>We&rsquo;ve become sooo used to having a graphical user interface with swipy user-friendly experiences that we&rsquo;ve become remarkably complacent about the shadowy figures that lurk in the background, able to unleash their power at will<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. I am, of course, describing command line interfaces whose ability to perform simple and complex actions quickly is unrivalled.</p>
+<p><img src="/img/chickens_at_a_table.png" alt="Attack chickens"></p>
+<p>Just be careful out there, with great power comes great responsibility; just ask anyone who has typed  <em>&lsquo;rm -rf /&rsquo;</em> on a Unix based computer. <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<h2 id="syntax-error-when-words-betray-you">Syntax Error: When Words Betray You</h2>
+<p>Let us move out of the cold, chilly, dark depths that my words have taken us to and into the lighter, warmer shallows with an eye on an appealing beach bar.</p>
+<p>There are times when a CLI gets you what you need without needing to push a pointer around a screen and click on things - it&rsquo;s way faster and more convenient.</p>
+<p>Consider using the Aura provisioning API <sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>, Aura being a cloud based service for <a href="https://neo4j.com/cloud/platform/aura-graph-database/">Neo4j graph databases</a>.   You can read more on about Aura provisioning API in the <a href="https://neo4j.com/docs/aura/platform/api/specification/">documentation</a>.</p>
+<p>The API allows programmatic management of provisioning Aura instances - you can create, update and then, when you&rsquo;re done, delete them.</p>
+<p>You can use the API in code, an application like Postman or with a CLI - like curl. For example , use curl to list all of the Aura instances in your account</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X <span style="color:#e6db74">&#39;GET&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#39;https://api.neo4j.io/v1/instances&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> -H <span style="color:#e6db74">&#39;accept: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> -H <span style="color:#e6db74">&#39;Authorization: Bearer YOUR_TOKEN&#39;</span>
+</span></span></code></pre></div><p>Which will return JSON like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&#34;data&#34;</span>: [
+</span></span><span style="display:flex;"><span>   {
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&#34;cloud_provider&#34;</span>: <span style="color:#e6db74">&#34;gcp&#34;</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;4980872a&#34;</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Instance01&#34;</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&#34;tenant_id&#34;</span>: <span style="color:#e6db74">&#34;6e6bbbe2-1234-5f8a-a25f-b1f62f08b98f&#34;</span>
+</span></span><span style="display:flex;"><span>   },
+</span></span><span style="display:flex;"><span>   {
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&#34;cloud_provider&#34;</span>: <span style="color:#e6db74">&#34;gcp&#34;</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;601d53a3&#34;</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Instance02&#34;</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&#34;tenant_id&#34;</span>: <span style="color:#e6db74">&#34;6e6bbbe2-1234-5f8a-a25f-b1f62f08b98f&#34;</span>
+</span></span><span style="display:flex;"><span>   }
+</span></span><span style="display:flex;"><span> ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Curl is a great tool with many strengths but it is not focused on provisioning activities in Aura; this results in a user experience that is not as good as it could be.</p>
+<p>If only someone could wave a magic wand and take us to a place where CLIs for Aura danced and gambled amongst the rippling waves of flowers in the fields soaked in the rays of summer <sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup></p>
+<h2 id="efficiency-unleashed">Efficiency Unleashed</h2>
+<p>Why hello there Aura API, a CLI for use with , err, Aura. It brings the ability to provision Aura instances and manage their lifecycle programmatically.  If you&rsquo;re comfortable at the command line or want to include Aura in cloud formation templates or terraform scripts, then this is for you.</p>
+<p>Aura CLI is currently a <a href="https://neo4j.com/labs/aura-cli/">Neo4j Labs project</a> written in Python.  This means that you can wave your own magic wand and suggest code improvements - &lsquo;Codify&rsquo; as Harry P would say whilst waving his wood around.</p>
+<p>We&rsquo;re going to see how it goes for the next few months before we take any decision but, based on feedback so far, there&rsquo;s a fair to good chance that Aura CLI will become an official Neo4j product <sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup>.</p>
+<p>Let us take a quick peek into what it can do</p>
+<h2 id="learn-by-doing">Learn by Doing</h2>
+<p>Install the Aura CLI with</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install aura-cli
+</span></span></code></pre></div><p>Once that&rsquo;s done, and it only takes a few moments, you&rsquo;re then able to confirm that the installation was successful</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aura --version
+</span></span></code></pre></div><p>API commands are divided into 3 resources: instances, tenants and snapshots. Use the &ndash;help flag to get more information about each subcommand, e.g.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aura instances --help
+</span></span><span style="display:flex;"><span>Usage: aura instances <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> COMMAND <span style="color:#f92672">[</span>ARGS<span style="color:#f92672">]</span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Manage your Aura instances
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Options:
+</span></span><span style="display:flex;"><span>  --help  Show this message and exit.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Commands:
+</span></span><span style="display:flex;"><span>  create     Create a new instance
+</span></span><span style="display:flex;"><span>  delete     Delete an instance
+</span></span><span style="display:flex;"><span>  get        Get details <span style="color:#66d9ef">for</span> an instance
+</span></span><span style="display:flex;"><span>  list       List all instances in a tenant
+</span></span><span style="display:flex;"><span>  overwrite  Overwrite an instance
+</span></span><span style="display:flex;"><span>  pause      Pause an instance
+</span></span><span style="display:flex;"><span>  resume     Resume an instance
+</span></span><span style="display:flex;"><span>  update     Update an instance
+</span></span></code></pre></div><p>I should have mentioned this a bit earlier but you will need a client id and client secret which you obtain from the Aura console by clicking on your account and following the UX</p>
+<p>Nip off, do that and come back.  I&rsquo;ll wait.</p>
+<p>With the client id and client secret use them like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aura credentials add --name &lt;NAME&gt; --client-id &lt;YOUR_CLIENT_ID&gt; --client-secret &lt;YOUR_CLIENT_SECRET&gt; --use
+</span></span></code></pre></div><p>This tells the Aura CLI what credentials to use with the Aura API</p>
+<p>Now you can use the various commands.  For example, show the Aura instances in a table</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aura instances list --output table
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cloud_provider | id       | name                        | tenant_id
+</span></span><span style="display:flex;"><span>----------------------------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>aws            | aab68676 | Instance01                  | cdd08005-1f34-57e0-abc6-9f1d813f7301
+</span></span><span style="display:flex;"><span>gcp            | bbe0632f | Instance02                  | cdd08005-1f34-57e0-abc6-9f1d813f7301
+</span></span><span style="display:flex;"><span>aws            | 3djfi676 | Instance03                  | cdd08005-1f34-57e0-abc6-9f1d813f7301
+</span></span></code></pre></div><p>How about creating a new instance?</p>
+<p>First, you&rsquo;ll need to know what configurations are available.  These can be different to each tenant you belong to in Aura.  This will be a two step process - get the list of tenants and then get the configurations for the tenant where you want to create an instance.</p>
+<p>Get the tenants</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aura tenants list --output table
+</span></span><span style="display:flex;"><span>id                                   | name
+</span></span><span style="display:flex;"><span>-----------------------------------------------------
+</span></span><span style="display:flex;"><span>a4dd8fc3-a16d-5734-a5e3-1f2e465ddd2b | Tenant1
+</span></span><span style="display:flex;"><span>cdd08005-1234-57e0-abc6-9f1d813f7301 | Tenant2
+</span></span></code></pre></div><p>Now the configurations for Tenant1 using its tenant id</p>
+<p>Caution - this will be a long list and I&rsquo;ve only shown a snip in the example</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aura tenants get -id a4dd8fc3-a16d-5734-a5e3-1f2e465ddd2b
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;a4dd8fc3-a16d-5734-a5e3-1f2e465ddd2b&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;instance_configurations&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;cloud_provider&#34;</span>: <span style="color:#e6db74">&#34;gcp&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;memory&#34;</span>: <span style="color:#e6db74">&#34;2GB&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;europe-west1&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;region_name&#34;</span>: <span style="color:#e6db74">&#34;Belgium (europe-west1)&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;enterprise-db&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;4&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>,
+</span></span></code></pre></div><p>You can then use this information to create an instance.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aura instances create -tid a4dd8fc3-a16d-5734-a5e3-1f2e465ddd2b -cp gcp -t enterprise-db -r europe-west1 -m <span style="color:#ae81ff">4</span> -v <span style="color:#ae81ff">5</span> -n Instance10
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;cloud_provider&#34;</span>: <span style="color:#e6db74">&#34;gcp&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;connection_url&#34;</span>: <span style="color:#e6db74">&#34;neo4j+s://5c45c43b.databases.neo4j.io&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;5c45c43b&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Instance10&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;PWP6UZHNEGkaZEBj5c9N1PYqfNRMf0jsCBKWgCt874U&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;europe-west1&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;tenant_id&#34;</span>: <span style="color:#e6db74">&#34;a4dd8fc3-a16d-5734-a5e3-1f2e465ddd2b&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;enterprise-db&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;neo4j&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>It will take a few moments to create the new instance.  You can check progress like so</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>aura instances get -id 5c45c43b
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;cloud_provider&#34;</span>: <span style="color:#e6db74">&#34;gcp&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;connection_url&#34;</span>: <span style="color:#e6db74">&#34;neo4j+s://5c45c43b.databases.neo4j.io&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;5c45c43b&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;memory&#34;</span>: <span style="color:#e6db74">&#34;4GB&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Instance01&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;region&#34;</span>: <span style="color:#e6db74">&#34;europe-west1&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;running&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;storage&#34;</span>: <span style="color:#e6db74">&#34;8GB&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;tenant_id&#34;</span>: <span style="color:#e6db74">&#34;a4dd8fc3-a16d-5734-a5e3-1f2e465ddd2b&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;enterprise-db&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>When status changes to running , the instance is available</p>
+<h2 id="the-sun-rays-warms-our-skin">The sun rays warms our skin</h2>
+<p>The default JSON output can be consumed by other applications for subsequent processing so you can start to sequence operations together.  Or, if you&rsquo;re just lazy like me, place it into scripts to spin up and down Aura instances without having to move a mouse around the screen.</p>
+<p>Enjoy</p>
+<p>Until the next time, laters</p>
+<hr>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Sucks to be Will or whomever that is.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>rm lurks in the swadows of the bass bin in sticky floored night club trying lure people into the endless darkness of despare with it&rsquo;s siren call.  Approach with care and preferably at the other end of a 10 foot pole.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>Full disclosure - I advised on this API as part of my Product Management responsibiliies for APIs at Neo4j.  It goes without saying that I&rsquo;m rather proud of what the team created here and I&rsquo;m looking forward to see where we go next with it.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4">
+<p>I maybe over correcting for the earlier trip into barren , bleak lands.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5">
+<p>I&rsquo;d take that bet - I&rsquo;m the PM for it.&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/aura"
+      >Aura</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/cli"
+      >CLI</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

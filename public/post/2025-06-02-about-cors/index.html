@@ -1,0 +1,283 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>A guide to not loosing your shit over CORS - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="CORs?
+Dear Reader,
+Take a moment and load web page in your browser. Then jump over into the browsers developer tools and look at all of the different domains that page is connecting to. This reflects the need of a web page to communicate across different domains to function properly ( although I&rsquo;d bet a lot of what you can see right now is advertising or tracking ).
+Allowing cross domain connects can be of concern when it comes to security. But there&rsquo;s something we can do about that. Enter CORS—Cross-Origin Resource Sharing, a browser feature, that controls how and when web pages can make requests to domains other than their own." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">A guide to not loosing your shit over CORS</h1><div class="text-xs antialiased opacity-60"><time>Jun 2, 2025</time></div></header>
+
+  <section><h2 id="cors">CORs?</h2>
+<p>Dear Reader,</p>
+<p>Take a moment and load web page in your browser. Then jump over into the browsers developer tools and look at all of the different domains that page is connecting to. This reflects the need of a web page to communicate across different domains to function properly ( although I&rsquo;d bet a lot of what you can see right now is advertising or tracking ).</p>
+<p>Allowing cross domain connects can be of concern when it comes to security. But there&rsquo;s something we can do about that. Enter <strong>CORS</strong>—Cross-Origin Resource Sharing, a browser feature, that controls how and when web pages can make requests to domains other than their own.</p>
+<p>But CORS can also be a pain in the arse for Developers creating those web applications if CORs has not been configured correctly , or not at all, on the server your browser wants to talk to.</p>
+<p>Like the GraphQL for AurDB API.</p>
+<p>Before we jump into how to configure CORS for GraphQL for AurDB API, let first understand some more about CORS itself.</p>
+<p>Or you can skip that and just get into it.</p>
+<p>Let me hear you make decisions
+Without your television
+(c) Depeche Mode, Stripped</p>
+<hr>
+<h2 id="what-is-cors">What is CORS?</h2>
+<p>CORS is a security mechanism implemented by web browsers that restricts web pages from making requests to a domain different from the one that served the web page. This policy is called the <strong>Same-Origin Policy (SOP)</strong>, and CORS is a way to safely relax it.</p>
+<p>Without CORS, your frontend JavaScript running on <code>https://www.myapp.com</code> would be blocked from making a request to <code>https://api.ineed.com</code>, even if the API was publicly available without requiring authentication of any kind. CORS allows <code>api.ineed.com</code> to explicitly declare which origins are allowed to access its resources.</p>
+<p>This only applies to web browsers like Chrome, Firefox etc.. as CORS is enforced by the <em>browser</em>. CORS does not come into play when calling an API directly from a non-web application such as CURL</p>
+<blockquote>
+<p>Note: It&rsquo;s the <strong>server</strong> that informs the <strong>browser</strong> if access will be permitted from it&rsquo;s origin ( i.e the domain or host ) and not the other way around. CORS is therefore configure on the <em>server</em>.</p>
+</blockquote>
+<hr>
+<h2 id="why-is-cors-useful">Why Is CORS Useful?</h2>
+<ol>
+<li>
+<p><strong>Prevents Malicious Cross-Domain Requests</strong>
+CORS helps mitigate <strong>cross-site request forgery (CSRF)</strong> by ensuring that only trusted domains can access sensitive APIs. Trusted domains are configured as part of the Same-Origin Policy</p>
+</li>
+<li>
+<p><strong>Enables Safe API Sharing</strong>
+Modern applications often use microservices, CDNs, or third-party APIs. CORS enables these services to be accessed securely and intentionally, without exposing users to unwanted risk.</p>
+</li>
+<li>
+<p><strong>Encourages Explicit Permissions</strong>
+Developers have to think about the individual domains have to be allowed in order to make their web app work. This makes CORS policies intentional as wildwards are not permitted.</p>
+</li>
+</ol>
+<hr>
+<h2 id="cors-and-graphql-for-auradb">CORs and GraphQL for AuraDB</h2>
+<p>By default GraphQL for AuraDB APIs block all requests from any origin. This will need adjusting for any web application that needs to make a request to GraphQL endpoint. This includes development environments, e.g node.js, that serves content on <a href="http://localhost">http://localhost</a> or similar or when using web based tooling for GraphQL APIs such as <a href="https://studio.apollographql.com/">Apollo Studio</a></p>
+<blockquote>
+<p>Note: The domain entered in the CORs policy must be an exact match. For example, <a href="http://localhost">http://localhost</a> is not the same as <a href="http://localhost:3000/">http://localhost:3000/</a>. Wildcards are not supported.</p>
+</blockquote>
+<p>To set the CORS policy, When creating the GraphQL API or modifying an existing one, you need to go scroll down the configuration page until you reach the CORS policy section</p>
+<p><img src="/img/cors-graphql-for-auradb/create-cors-policy.png" alt=""></p>
+<p>To add a CORS policy entry , enter the exact domain, inclusive of http / https and any port number, in the <strong>Origin box</strong>. If you need multiple entries, select <strong>Add allowed origin</strong></p>
+<h2 id="best-practices">Best Practices</h2>
+<ul>
+<li><strong>Be specific with allowed origins</strong> rather than using wildcards.</li>
+<li><strong>Limit allowed methods and headers</strong> to only what&rsquo;s necessary.</li>
+<li><strong>Test CORS configurations</strong> thoroughly in development and staging environments.</li>
+</ul>
+<hr>
+<h2 id="summary">Summary</h2>
+<p>When it comes to developing web applications there&rsquo;s no avoiding CORS; it has a role in protecting users from bad actors. Configuring GraphQL for AuraDB for CORS is straight forward so long as you enter <em>exactly</em> allowed origins and remember - no wildcards !</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/graphql"
+      >GraphQL</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

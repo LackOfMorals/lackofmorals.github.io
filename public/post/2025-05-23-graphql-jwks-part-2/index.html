@@ -1,0 +1,538 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Token for auth with GraphQL for AuraDB  - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="An introduction to using JWTs with GraphQL for AuraDB - Part Two
+In part one I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.
+This blog will look at using properties of a token to control access to the API and the data within.
+But I&rsquo;m overreaching a bit as I&rsquo;m assuming knowledge ( a trap so easier to stumble into when trying to convey information ) on the topic of JSON Web Token (JWT )." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Token for auth with GraphQL for AuraDB </h1><div class="text-xs antialiased opacity-60"><time>May 23, 2025</time></div></header>
+
+  <section><h1 id="an-introduction-to-using-jwts-with-graphql-for-auradb---part-two">An introduction to using JWTs with GraphQL for AuraDB - Part Two</h1>
+<p>In <a href="https://www.pm50plus.com/2025/05/16/graphql-jwks-part-1.html">part one</a> I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.</p>
+<p>This blog will look at using properties of a token to control access to the API and the data within.</p>
+<p>But I&rsquo;m overreaching a bit as I&rsquo;m assuming knowledge ( a trap so easier to stumble into when trying to convey information ) on the topic of JSON Web Token (JWT ).</p>
+<p>Lets quickly fix that.</p>
+<h2 id="a-primer-on-json-web-token-jwt-">A primer on JSON Web Token (JWT )</h2>
+<p>A JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. So any attempt to change a JWT in order to gain access will fail as the JWT will not pass verification.</p>
+<p>A JWT consists of three elements, a Header, Payload and Signature and it&rsquo;s the 2nd part we&rsquo;re interested in as this contains <em>claims</em>. Keeping with the 3 theme, there are three types of claims: registered, public, and private claims.</p>
+<blockquote>
+<p>Note: Claim names are only three characters long to keep the JWT as small as possible.</p>
+</blockquote>
+<h3 id="registered-claims">Registered claims</h3>
+<p>These are a set of predefined claims which are not mandatory but recommended, to provide a set of useful, interoperable claims.</p>
+<h3 id="public-claims">Public claims</h3>
+<p>These can be defined at will by those using JWTs ( e.g adding scopes in Okta ). Ideally they should be defined in the IANA JSON Web Token Registry to avoid collison but most don&rsquo;t bother.</p>
+<h3 id="private-claims">Private claims</h3>
+<p>These are the custom claims created to share information between parties that agree on using them and are neither registered or public claims.</p>
+<p>Here&rsquo;s an example of a decoded payload from Okta that was configured as described in the Part One blog.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;ver&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;jti&#34;</span>: <span style="color:#e6db74">&#34;AT.3qOFwHd-YW0gOUACNT2th5-1r7YQ3DDnug3UGOvaDcI&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;iss&#34;</span>: <span style="color:#e6db74">&#34;https://dev-85257838.okta.com/oauth2/ausoqtatu2kOwMgbe5d7&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;aud&#34;</span>: <span style="color:#e6db74">&#34;graphqAPIUsers&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;iat&#34;</span>: <span style="color:#ae81ff">1747844937</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;exp&#34;</span>: <span style="color:#ae81ff">1747848537</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;cid&#34;</span>: <span style="color:#e6db74">&#34;0oaoqt9j7yYo1ytbs5d7&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;scp&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;graphqlAPIRO&#34;</span>
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;sub&#34;</span>: <span style="color:#e6db74">&#34;0oaoqt9j7yYo1ytbs5d7&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Public claims that you will often see include</p>
+<ul>
+<li>iss: The issuer of the JWT, usually a URI of some sort.</li>
+<li>aud: The audience for the JWY.</li>
+<li>iat: Issued At. The Date time when the token was created</li>
+<li>exp: Expiry. When the token expires</li>
+</ul>
+<p>This quick JWT introduction arms us with suffiicient detail for what we need to do. If you want to find out more, the <a href="https://datatracker.ietf.org/doc/html/rfc7519">official specification</a> is a good place to start.</p>
+<blockquote>
+<p>Note: JWT payload can be read by <em>anyone</em> who has it unless it has been encrypted. Be careful what you include.</p>
+</blockquote>
+<h2 id="using-jwt-with-graphql-for-auradb">Using JWT with GraphQL for AuraDB</h2>
+<p>At the end of part one of this blog series, we had a GraphQL data api that can only be access with a valid JWT. Your use case may determine that this is sufficient - possesion of a verifiable JWT is a sufficient level of protection for being able to query / mutate your data using GraphQL operations. If you need nothing more than this, you now have the chance to do something else instead of moving your eyes over the rest of these fine words.</p>
+<p>But what if you need more control?</p>
+<p>For reference, here&rsquo;s what is possible with JWTs along with links to the relevant documentation page</p>
+<p><a href="https://neo4j.com/docs/graphql/current/security/authentication/">Authentication</a>
+You could judge that this is fairly useless as the GraphQL API itself has already checked the JWT and allowed access if it was verified. However, that process does not look at any private claims that have been added to the JWT payload which you may want to use to further refine who is permitted to use the GraphQL API, set specific or default rules as to what they can do by controlling what operations are pemitted.</p>
+<p><a href="https://neo4j.com/docs/graphql/current/security/authorization/">Authorization</a>
+Authorization rules cover what specific data a generated Cypher query is allowed to access and hence can control the outcomes of GraphQL queries and mutations. There are two types of rules that can be used; <em>Filtering rules</em> that filter out data which users do not have access to, without throwing any errors and <em>Validating rules</em> that throw an error if a query is executed against data which users do not have access to.</p>
+<p>We&rsquo;ll use examples to show these being used in a number of scenarios.</p>
+<p>Introducing ACME Corporation.</p>
+<h3 id="scenario-one---controlling-access-to-a-group-of-acmes-users">Scenario One - Controlling access to a group of ACME&rsquo;s users</h3>
+<p>ACME Corporation use Single Sign On for all of their applications. They wish to use the same system to provide access to GraphQL Data API for a subset of their users.</p>
+<p>Configuring the GraphQL to support JWT will allow anyone using SSO in ACME Corp to gain access but we only want some of them to do so. To enforce additional controls, we can use the <code>@authentication</code> directive to check the JWT to see if it contains a certain claim that indicates authentication should be allowed. Using the Okta web console, ACME Corp adds an additional entry in the JWT scope claim for this purpose - &ldquo;acmeGraphQLUser&rdquo;</p>
+<p>Lets modify the Type Definitions to use this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">JWTPayload</span> <span style="color:#960050;background-color:#1e0010">@jwt</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">[String!]!</span> <span style="color:#960050;background-color:#1e0010">@jwtClaim(path:</span> <span style="color:#f92672">&#34;scp&#34;</span><span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">extend</span> <span style="color:#960050;background-color:#1e0010">@authentication(</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> { <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLUser&#34;</span> } <span style="color:#960050;background-color:#1e0010">})</span>
+</span></span></code></pre></div><p>Lets dig into what&rsquo;s going on here.</p>
+<p>We define a type, JWTPayload that&rsquo;s decorated with @jwt. You can use any type name so long as you add @jwt. Within the type we have an array of strings, roles and we use @jwtClaim to copy over values from the JWT payload claim &lsquo;scp&rsquo; into it. So the net result is we now have access to the values defined in the scp claim of our JWT. We have to do this as scp is a private claim from Okta and not a publically registered one. If we were only using <a href="https://www.rfc-editor.org/rfc/rfc7519#section-4.1">public claim names</a> from the JWT specification, e.g iss, then we don&rsquo;t need to do this as those claims are automatically available to us.</p>
+<p>Now we have the values, we can check them to see if access shoud be granted with use of the <code>@authentication</code> directive. You can see that we check roles to see if contains the value &ldquo;acmeGraphQLUser&rdquo;; If it does the request will be accepted, if not it will be rejected.</p>
+<p>ACME Corporation now has secured its GraphQL API so that only people who have been given the &ldquo;acmeGraphQLUser&rdquo; as part of the token issued to them will be able to have access.</p>
+<p>Great success.</p>
+<h3 id="scenario-two---protecting-sensitive-data">Scenario Two - Protecting sensitive data</h3>
+<p>ACME Corporation is so stoked with the outcomes it&rsquo;s getting from using GraphQL with AuraDB that they want to do more. But some of the data they wish to expose is sensitive and not all users should be able to access it.</p>
+<p>Here&rsquo;s where we can make use of <code>@authorization</code> directive combined with either validation or verification rules or a combination thereof.</p>
+<p>Rather than rush in, ACME Corp decides to try a few things using the Movies example graph. Here&rsquo;s the Type Definitions for Movies graph.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">JWT</span> <span style="color:#960050;background-color:#1e0010">@jwt</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">[String!]!</span> <span style="color:#960050;background-color:#1e0010">@jwtClaim(path:</span> <span style="color:#f92672">&#34;scp&#34;</span><span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">extend</span> <span style="color:#960050;background-color:#1e0010">schema</span> <span style="color:#960050;background-color:#1e0010">@authentication(</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> { <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLUser&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">ActedInProperties</span> <span style="color:#960050;background-color:#1e0010">@relationshipProperties</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">[String!]!</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">Movie</span> <span style="color:#960050;background-color:#1e0010">@node</span>  {
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleActedIn:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;ACTED_IN&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">IN</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ActedInProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleDirected</span>: [<span style="color:#960050;background-color:#1e0010">Person!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;DIRECTED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleProduced:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;PRODUCED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleReviewed:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;REVIEWED&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">IN</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ReviewedProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleWrote</span>: [<span style="color:#960050;background-color:#1e0010">Person!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;WROTE&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">released:</span> <span style="color:#960050;background-color:#1e0010">BigInt!</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">tagline:</span> <span style="color:#960050;background-color:#1e0010">String</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">title:</span> <span style="color:#960050;background-color:#1e0010">String!</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">Person</span> <span style="color:#960050;background-color:#1e0010">@node</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">actedInMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;ACTED_IN&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">OUT</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ActedInProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">born</span>: <span style="color:#960050;background-color:#1e0010">BigInt</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">directedMovies</span>: [<span style="color:#960050;background-color:#1e0010">Movie!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;DIRECTED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">followsPeople:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;FOLLOWS&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">name:</span> <span style="color:#960050;background-color:#1e0010">String!</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleFollows:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;FOLLOWS&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">producedMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;PRODUCED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">reviewedMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;REVIEWED&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">OUT</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ReviewedProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">wroteMovies</span>: [<span style="color:#960050;background-color:#1e0010">Movie!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;WROTE&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">ReviewedProperties</span> <span style="color:#960050;background-color:#1e0010">@relationshipProperties</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">rating:</span> <span style="color:#960050;background-color:#1e0010">BigInt!</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">summary:</span> <span style="color:#960050;background-color:#1e0010">String!</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>ACME Corp has the changes from Scenario One that control access to the GraphQL API to those with the &ldquo;acmeGraphQLUser&rdquo; claim in their token. This token will always be present but there will be an additional token, &ldquo;acmeGraphQLSensitive&rdquo; that allows access to sensitive data.</p>
+<p>There are two rules ACME can use with <code>@authorization</code> filtering and validuation. Recall from our earlier explanation, filtering will remove data according to defined rules where as validation returns an error. Let sees what&rsquo;s these look like when protecting sensitive data.</p>
+<p>The Person type contains sensitive data that we want to protect. Lets do that by restricting it to only those users with &ldquo;acmeGraphQLSensitive&rdquo; in their token.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">Person</span> <span style="color:#960050;background-color:#1e0010">@node</span> <span style="color:#960050;background-color:#1e0010">@authorization(filter:</span> [ { <span style="color:#960050;background-color:#1e0010">where:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLSensitive&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">}</span> ]<span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">actedInMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;ACTED_IN&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">OUT</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ActedInProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">born</span>: <span style="color:#960050;background-color:#1e0010">BigInt</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">directedMovies</span>: [<span style="color:#960050;background-color:#1e0010">Movie!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;DIRECTED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">followsPeople:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;FOLLOWS&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">name:</span> <span style="color:#960050;background-color:#1e0010">String!</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleFollows:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;FOLLOWS&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">producedMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;PRODUCED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">reviewedMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;REVIEWED&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">OUT</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ReviewedProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">wroteMovies</span>: [<span style="color:#960050;background-color:#1e0010">Movie!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;WROTE&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>If you now run a graphQL query with the &ldquo;acmeGraphQLSensitive&rdquo; claim in your token the query will return what&rsquo;s being asked for. Without the token you just see this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;data&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;people&#34;</span>: []
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>But what if there are only a subset of fields that need to protected ? Well you can apply <code>@authorization</code> to individual fields. If a query contains any of those field and the received JWT lacks the required claim, an emplty JSON document is returned like the one above. But if the query does not have any of protected fields and the JWT lacks the need claim, you will still get the asked for data back.</p>
+<p>To do this, ACME changes its Type Def as follows</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">Person</span> <span style="color:#960050;background-color:#1e0010">@node</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">actedInMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;ACTED_IN&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">OUT</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ActedInProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">born</span>: <span style="color:#960050;background-color:#1e0010">BigInt</span> <span style="color:#960050;background-color:#1e0010">@authorization(filter</span>: [ { <span style="color:#960050;background-color:#1e0010">where:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLSensitive&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">}</span> ]<span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">directedMovies</span>: [<span style="color:#960050;background-color:#1e0010">Movie!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;DIRECTED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">followsPeople:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;FOLLOWS&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">name:</span> <span style="color:#960050;background-color:#1e0010">String!</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleFollows:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;FOLLOWS&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">producedMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;PRODUCED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">reviewedMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;REVIEWED&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">OUT</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ReviewedProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">wroteMovies</span>: [<span style="color:#960050;background-color:#1e0010">Movie!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;WROTE&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>When a query is issued that does not include <em>born</em> and the JWT does not have &ldquo;acmeGraphQLSensitive&rdquo; in its claims, then we still get them requested results</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;data&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;people&#34;</span>: [
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Keanu Reeves&#34;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Instead of empty JSON documents, ACME could have an error returned by using <strong>validation</strong> instead of <strong>filter</strong>. The structure is similar</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">born:</span> <span style="color:#960050;background-color:#1e0010">BigInt</span> <span style="color:#960050;background-color:#1e0010">@authorization(validate:</span> [ { <span style="color:#960050;background-color:#1e0010">where:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLSensitive&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">}</span> ]<span style="color:#960050;background-color:#1e0010">)</span>
+</span></span></code></pre></div><p>When requesting <strong>born</strong> without the required JWT claim, you now get an error like this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;errors&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Forbidden&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;locations&#34;</span>: [
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;line&#34;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;column&#34;</span>: <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;path&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;people&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;data&#34;</span>: <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>More on <strong>filter</strong> and <strong>validate</strong> can be found in the GraphQL API <a href="https://neo4j.com/docs/graphql/current/security/authorization/">documentation</a></p>
+<h3 id="scenario-three---control-writes">Scenario Three - control writes</h3>
+<p>With protection for sensitive data, ACME Corporation turns it attention to controlling who can change the data. ACME Corps adds another claim to the JWT to control this:- &ldquo;acmeGraphQLReadWrite&rdquo;.</p>
+<p>Staying with the Type Defs already present, we add <code>@authentication</code>, with a check for &ldquo;acmeGraphQLReadWrite&rdquo; in the JWT, to each node that requires protection against change like this:-</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">@authentication(operations:</span> [<span style="color:#960050;background-color:#1e0010">CREATE</span>, <span style="color:#960050;background-color:#1e0010">DELETE</span>, <span style="color:#960050;background-color:#1e0010">UPDATE</span>]<span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> { <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLReadWrite&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span></code></pre></div><p>See the <a href="https://neo4j.com/docs/graphql/current/security/authentication/#_operations">list of operations</a> in the documentation to see what is possible</p>
+<p>ACME Corps type defintions now look like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">JWT</span> <span style="color:#960050;background-color:#1e0010">@jwt</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">[String!]!</span> <span style="color:#960050;background-color:#1e0010">@jwtClaim(path:</span> <span style="color:#f92672">&#34;scp&#34;</span><span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">extend</span> <span style="color:#960050;background-color:#1e0010">schema</span> <span style="color:#960050;background-color:#1e0010">@authentication(</span>  <span style="color:#960050;background-color:#1e0010">jwt:</span> { <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLUser&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">ActedInProperties</span> <span style="color:#960050;background-color:#1e0010">@relationshipProperties</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">[String!]!</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">Movie</span> <span style="color:#960050;background-color:#1e0010">@authentication(operations:</span> [<span style="color:#960050;background-color:#1e0010">CREATE</span>, <span style="color:#960050;background-color:#1e0010">DELETE</span>, <span style="color:#960050;background-color:#1e0010">UPDATE</span>]<span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> { <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLReadWrite&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">)</span>  <span style="color:#960050;background-color:#1e0010">@node</span>   {
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleActedIn:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;ACTED_IN&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">IN</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ActedInProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleDirected</span>: [<span style="color:#960050;background-color:#1e0010">Person!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;DIRECTED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleProduced:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;PRODUCED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleReviewed:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;REVIEWED&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">IN</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ReviewedProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleWrote</span>: [<span style="color:#960050;background-color:#1e0010">Person!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;WROTE&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">released:</span> <span style="color:#960050;background-color:#1e0010">BigInt!</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">tagline:</span> <span style="color:#960050;background-color:#1e0010">String</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">title:</span> <span style="color:#960050;background-color:#1e0010">String!</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">Person</span> <span style="color:#960050;background-color:#1e0010">@authentication(operations:</span> [<span style="color:#960050;background-color:#1e0010">CREATE</span>, <span style="color:#960050;background-color:#1e0010">DELETE</span>, <span style="color:#960050;background-color:#1e0010">UPDATE</span>]<span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> { <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLReadWrite&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">)</span>  <span style="color:#960050;background-color:#1e0010">@node</span>   {
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">actedInMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;ACTED_IN&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">OUT</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ActedInProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">born</span>: <span style="color:#960050;background-color:#1e0010">BigInt</span> <span style="color:#960050;background-color:#1e0010">@authorization(validate</span>: [ { <span style="color:#960050;background-color:#1e0010">where:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">jwt:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">roles:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">includes:</span> <span style="color:#f92672">&#34;acmeGraphQLSensitive&#34;</span> } <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#960050;background-color:#1e0010">}</span> ]<span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">directedMovies</span>: [<span style="color:#960050;background-color:#1e0010">Movie!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;DIRECTED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">followsPeople:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;FOLLOWS&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">name:</span> <span style="color:#960050;background-color:#1e0010">String!</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">peopleFollows:</span> <span style="color:#960050;background-color:#1e0010">[Person!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;FOLLOWS&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">IN)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">producedMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type:</span> <span style="color:#f92672">&#34;PRODUCED&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">reviewedMovies:</span> <span style="color:#960050;background-color:#1e0010">[Movie!]!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">@relationship(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">type:</span> <span style="color:#f92672">&#34;REVIEWED&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">direction</span>: <span style="color:#960050;background-color:#1e0010">OUT</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">properties</span>: <span style="color:#e6db74">&#34;ReviewedProperties&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">wroteMovies</span>: [<span style="color:#960050;background-color:#1e0010">Movie!</span>]<span style="color:#960050;background-color:#1e0010">!</span> <span style="color:#960050;background-color:#1e0010">@relationship(type</span>: <span style="color:#e6db74">&#34;WROTE&#34;</span>, <span style="color:#960050;background-color:#1e0010">direction:</span> <span style="color:#960050;background-color:#1e0010">OUT)</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">type</span> <span style="color:#960050;background-color:#1e0010">ReviewedProperties</span> <span style="color:#960050;background-color:#1e0010">@relationshipProperties</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">rating:</span> <span style="color:#960050;background-color:#1e0010">BigInt!</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">summary:</span> <span style="color:#960050;background-color:#1e0010">String!</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>If someone at ACME Corp tries to make a change and lacks the necessary claim in their JWT, they get this response</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;errors&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Unauthenticated&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;locations&#34;</span>: [
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;line&#34;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;column&#34;</span>: <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;path&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;createPeople&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;data&#34;</span>: <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="summary">Summary</h2>
+<p>ACME Corparation now has all of the three outcomes it was looking for. GraphQL API fits into it&rsquo;s SSO system whilst restricting access to those who have the &ldquo;acmeGraphQLUser&rdquo; claim in their JWT. Their senstive data requires an additional claim, &ldquo;acmeGraphQLSensitive&rdquo;, and any change to the People data needs &ldquo;acmeGraphQLReadWrite&rdquo;</p>
+<p>This is a gentle introduction controlling data access using claims found in JWT. There&rsquo;s more flexibilty available by using logical operations such as OR , AND and this is covered in the <a href="https://neo4j.com/docs/graphql">documentation</a></p>
+<p>A pragmatic approach is recommended when it comes to applying this in a production environment. You need to carefully balance operational overhead and security or you can end up diving down this rabiit hole and end up a guest at the Mad Hatters Tea party.</p>
+<p>Next time I&rsquo;ll be covering using this approach with a using a client initiated JWT from a web browser app.</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/token"
+      >Token</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/graphql"
+      >GraphQL</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

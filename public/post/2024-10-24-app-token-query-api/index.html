@@ -1,0 +1,601 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Applications, Tokens and Neo4j Query API  - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Applications, Tokens and Neo4j Query API
+Using tokens with Applications and Neo4j Query API for auth
+In a previous blog post I discussed a web application obtaining and using a token with Neo4j Query API as a result of a user successfully authenticating.  This entry looks at what would be involved for an application to obtain a token and use it with Neo4j Query API.
+Plot spoiler - it&rsquo;s very similar." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Applications, Tokens and Neo4j Query API </h1><div class="text-xs antialiased opacity-60"><time>Oct 24, 2024</time></div></header>
+
+  <section><h1 id="applications-tokens-and-neo4j-query-api">Applications, Tokens and Neo4j Query API</h1>
+<h1 id="using-tokens-with-applications-and-neo4j-query-api-for-auth">Using tokens with Applications and Neo4j Query API for auth</h1>
+<p>In a previous blog post I discussed a web application obtaining and using a token with Neo4j Query API as a result of a user successfully authenticating.  This entry looks at what would be involved for an application to obtain a token and use it with Neo4j Query API.</p>
+<p><strong>Plot spoiler</strong> - it&rsquo;s very similar.</p>
+<p>Many organisations prefer a token based approach, one reason for this is the limited lifespan and scope of token which helps to reduce risk if it is intercepted.  Lets look at how this can be achieved.</p>
+<p>We will need</p>
+<ul>
+<li>
+<p>A free Okta developer account</p>
+</li>
+<li>
+<p>Neo4j Enterprise running in Docker locally</p>
+</li>
+<li>
+<p>Docker installed</p>
+</li>
+<li>
+<p>A local copy of curl</p>
+</li>
+<li>
+<p>Text editor</p>
+</li>
+</ul>
+<h2 id="neo4j-docker-image">Neo4j Docker image</h2>
+<h3 id="install--run-the-neo4j-docker-image">Install &amp; Run the Neo4j Docker image</h3>
+<p><strong>Note</strong>:  If you are not comfortable with the values used for the username &amp; password , change NEO4J_AUTH=neo4j/password to  something that works for you.</p>
+<p>The neo4j docker image will use folders in the home directory.  Create those first</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>mkdir -p ~/neo4j/conf
+</span></span><span style="display:flex;"><span>mkdir -p ~/neo4j/data
+</span></span><span style="display:flex;"><span>mkdir -p ~/neo4j/logs
+</span></span></code></pre></div><p>Tell Docker to download and run Neo4j</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>docker run -dt <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--name<span style="color:#f92672">=</span>neo4jDb <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--publish<span style="color:#f92672">=</span>7474:7474 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--publish<span style="color:#f92672">=</span>7687:7687 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--volume<span style="color:#f92672">=</span>$HOME/neo4j/data:/data <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--volume<span style="color:#f92672">=</span>$HOME/neo4j/conf:/conf <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--volume<span style="color:#f92672">=</span>$HOME/neo4j/logs:/logs <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--env<span style="color:#f92672">=</span>NEO4J_ACCEPT_LICENSE_AGREEMENT<span style="color:#f92672">=</span>yes <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--env<span style="color:#f92672">=</span>NEO4J_AUTH<span style="color:#f92672">=</span>neo4j/password <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>neo4j:enterprise
+</span></span></code></pre></div><h3 id="test">Test</h3>
+<p>Check Neo4j is up and running by going to this local URL <a href="http://localhost:7474/browser">http://localhost:7474/browser</a></p>
+<p>This should show you the Browser console for Neo4j.  Auth using neo4j for the user and password for the password.</p>
+<hr>
+<h1 id="okta-configuration">Okta configuration</h1>
+<p>This requires configuration work in two areas of the Okta console; Applications and  Security and also obtaining the developer account Okta Domain.</p>
+<h2 id="okta-developer-account-domain">Okta developer account domain</h2>
+<p>Before starting any work , we need the developer account okta domain.  Locate this by going to the top right and selecting your account.  From the drop down menu , you will see your email address and immediately underneath the domain for your developer account.  Make a note of this.</p>
+<h2 id="applications">Applications</h2>
+<p><strong>Applications</strong> -&gt; <strong>Create App Integration</strong> -&gt; <strong>API Services</strong></p>
+<ul>
+<li>Provide a name e.g neo4j m2m query api for API Service</li>
+</ul>
+<p>When the new API Service is shown :-</p>
+<h3 id="general">General</h3>
+<p>Client credentials</p>
+<ul>
+<li>
+<p>Client ID: Copy the client id as this will be needed later</p>
+</li>
+<li>
+<p>Client authentication: Client secret</p>
+</li>
+</ul>
+<p>CLIENT SECRETS</p>
+<ul>
+<li>Client secret:   Copy this as it also will be needed later</li>
+</ul>
+<p>General Setting</p>
+<ul>
+<li>Proof of possession :  Make sure Require Demonstrating Proof of Possession (DPoP) header in token requests is not selected</li>
+</ul>
+<h2 id="security">Security</h2>
+<p><strong>Security</strong> -&gt; <strong>API</strong> -&gt; <strong>Add Authorization Server</strong></p>
+<ul>
+<li>
+<p>Name:  Give this a meaningful name e.g neo4j query api</p>
+</li>
+<li>
+<p>Audience: This will form part of the generated token.  Suggest using that is short and descriptive e.g neo4j-query-api.  This will be needed for Neo4j configuration</p>
+</li>
+<li>
+<p>Description: Enter some words that describe what this is for</p>
+</li>
+</ul>
+<p>The newly created authorization server is now displayed.</p>
+<p>The next step is to create a Scope which will be used in the Neo4j configuration to map to a Neo4j role.  This determines the access level that will be granted.</p>
+<p>Select <strong>Scopes</strong></p>
+<h3 id="add-scope">Add Scope</h3>
+<ul>
+<li>
+<p>Name: Provide a name for the scope e.g Neo4jDba</p>
+</li>
+<li>
+<p>Display phrase:  Enter what this is for e.g DBA access</p>
+</li>
+<li>
+<p>Description: Longer description e.g DBA level access for Neo4j</p>
+</li>
+<li>
+<p>User consent:  Implicit</p>
+</li>
+<li>
+<p>Block services :  Not checked</p>
+</li>
+<li>
+<p>Default scope:  If checked, this will be given to any token request that does not explicitly ask for a scope.  Advise that this is not checked.</p>
+</li>
+<li>
+<p>Metadata:  The scope will be included in the response from the well known API and hence visible.  Advise that this is not checked.</p>
+</li>
+</ul>
+<p>Select <strong>Create</strong></p>
+<p>The newly created scope will now be shown in the table.  Make a note of the <strong>Issuer URI</strong></p>
+<h2 id="takeways-from-okta-configuration-work">Takeways from Okta configuration work</h2>
+<p>Once Okta is configured, we will have</p>
+<ul>
+<li>
+<p>Developer account domain</p>
+</li>
+<li>
+<p>Client ID</p>
+</li>
+<li>
+<p>Client Secret</p>
+</li>
+<li>
+<p>Issuer URI</p>
+</li>
+<li>
+<p>Audience</p>
+</li>
+<li>
+<p>Scope</p>
+</li>
+</ul>
+<hr>
+<h2 id="neo4j-configuration">Neo4j configuration</h2>
+<p>It&rsquo;s entirely possible for Neo4j to have more than one configured ODIC provider.  It&rsquo;s also possible to hide an entry from users of the Neo4j web Browser console, something that we will need to do as the configuration for an application to use token is not going to work for a user.</p>
+<p>This is line that we&rsquo;ll need to use with our OIDC configuration entry
+<code>dbms.ecurity.oidc.YOUR_OIDC_ENTYR_NAME.visible=false</code></p>
+<p>Edit neo4j.conf and add this in the OIDC section swapping out these values for yours from Okta.</p>
+<ul>
+<li>
+<p>YOUR_AUDIENCE_ID_FROM_OKTA</p>
+</li>
+<li>
+<p>YOUR_CLIENT_ID_FROM_OKTA</p>
+</li>
+<li>
+<p>YOUR_CLIENT_SECRET_ID_FROM_OKTA</p>
+</li>
+<li>
+<p>YOUR_ISSUER_URI_FROM_OKTA</p>
+</li>
+<li>
+<p>YOUR_SCOPE_FROM_OKTA</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span># Okta m2m settings
+</span></span><span style="display:flex;"><span>dbms.ecurity.oidc.m2m.visible=false
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.display_name=m2m
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.auth_flow=pkce
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.well_known_discovery_uri=YOUR_ISSUER_URI_FROM_OKTA/.well-known/openid-configuration
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.audience=YOUR_AUDIENCE_ID_FROM_OKTA
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.client_id=YOUR_CLIENT_ID_FROM_OKTA
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.claims.groups=scp
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.claims.username=sub
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.params=client_id=YOUR_CLIENT_ID_FROM_OKTA;response_type=code;scope=openid profile scp
+</span></span><span style="display:flex;"><span>dbms.security.oidc.m2m.authorization.group_to_role_mapping=YOUR_SCOPE_FROM_OKTA=admin
+</span></span></code></pre></div><p>Save the file and then restart Neo4j.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>docker restart neo4jDb
+</span></span></code></pre></div><hr>
+<h2 id="getting-a-token-from-okta-to-use-with-neo4j-query-api">Getting a token from Okta to use with Neo4j Query API</h2>
+<p>A token to use with the Query API is obtained from <strong>https://YOUR_DEVELOPER_ACCOUNT_DOMAIN/oauth2/default/v1/token</strong>  as illustrated with this example using CURL</p>
+<p>Replace</p>
+<ul>
+<li>
+<p>YOUR_DEVELOPER_ACCOUNT_DOMAIN</p>
+</li>
+<li>
+<p>YOUR_SCOPE_FROM_OKTA</p>
+</li>
+<li>
+<p>YOUR_CLIENT_ID_FROM_OKTA</p>
+</li>
+<li>
+<p>YOUR_CLIENT_SECRET_ID_FROM_OKTA</p>
+</li>
+</ul>
+<p>with values from the Okta configuration</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>curl --request POST <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>--url https://YOUR_DEVELOPER_ACCOUNT_DOMAIN/oauth2/default/v1/token <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--header <span style="color:#e6db74">&#39;accept: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--header <span style="color:#e6db74">&#39;cache-control: no-cache&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--header <span style="color:#e6db74">&#39;content-type: application/x-www-form-urlencoded&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>--data <span style="color:#e6db74">&#39;grant_type=client_credentials&amp;scope=YOUR_SCOPE_FROM_OKTA&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>-u CLIENT_ID:CLIENT_SECRET
+</span></span></code></pre></div><p>This should result in a response that looks similar to this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&#34;token_type&#34;</span>: <span style="color:#e6db74">&#34;Bearer&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&#34;expires_in&#34;</span>: <span style="color:#ae81ff">3600</span>,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&#34;access_token&#34;</span>: <span style="color:#e6db74">&#34;eyJraWQiOiJfM0lPdk9tUEJGN3hKN2FPbHNmYzVKWmlGWXdua1Q4WHY5ZG9hYk9JOEhFIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULmZkYjJ3eGZPMFJaSmFiUDNIUkxGLVl6VFpHczhkTVFYUnJLWU02aUFlemsiLCJpc3MiOiJodHRwczovL2Rldi04NTI1NzgzOC5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6Im5lbzRqLWF1ZCIsImlhdCI6MTcyOTYzMzA2MiwiZXhwIjoxNzI5NjM2NjYyLCJjaWQiOiIwb2FrZ2R4eHJyM3FiVkhFRDVkNyIsInNjcCI6WyJuZW80akRiYSJdLCJzdWIiOiIwb2FrZ2R4eHJyM3FiVkhFRDVkNyJ9.CGHx-dnhKd1d_i_hEroNHOCPUYROh0wqz2EuKCDYuieiIkqx9sG1Z8f1hnb96FL2uyyTL2bpAILiG3-85urVeG-6R5Dazf87opM5IyLhYTxboM5VjF3xsKsUiSjIQBP7jsCqHFxCsBpOB2nUSxzmk3NZpVhV2oZJK5-WBl1wCj7ttyAeuZ7sbm44SdrdIz9pmf6RmTQ30nBexZ6ccNx7YxxZZyo2jJeRvNDOn-yRpydkOOOqe7kR1qk7qhG14cKLQBgmx2RL5DAxG9ZJOHh1dUcOE87duhT3uD476JmcmS8DG589CCO3bMcmORYLkArf_5QFWW-bG8FJy5UGJVffFA&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&#34;scope&#34;</span>: <span style="color:#e6db74">&#34;neo4jDba&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>From this we use the value of the access_token key to use with the Query API.</p>
+<hr>
+<h2 id="using-a-token-with-the-query-api">Using a token with the Query API</h2>
+<p>Replace</p>
+<ul>
+<li>YOUR_ACCESS_TOKEN</li>
+</ul>
+<p>with the value obtained from Okta</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Bash" data-lang="Bash"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl -X POST &lt;http://localhost:7474/db/neo4j/query/v2&gt; <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>-H <span style="color:#e6db74">&#34;Authorization: Bearer YOUR_ACCESS_TOKEN&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>-H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>-d <span style="color:#e6db74">&#39;{&#34;statement&#34;: &#34;MATCH (n) RETURN n LIMIT 1&#34;}&#39;</span>
+</span></span></code></pre></div><p>A response with a single entry from your Neo4j graph will be returned</p>
+<hr>
+<h2 id="an-example-python-application">An example Python application</h2>
+<p>Needs the request module to be installed before this can be used.  Replace YOUR_ with values for your setup.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * Copyright (c) 2024-Present, Neo4j. and/or its affiliates. All rights reserved.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * Unless required by applicable law or agreed to in writing, software
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS, WITHOUT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> * See the License for the specific language governing permissions and limitations under the License.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generic/Built-in</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Dict
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Other Libs</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> requests <span style="color:#f92672">import</span> Request, Session
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> requests.auth <span style="color:#f92672">import</span> HTTPBasicAuth, AuthBase
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Owned</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Configuration values</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyConfiguration</span>():
+</span></span><span style="display:flex;"><span>    CLIENT_ID <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_CLIENT_ID_FROM_OKTA&#34;</span>
+</span></span><span style="display:flex;"><span>    CLIENT_SECRET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_CLIENT_SECRET_FROM_OKTA&#34;</span>
+</span></span><span style="display:flex;"><span>    OKTA_TOKEN_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://YOUR_DEVELOPER_ACCOUNT_DOMAIN/oauth2/default/v1/token&#34;</span>
+</span></span><span style="display:flex;"><span>    OKTA_SCOPE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_SCOPE_FROM_OKTA&#34;</span>
+</span></span><span style="display:flex;"><span>    NEO4J_QUERY_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_NEO4j_QUERY_API_URL&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Returns Auth object for use with Python requests </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># that uses our token from Okta</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BearerAuth</span>(AuthBase):
+</span></span><span style="display:flex;"><span>   <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Returns a request header that uses Bearer token for auth
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :return: Header that uses Bearer token
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, token):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>token <span style="color:#f92672">=</span> token
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__call__</span>(self, r):
+</span></span><span style="display:flex;"><span>        r<span style="color:#f92672">.</span>headers[<span style="color:#e6db74">&#34;authorization&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Bearer &#34;</span> <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>token
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> r
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">make_request</span>(request_url: str, request_operation: str, request_headers: dict, request_body,
+</span></span><span style="display:flex;"><span>                 request_auth: AuthBase) <span style="color:#f92672">-&gt;</span> Dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Makes a request to Aura API and returns the JSON from the response
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param request_url The path to the endpoint to make a request to
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param request_operation The HTTP operation to perform for the request
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param request_headers  A dictionary containing headers for the request
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param request_body  The body of the request
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param request_auth  Auth to use with the request
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :return: The JSON response back as a Python Dict
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># A session will be used to avoid having to make a new connection with each request</span>
+</span></span><span style="display:flex;"><span>    request_session <span style="color:#f92672">=</span> Session()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Prepare our request</span>
+</span></span><span style="display:flex;"><span>    prepared_request <span style="color:#f92672">=</span> Request(request_operation, request_url, headers<span style="color:#f92672">=</span>request_headers, auth<span style="color:#f92672">=</span>request_auth,
+</span></span><span style="display:flex;"><span>                               data<span style="color:#f92672">=</span>request_body)<span style="color:#f92672">.</span>prepare()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Send the request</span>
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> request_session<span style="color:#f92672">.</span>send(prepared_request)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> raised an error: </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span>, aura_api_request, e)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> response<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_token_from_okta</span>(url: str, client_id: str, client_secret: str, token_scope: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Gets a token from Okta
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param url: URL for Okta token
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param client_id: Okta client id
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param client_secret: Okta client secret
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   :param token_scope: Okta scope
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Ask for a bearer token using the client id and client secret from Okta</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    headers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Content-Type&#34;</span>: <span style="color:#e6db74">&#34;application/x-www-form-urlencoded&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Accept&#34;</span>: <span style="color:#e6db74">&#34;application/json&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    body <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;grant_type&#34;</span>: <span style="color:#e6db74">&#34;client_credentials&#34;</span>, <span style="color:#e6db74">&#34;scope&#34;</span>: token_scope}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    okta_response <span style="color:#f92672">=</span> make_request(url, <span style="color:#e6db74">&#39;POST&#39;</span>, headers, body, HTTPBasicAuth(client_id, client_secret))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;access_token&#39;</span> <span style="color:#f92672">in</span> okta_response:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> okta_response[<span style="color:#e6db74">&#39;access_token&#39;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_data_from_neo4j</span>(cypher_statement: str, query_api_url: str, token_from_okta: str) <span style="color:#f92672">-&gt;</span> Dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Gets a data from Neo4j Query API using a bearer token for auth
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    :param cypher_statement: Cypher statement in the form of a dictionary
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    :param query_api_url:URL for Neo4j Query API
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    :param token_from_okta: token from Okta
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    :return A dictionary containing the data from Neo4j
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    headers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Content-Type&#34;</span>: <span style="color:#e6db74">&#34;application/json&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Accept&#34;</span>: <span style="color:#e6db74">&#34;application/json&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    neo4j_response <span style="color:#f92672">=</span> make_request(query_api_url, <span style="color:#e6db74">&#39;POST&#39;</span>, headers, cypher_statement, BearerAuth(token_from_okta))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;data&#39;</span> <span style="color:#f92672">in</span> neo4j_response:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> neo4j_response[<span style="color:#e6db74">&#39;data&#39;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">showcase_token_with_queryapi</span>(config):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    okta_token <span style="color:#f92672">=</span> get_token_from_okta(config<span style="color:#f92672">.</span>OKTA_TOKEN_URI, config<span style="color:#f92672">.</span>CLIENT_ID, config<span style="color:#f92672">.</span>CLIENT_SECRET, config<span style="color:#f92672">.</span>OKTA_SCOPE)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    neo4j_query <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;statement&#34;</span>: <span style="color:#e6db74">&#34;MATCH (n) RETURN n LIMIT 1&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    neo4j_data <span style="color:#f92672">=</span> get_data_from_neo4j(json<span style="color:#f92672">.</span>dumps(neo4j_query), config<span style="color:#f92672">.</span>NEO4J_QUERY_URI, okta_token)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Data from Neo4j: </span><span style="color:#e6db74">{</span>neo4j_data[<span style="color:#e6db74">&#39;values&#39;</span>][<span style="color:#ae81ff">0</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    showcase_token_with_queryapi(MyConfiguration)
+</span></span></code></pre></div></section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/queryapi"
+      >QueryAPI</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/sso"
+      >SSO</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/token"
+      >Token</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Using parameters with the Neo4j Query API - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Using parameters with the Query API
+Imagine that you find yourself needing to perform bulk updates in some shape or form to Neo4j Graph database; it could be a data import, creating relationships between nodes, changing properties or anything else that requires a lot of mutations.
+As an example of this, consider the work from an earlier blog post where we represented the London Underground as a graph; Nodes are used for Tube stations and Relationships are the Tube lines that form the network." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Using parameters with the Neo4j Query API</h1><div class="text-xs antialiased opacity-60"><time>Apr 26, 2024</time></div></header>
+
+  <section><h1 id="using-parameters-with-the-query-api">Using parameters with the Query API</h1>
+<p>Imagine that you find yourself needing to perform bulk updates in some shape or form to Neo4j Graph database; it could be a data import, creating relationships between nodes, changing properties or anything else that requires a lot of mutations.</p>
+<p>As an example of this, consider the work from an earlier blog post where we represented the London Underground as a graph; Nodes are used for Tube stations and Relationships are the Tube lines that form the network.</p>
+<p>Take the Circle Line. There are 38 tube stations, each of which will be a Node and we will store this information about them</p>
+<ul>
+<li>Name</li>
+<li>London Underground ID</li>
+<li>Long</li>
+<li>Lat</li>
+<li>Tube Zone</li>
+</ul>
+<p>To put this into Neo4j we could write a Cypher statement for each station. For example, create a node for Goldhawk Road Tube Station</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>MERGE ( s:Station {id:, name:&#34;Goldhawk Road Underground Station&#34; , zone:2, lat:51.502005, lon:-0.226715})
+</span></span></code></pre></div><p>and then carry on with another 37 Cypher statements for all of the remaining tube stations on the Circle line.</p>
+<p>Sending a single Cypher statement in this way is not very efficient. Apart from the overhead of establishing network connection each and every time, it skips over an optimisation that&rsquo;s available with Neo4j - Parameterized Queries</p>
+<h2 id="parameterized-queries">Parameterized queries</h2>
+<p>A parameterized query is a query in which placeholders are used for parameters and the parameter values are supplied at execution time. This means you don&rsquo;t need to resort to using multiple statements mentioned previously.  It also means that you can avoid string building to create a query and having to escape problematic characters. Additionally, parameters make caching of execution plans much easier for Cypher, thus leading to significantly faster query execution times.</p>
+<p>Parameterized queries are available for direct use with Cypher , Neo4j drivers and the Query API.</p>
+<p>The Query API supports the use of parameters ( link to docs page ) with a request body that looks like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&#39;statement&#39;:</span> <span style="color:#960050;background-color:#1e0010">Parameterized</span> <span style="color:#960050;background-color:#1e0010">Cypher</span> <span style="color:#960050;background-color:#1e0010">statement</span> <span style="color:#960050;background-color:#1e0010">that</span> <span style="color:#960050;background-color:#1e0010">references</span> <span style="color:#960050;background-color:#1e0010">values,</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&#39;parameters&#39;:</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#f92672">&#34;key&#34;</span> : [{<span style="color:#960050;background-color:#1e0010">Values</span>}] }
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span>
+</span></span></code></pre></div><p>If we used Query API with parameters for the Circle Line , then we could do this in a single request ( I&rsquo;ll just put 5 Circle Line stations in to keep it readable ).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&#39;statement&#39;:&#39;WITH</span> <span style="color:#960050;background-color:#1e0010">$items</span> <span style="color:#960050;background-color:#1e0010">as</span> <span style="color:#960050;background-color:#1e0010">batch</span> <span style="color:#960050;background-color:#1e0010">UNWIND</span> <span style="color:#960050;background-color:#1e0010">batch</span> <span style="color:#960050;background-color:#1e0010">as</span> <span style="color:#960050;background-color:#1e0010">item</span> <span style="color:#960050;background-color:#1e0010">MERGE</span> <span style="color:#960050;background-color:#1e0010">(</span> <span style="color:#960050;background-color:#1e0010">s:Station</span> <span style="color:#960050;background-color:#1e0010">{id:</span> <span style="color:#960050;background-color:#1e0010">item.id,</span> <span style="color:#960050;background-color:#1e0010">name:</span> <span style="color:#960050;background-color:#1e0010">item.name,</span> <span style="color:#960050;background-color:#1e0010">zone:</span> <span style="color:#960050;background-color:#1e0010">item.zone,</span> <span style="color:#960050;background-color:#1e0010">lat:item.lat,</span> <span style="color:#960050;background-color:#1e0010">lon:item.lon</span> }<span style="color:#960050;background-color:#1e0010">),</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&#39;parameters&#39;:</span> { <span style="color:#f92672">&#34;items&#34;</span> : [
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLUHSC&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;Hammersmith</span> <span style="color:#960050;background-color:#1e0010">(H&amp;C</span> <span style="color:#960050;background-color:#1e0010">Line)</span> <span style="color:#960050;background-color:#1e0010">Underground</span> <span style="color:#960050;background-color:#1e0010">Station&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.49339,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.225033</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLUGHK&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;Goldhawk</span> <span style="color:#960050;background-color:#1e0010">Road</span> <span style="color:#960050;background-color:#1e0010">Underground</span> <span style="color:#960050;background-color:#1e0010">Station&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.502005,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.226715</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLUSBM&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#f92672">&#34;Shepherd&#39;s Bush Market Underground Station&#34;</span>, <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.505579,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.226375</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLUWLA&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;Wood</span> <span style="color:#960050;background-color:#1e0010">Lane</span> <span style="color:#960050;background-color:#1e0010">Underground</span> <span style="color:#960050;background-color:#1e0010">Station&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.509669,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.22453</span>}, 
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLULRD&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;Latimer</span> <span style="color:#960050;background-color:#1e0010">Road</span> <span style="color:#960050;background-color:#1e0010">Underground</span> <span style="color:#960050;background-color:#1e0010">Station&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.513389,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.217799</span>}
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}</span>
+</span></span></code></pre></div><p>Lets dig into this a bit deeper and see what is going on</p>
+<p>We&rsquo;ll start with parameters.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-JSON" data-lang="JSON"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&#39;parameters&#39;:</span> { <span style="color:#f92672">&#34;items&#34;</span> : [
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLUHSC&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;Hammersmith</span> <span style="color:#960050;background-color:#1e0010">(H&amp;C</span> <span style="color:#960050;background-color:#1e0010">Line)</span> <span style="color:#960050;background-color:#1e0010">Underground</span> <span style="color:#960050;background-color:#1e0010">Station&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.49339,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.225033</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLUGHK&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;Goldhawk</span> <span style="color:#960050;background-color:#1e0010">Road</span> <span style="color:#960050;background-color:#1e0010">Underground</span> <span style="color:#960050;background-color:#1e0010">Station&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.502005,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.226715</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLUSBM&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#f92672">&#34;Shepherd&#39;s Bush Market Underground Station&#34;</span>, <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.505579,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.226375</span>},
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLUWLA&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;Wood</span> <span style="color:#960050;background-color:#1e0010">Lane</span> <span style="color:#960050;background-color:#1e0010">Underground</span> <span style="color:#960050;background-color:#1e0010">Station&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.509669,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.22453</span>}, 
+</span></span><span style="display:flex;"><span>    {<span style="color:#960050;background-color:#1e0010">&#39;id&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;940GZZLULRD&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;name&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;Latimer</span> <span style="color:#960050;background-color:#1e0010">Road</span> <span style="color:#960050;background-color:#1e0010">Underground</span> <span style="color:#960050;background-color:#1e0010">Station&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;zone&#39;:</span> <span style="color:#960050;background-color:#1e0010">&#39;2&#39;,</span> <span style="color:#960050;background-color:#1e0010">&#39;lat&#39;:</span> <span style="color:#960050;background-color:#1e0010">51.513389,</span> <span style="color:#960050;background-color:#1e0010">&#39;lon&#39;:</span> <span style="color:#960050;background-color:#1e0010">-0.217799</span>}
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>This is an array of JSON objects, each object having key:value pairs. The array is referenced by its key, items</p>
+<p>Onto the Cyper statement.  We can see the key name being used - items - and the array is going to be referenced by the label batch</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>WITH $items as batch
+</span></span></code></pre></div><p>Next step is to loop around each JSON object in the array like so</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>UNWIND batch as item
+</span></span></code></pre></div><p>Then we get to the Cypher statement that creates a new node if it does not already exist.  We obtain the values we want to use by refering to the key name e.g item.name</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>MERGE ( s:Station {id: item.id, name: item.name, zone: item.zone, lat:item.lat, lon:item.lon })
+</span></span></code></pre></div><h2 id="what-difference-does-it-make">What difference does it make?</h2>
+<p>To illustrate the difference parameters make, we&rsquo;ll run a comparative test that creates the entire London Tube Network in Neo4j.  We&rsquo;ll use Neo4j Desktop as Query APi is not ( yet ) available in Aura.  For the code, we can modify that used in previous articles on this topic.</p>
+<p>As for timing, we&rsquo;ll use a Python decorator to see how long the Neo4j request function call takes.  Here it is , thanks to realpython.com</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PYTHON" data-lang="PYTHON"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">timer</span>(func):
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@functools.wraps</span>(func)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper_timer</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+</span></span><span style="display:flex;"><span>        tic <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>perf_counter()
+</span></span><span style="display:flex;"><span>        value <span style="color:#f92672">=</span> func(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
+</span></span><span style="display:flex;"><span>        toc <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>perf_counter()
+</span></span><span style="display:flex;"><span>        elapsed_time <span style="color:#f92672">=</span> toc <span style="color:#f92672">-</span> tic
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> value
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> wrapper_timer
+</span></span></code></pre></div><p>As we want to focus on Neo4j, lets re-use network connection to avoid the overhead of establishing one for each request.  We will be using Neo4j Desktop locally so network conditions should not be an issue.</p>
+<p>Another variable outside of our control is the response of the TFL API.  As we&rsquo;re not measuring that, we can ignore it.</p>
+<p>Each test, with Parameters and then without Parameters, was run 3 times using these steps each time
+Once you have everything ready</p>
+<ul>
+<li>Start Neo4j</li>
+<li>Run Python code</li>
+<li>Note timing</li>
+<li>Empty Neo4j database with MATCH(n) DETACH DELETE(n)</li>
+<li>Stop Neo4j</li>
+</ul>
+<p>The resulsts are as follows.  All timings are in seconds</p>
+<table>
+  <thead>
+      <tr>
+          <th>Test run</th>
+          <th>With Parameters</th>
+          <th>Without Parameters</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>2.5783</td>
+          <td>15.1745</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>3.0867</td>
+          <td>15.5487</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>2.6416</td>
+          <td>16.8796</td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Average</strong></td>
+          <td>2.6416</td>
+          <td>15.5487</td>
+      </tr>
+  </tbody>
+</table>
+<p>It&rsquo;s hard to avoid the conclusion - use parameters, they save a lot of time</p>
+<h2 id="try-it-out-at-home">Try it out at home</h2>
+<p>If you want to follow along at home then you will need</p>
+<ul>
+<li><a href="https://neo4j.com/download/">Neo4j Desktop </a></li>
+<li>Using Neo4j Desktop, create a new database that uses Neo4j 5.19</li>
+<li>Change the database configuraiton to add this line
+<code>server.http_enabled_modules=TRANSACTIONAL_ENDPOINTS,UNMANAGED_EXTENSIONS,BROWSER,ENTERPRISE_MANAGEMENT_ENDPOINTS,QUERY_API_ENDPOINTS</code></li>
+<li>Python 3.12 or newer</li>
+<li><a href="https://api.tfl.gov.uk">TFL API key</a></li>
+<li>The two Python files,  <a href="/code/2024-04-26-withParameters_code.py">With parameters </a> and <a href="/code/2024-04-26-withoutParameters_code.py">Without parameters </a></li>
+<li>Modified the Python files to use your Neo4j username , password and your TLF API key</li>
+</ul>
+<p>Laters</p>
+<p>JG</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/queryapi"
+      >QueryAPI</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

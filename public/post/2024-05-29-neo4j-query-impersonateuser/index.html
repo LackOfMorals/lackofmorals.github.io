@@ -1,0 +1,465 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Exploring impersonating with the Neo4j Query API - Work In Progress</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Pretending to be someone else
+I recently watched a TV broadcast where someone self-identified as the U.k Prime Minster and claimed to have a plan to solve all of countries challenges.  But there were doubts in my mind as to his credibilty. Anyone who has visited the Unitied Kingdom ( and those of us who live here ) are well aware of the high probabilty for rain and yet this individual had not considered this possibility and they got drenced whilst shouting into the void.  This makes me doubt his capability for forward planning and his claim to be the Prime Minister seems to be very far fetched indeed.  Was this a prank and was it an impersonator out in the rain that day?  We may never know." />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+  integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+  integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+  crossorigin="anonymous"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+  integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+  crossorigin="anonymous"
+></script><script>
+  document.addEventListener('DOMContentLoaded', () =>
+    renderMathInElement(document.body, {
+      
+      
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+      
+      throwOnError: false,
+    }),
+  );
+</script>
+
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.161.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Work In Progress</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? "rgb(0 0 0 / 85%)" : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/LackOfMorals"
+        target="_blank"
+        rel="me"
+      >github</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href="https://instagram.com/body_by_dad"
+        target="_blank"
+        rel="me"
+      >instagram</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./linkedin.svg)"
+        href="https://linkedin.com/in/jgiffard"
+        target="_blank"
+        rel="me"
+      >linkedin</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank"
+        rel="alternate"
+      >rss</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Exploring impersonating with the Neo4j Query API</h1><div class="text-xs antialiased opacity-60"><time>May 29, 2024</time></div></header>
+
+  <section><h1 id="pretending-to-be-someone-else">Pretending to be someone else</h1>
+<p>I recently watched a TV broadcast where someone self-identified as the U.k Prime Minster and claimed to have a plan to solve all of countries challenges.  But there were doubts in my mind as to his credibilty. Anyone who has visited the Unitied Kingdom ( and those of us who live here ) are well aware of the high probabilty for rain and yet this individual had not considered this possibility and they got drenced whilst shouting into the void.  This makes me doubt his capability for forward planning and his claim to be the Prime Minister seems to be very far fetched indeed.  Was this a prank and was it an impersonator out in the rain that day?  We may never know.</p>
+<p>There are times when impersonation can actually be useuful.  Let me give an example in this post.</p>
+<p>Since Neo4j 4.4, it has been possible to execute a Cypher statement as someone different from the person who has authenticated.  This is referred to as impersonation.  You may wonder why have such a capability and there are two very good reasons for it&rsquo;s existence.</p>
+<p>• Testing or debugging security controls is almost impossible unless you can mimic other users</p>
+<p>• Enterprise systems with middle tier components or microservices often need to act on the behalf of other logins. Disconnecting/Reconnecting at every user change is error prone and carries excessive overhead</p>
+<p>The Query API supports this feature and we&rsquo;ll see how those two scenarios can be addressed.  If you want to follow along, use <a href="https://neo4j.com/download/">Neo4j Desktop</a> or a <a href="https://neo4j.com/docs/operations-manual/current/docker/">Docker container</a> and load the Movie sample graph database.</p>
+<h2 id="1-impersonating-users-for-testing--debugging">1. Impersonating users for testing / debugging</h2>
+<p>The user being used with Query API auth needs to be able to impersonate others. This cannot be assigned directly; it has come from role membership.  Lets begin with the user.</p>
+<p>We&rsquo;ll create a user called queryAPIUser that has Read / Write to the Neo4j database where our graph is stored.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>CREATE USER queryAPIUser SET PASSWORD &#39;secretpassword&#39; CHANGE NOT REQUIRED;
+</span></span></code></pre></div><p>This user will not have any other permissions - the only way it can do anything is to assume the identity of another user that has privledges.</p>
+<p>As mentioned, this will come from membership of a role which will need creating, assiging the privilege, and then granting the role to our user.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>CREATE ROLE impersonateUsers; 
+</span></span><span style="display:flex;"><span>GRANT IMPERSONATE (*) ON DBMS TO impersonateUsers;
+</span></span><span style="display:flex;"><span>GRANT ROLE impersonateUsers to queryAPIUser;
+</span></span></code></pre></div><p>Notice that IMPERSONATE (*) is using a wildcard which menans any user can be impersonated.  It is also possible to selectively assign users rather than the blanket approach used here. Be careful!</p>
+<p>To use this feature with the Query API you will need to add another key:value pair to the message body,  impersonatedUser:<em>Username</em></p>
+<p>For example, if we need to impersonate the user neo4j</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryAPIUser:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (n) RETURN n LIMIT 5&#34;, &#34;impersonatedUser&#34;:&#34;neo4j&#34;}&#39;
+</span></span></code></pre></div><h2 id="2-act-on-behalf-of-other-logins">2. Act on behalf of other logins</h2>
+<p>Consider an architecture where users login to a front end with a backend that then determines what those users can do.  The backend resolves access down to various users which will be used to access Neo4j.</p>
+<p>Using impersonation is a mechanism we will configure to do this and we&rsquo;ll look at a simple scenario where the backend will use two users - dataReader and dataWriter.  From a CRUD point of view, these allow for</p>
+<table>
+  <thead>
+      <tr>
+          <th>Role</th>
+          <th>Create</th>
+          <th>Read</th>
+          <th>Update</th>
+          <th>Delete</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>dataReader</td>
+          <td>N</td>
+          <td>Y</td>
+          <td>N</td>
+          <td>N</td>
+      </tr>
+      <tr>
+          <td>dataWriter</td>
+          <td>Y</td>
+          <td>Y</td>
+          <td>Y</td>
+          <td>Y</td>
+      </tr>
+  </tbody>
+</table>
+<p>The setup steps are</p>
+<ul>
+<li>Create the dataReader user and role that allows read</li>
+<li>Create the dataWriter user and role that allows full CRUD</li>
+<li>Create a new role that allows impersonation of dataReader and dataWriter users only</li>
+<li>Create a user for the Query APi and grant it the impersonation role</li>
+</ul>
+<p>Then we&rsquo;ll everyones favourite thing and do a bunch of tests to make sure everything works as we expect.</p>
+<h3 id="create-the-datareader-user-and-role-that-allow-reads">Create the dataReader user and role that allow reads</h3>
+<p>First, the user account.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>CREATE USER dataReader SET PASSWORD &#39;secretpassword&#39; CHANGE NOT REQUIRED;
+</span></span></code></pre></div><p>Then we will create a role that gives its members read access to data</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>CREATE ROLE dataReaders;
+</span></span><span style="display:flex;"><span>GRANT TRAVERSE ON GRAPH neo4j ELEMENTS * TO dataReaders;
+</span></span><span style="display:flex;"><span>GRANT READ {*} ON GRAPH neo4j ELEMENTS * TO dataReaders;
+</span></span></code></pre></div><p>Grant the dataReader this role</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>GRANT ROLE dataReaders TO dataReader;
+</span></span></code></pre></div><h3 id="create-datawriter-user-and-a-role-that-allows-full-crud">Create dataWriter user and a role that allows full CRUD</h3>
+<p>Like for the previous user , we start with the user account.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>CREATE USER dataWriter SET PASSWORD &#39;secretpassword&#39; CHANGE NOT REQUIRED;
+</span></span></code></pre></div><p>Then we will create a role that gives its members read and write access to our data</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>CREATE ROLE dataWriters;
+</span></span><span style="display:flex;"><span>GRANT TRAVERSE ON GRAPH neo4j ELEMENTS * TO dataWriters;
+</span></span><span style="display:flex;"><span>GRANT READ {*} ON GRAPH neo4j ELEMENTS * TO dataWriters;
+</span></span><span style="display:flex;"><span>GRANT WRITE ON GRAPH neo4j TO dataWriters;
+</span></span></code></pre></div><p>Then put our user into this role</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>GRANT ROLE dataWriters TO dataWriter;
+</span></span></code></pre></div><h3 id="create-a-role-that-allows-impersonation-of-the-two-users">Create a role that allows impersonation of the two users</h3>
+<p>Naming is not one of my key strengths.  It&rsquo;s why both of my daugthers forenames both start with the letter A because those are at the start of the alphabetical list of possibilities.  It&rsquo;s a good a reason as any. I&rsquo;m going for a descriptive name of the role here.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>CREATE ROLE impersonateDataUsers; 
+</span></span><span style="display:flex;"><span>GRANT IMPERSONATE (dataReader, dataWriter) ON DBMS TO impersonateDataUsers;
+</span></span></code></pre></div><h3 id="create-an-account-for-use-by-the-query-api-and-grant-it-our-impersonate-role">Create an account for use by the Query API and grant it our impersonate role</h3>
+<p>This account will not have any access to our data unless impersonation is used. Using every ounce of my naming ability ( I did have a spell in Marketing - thankfully I never was called on to name products ) we will call this user queryNoData as that reflects its purpose.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>CREATE USER queryNoData SET PASSWORD &#39;secretpassword&#39; CHANGE NOT REQUIRED;
+</span></span><span style="display:flex;"><span>GRANT ROLE impersonateDataUsers to queryNoData;
+</span></span></code></pre></div><h3 id="lets-go-try-this-out">Lets go try this out</h3>
+<p>That&rsquo;s a lot of typing or copy / paste that we&rsquo;ve done.  Lets check that it&rsquo;s working as we expect.</p>
+<p>As a reminder of what we expect data access to be for our various users</p>
+<table>
+  <thead>
+      <tr>
+          <th>Role</th>
+          <th>Create</th>
+          <th>Read</th>
+          <th>Update</th>
+          <th>Delete</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>queryNoData</td>
+          <td>N</td>
+          <td>N</td>
+          <td>N</td>
+          <td>N</td>
+      </tr>
+      <tr>
+          <td>dataReader</td>
+          <td>N</td>
+          <td>Y</td>
+          <td>N</td>
+          <td>N</td>
+      </tr>
+      <tr>
+          <td>dataWriter</td>
+          <td>Y</td>
+          <td>Y</td>
+          <td>Y</td>
+          <td>Y</td>
+      </tr>
+  </tbody>
+</table>
+<p>Rather than spam this post with all of the tests and their results, I&rsquo;ll put the curl statements for each CRUD operation at the bottom of this post so you can try them out.  You will need to modify the various values to adjust for each test.  Suffice to say that everything did work as expected</p>
+<h2 id="the-end">The end</h2>
+<p>We&rsquo;ve seen how impersonation can be used with the Query API for a couple of scenarios.  There&rsquo;s an upcoming feature involving the use of JWT claims that can also be used here but more on that when it ships.</p>
+<p>You may have questions on how Neo4j roles / permissions work. Further information is available on the documentation here:- <a href="https://neo4j.com/docs/operations-manual/current/authentication-authorization/">Authentication and Authorisation</a></p>
+<p>My next post on the Query API will look at how we can use the various roles of each member of a cluster to help with performance and use of bookmarks to immediately read our writes.</p>
+<p>Until then,</p>
+<p>JG, the elder PM.</p>
+<hr>
+<h2 id="curl-statements-used-in-testing">Curl statements used in testing</h2>
+<h3 id="querynodata">queryNoData</h3>
+<p>This user account can not access our data in anyway.</p>
+<p><strong>Create</strong>
+Expected result: No data created</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;CREATE (RyanReynolds:Person {name:&#39;\&#39;&#39;Ryan Reynolds&#39;\&#39;&#39;,born:1976})&#34;} &#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div><p><strong>Read</strong>
+Expected result: No data returned</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (n) RETURN n LIMIT 5&#34; } &#39; \
+</span></span><span style="display:flex;"><span>| jq 
+</span></span></code></pre></div><p><strong>Update</strong>
+Expected result:  Data is not updated</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (p:Person {name:&#39;\&#39;&#39;Jack Nicholson&#39;\&#39;&#39;}) SET p.name=&#39;\&#39;&#39;Bob Reynolds&#39;\&#39;&#39; RETURN p.name&#34;} &#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div><p><strong>Delete</strong>
+Expected result: Data is not deleted</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (p:Person) WHERE p.name=&#39;\&#39;&#39;Jack Nicholson&#39;\&#39;&#39; DELETE p&#34; }&#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div><h3 id="datareader">dataReader</h3>
+<p>This user account can read our data but not make any changes to it.</p>
+<p><strong>Create</strong>
+Expected result: No data created</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;CREATE (RyanReynolds:Person {name:&#39;\&#39;&#39;Ryan Reynolds&#39;\&#39;&#39;,born:1976})&#34;, &#34;impersonatedUser&#34;:&#34;dataReader&#34;} &#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div><p><strong>Read</strong>
+Expected result: Data returned</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (n) RETURN n LIMIT 5&#34;, &#34;impersonatedUser&#34;:&#34;dataReader&#34; } &#39; \
+</span></span><span style="display:flex;"><span>| jq 
+</span></span></code></pre></div><p><strong>Update</strong>
+Expected result:  Data is not updated</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (p:Person {name:&#39;\&#39;&#39;Jack Nicholson&#39;\&#39;&#39;}) SET p.name=&#39;\&#39;&#39;Bob Reynolds&#39;\&#39;&#39; RETURN p.name&#34;, &#34;impersonatedUser&#34;:&#34;dataReader&#34;} &#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div><p><strong>Delete</strong>
+Expected result: Data is not deleted</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (p:Person) WHERE p.name=&#39;\&#39;&#39;Jack Nicholson&#39;\&#39;&#39; DELETE p&#34;, &#34;impersonatedUser&#34;:&#34;dataReader&#34; } &#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div><h3 id="datawriter">dataWriter</h3>
+<p>This user account can read our data and make changes to it.</p>
+<p><strong>Create</strong>
+Expected result: Data created</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;CREATE (p:Person {name:&#39;\&#39;&#39;Ryan Reynolds&#39;\&#39;&#39;,born:1976}) RETURN p &#34;, &#34;impersonatedUser&#34;:&#34;dataWriter&#34;} &#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div><p><strong>Read</strong>
+Expected result: Data returned</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (n) RETURN n LIMIT 5&#34;, &#34;impersonatedUser&#34;:&#34;dataWriter&#34; } &#39; \
+</span></span><span style="display:flex;"><span>| jq 
+</span></span></code></pre></div><p><strong>Update</strong>
+Expected result:  Data is updated</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (p:Person {name:&#39;\&#39;&#39;Ryan Reynolds&#39;\&#39;&#39;}) SET p.name=&#39;\&#39;&#39;Bob Reynolds&#39;\&#39;&#39; RETURN p.name&#34;, &#34;impersonatedUser&#34;:&#34;dataWriter&#34;} &#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div><p><strong>Delete</strong>
+Expected result: Data is deleted</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-TEXT" data-lang="TEXT"><span style="display:flex;"><span>curl --location &#39;http://localhost:7474/db/neo4j/query/v2&#39; \
+</span></span><span style="display:flex;"><span>--user &#39;queryNoData:secretpassword&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Content-Type: application/json&#39; \
+</span></span><span style="display:flex;"><span>--header &#39;Accept: application/json&#39; \
+</span></span><span style="display:flex;"><span>--data &#39;{ &#34;statement&#34;: &#34;MATCH (p:Person) WHERE p.name=&#39;\&#39;&#39;Bob Reynolds&#39;\&#39;&#39; DELETE p&#34;, &#34;impersonatedUser&#34;:&#34;dataWriter&#34; } &#39; \
+</span></span><span style="display:flex;"><span>| jq
+</span></span></code></pre></div></section>
+
+  <footer class="mt-12 flex flex-wrap"><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/neo4j"
+      >Neo4j</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/pm"
+      >PM</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/devex"
+      >DevEx</a
+    ><a
+      class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/queryapi"
+      >QueryAPI</a
+    ></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2026
+    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>
