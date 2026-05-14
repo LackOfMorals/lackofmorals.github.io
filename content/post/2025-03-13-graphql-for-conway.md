@@ -76,7 +76,7 @@ mutation createCells($input: [CellCreateInput!]!) {
 
 And the associated variables JSON document
 
-```JSON
+```Text
 {
   "input": [
     {
@@ -119,7 +119,7 @@ mutation connectCellWithNeighbours($where: CellWhere, $update: CellUpdateInput) 
 
 The variable JSON document looks like this
 
-```JSON
+```Text
 {
   "where": {
     "id": {
@@ -230,7 +230,7 @@ query aliveCellsWithAliveNeighours($where: CellWhere) {
 
 The variables JSON document will be
 
-```JSON
+```Text
 {
   "where": {
     "alive": {
@@ -242,7 +242,7 @@ The variables JSON document will be
 
 The response will return a cells ID, alive ( true or false ) and then the IDs of any alive neighbours. Here's a snippet of a typical response to this query.
 
-```JSON
+```Text
 {
     "data": {
         "cells": [
@@ -290,7 +290,7 @@ This is a relatively straight forward mutation
 
 The variable JSON document will be
 
-```JSON
+```Text
 {
   "where": [
     {
@@ -315,7 +315,7 @@ Running Conway Game Of Life requires evaluating each cell in the grid to see how
 
 You may noticed in the variable JSON that the mutation, to change a single cell from alive to dead and vice a versa, uses a list which appears odd as there is only one entry for that particular operation. But it's useful for the bulk changes that will be needed when the simulation is running. Here our code will execute the _Find how many Neighbours are alive query_ and then loop around the list of cells building up two lists of cells; those to mark alive and those who will be dead. The lists can be then used with mutation _Alive or Dead Cells_ with a different variable JSON document to what we used before.
 
-```JSON
+```Text
 {
     where: {
         id: {

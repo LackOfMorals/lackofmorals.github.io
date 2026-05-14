@@ -80,7 +80,7 @@ The data contract for responses can be found in the Query API documentation but 
 
 Here's a sample of what's returned from the Cypher statement we're using
 
-```JSON
+```Text
 {
     "data": {
         "fields": [
@@ -126,7 +126,7 @@ const moviesMap = json.data["values"].map( movieEntries => { return movieEntries
 
 This trims the response from Neo4j Query API to just the data.
 
-```JSON
+```Text
 [
     [
         "The Matrix",

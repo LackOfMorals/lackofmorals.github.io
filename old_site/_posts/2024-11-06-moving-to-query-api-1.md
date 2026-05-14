@@ -67,7 +67,7 @@ Feedback is encouraged.
 
 It's morphed a bit from the response that you previously got from the HTTP API. The response has been organised into distinct areas within the JSON response with a top level that contains one or more these entries
 
-```JSON
+```Text
 
 {
    "data":{},

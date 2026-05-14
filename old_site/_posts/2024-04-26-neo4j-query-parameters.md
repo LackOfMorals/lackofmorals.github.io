@@ -38,7 +38,7 @@ Parameterized queries are available for direct use with Cypher , Neo4j drivers a
 
 The Query API supports the use of parameters ( link to docs page ) with a request body that looks like this
 
-```JSON
+```Text
 {
 'statement': Parameterized Cypher statement that references values,
 'parameters': { "key" : [{Values}] }
@@ -47,7 +47,7 @@ The Query API supports the use of parameters ( link to docs page ) with a reques
 
 If we used Query API with parameters for the Circle Line , then we could do this in a single request ( I'll just put 5 Circle Line stations in to keep it readable ).
 
-```JSON
+```Text
 {
 'statement':'WITH $items as batch UNWIND batch as item MERGE ( s:Station {id: item.id, name: item.name, zone: item.zone, lat:item.lat, lon:item.lon }),
 'parameters': { "items" : [
@@ -65,7 +65,7 @@ Lets dig into this a bit deeper and see what is going on
 
 We'll start with parameters.  
 
-```JSON
+```Text
 'parameters': { "items" : [
     {'id': '940GZZLUHSC', 'name': 'Hammersmith (H&C Line) Underground Station', 'zone': '2', 'lat': 51.49339, 'lon': -0.225033},
     {'id': '940GZZLUGHK', 'name': 'Goldhawk Road Underground Station', 'zone': '2', 'lat': 51.502005, 'lon': -0.226715},

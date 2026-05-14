@@ -62,7 +62,7 @@ curl --location 'https://AURA_HOSTNAME/db/neo4j/query/v2' \
 
 If all is well, you will see a response similar to this
 
-```JSON
+```Text
 {
  "data": {"fields":["1"],"values":[1]},
  "bookmarks":["FB:kcwQlRkKozmpRoG708y0045J18kJmZA="]
@@ -89,7 +89,7 @@ curl --location 'https://AURA_HOSTNAME/db/neo4j/query/v2' \
 
 Here's an example response from the example Movies dataset that has been formatted to improve readability.
 
-```JSON
+```Text
 {
   "data": {
     "fields": [

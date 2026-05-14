@@ -64,7 +64,7 @@ curl - location 'http://127.0.0.1:7474/db/neo4j/query/v2' \
 
 We've just use the Query API to ask Neo4j for all of the movies that were released between 1990 and 2000.  If all is working as we expect, you should see this.
 
-```JSON
+```Text
 {"data":{"fields":["nineties.title"],"values":["The Matrix","The Devil's Advocate","A Few Good Men","As Good as It Gets","What Dreams May Come","Snow Falling on Cedars","You've Got Mail","Sleepless in Seattle","Joe Versus the Volcano","When Harry Met Sally","That Thing You Do","The Birdcage","Unforgiven","Johnny Mnemonic","The Green Mile","Hoffa","Apollo 13","Twister","Bicentennial Man","A League of Their Own"]},"bookmarks":["FB:kcwQQdg6mV80SxC+JcAk3s1YyRWQ"]}%
 ```
 

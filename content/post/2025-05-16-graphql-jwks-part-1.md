@@ -163,7 +163,7 @@ curl --request POST \
 
 This should result in a response that looks similar to this
 
-```JSON
+```Text
 {
 "token_type": "Bearer",
 "expires_in": 3600,

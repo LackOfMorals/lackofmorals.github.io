@@ -29,7 +29,7 @@ Is there a tfl endpoint that can give us all of the stationss a tube line and th
 
 Looking at the response from <https://api.tfl.gov.uk/Line/TUBE_LINE/Route/Sequence/inbound> , we can see a glint of hope
 
-```json
+```Text
 
  "stations": [
         {
@@ -50,7 +50,7 @@ Looking at the response from <https://api.tfl.gov.uk/Line/TUBE_LINE/Route/Sequen
 
 There's an array that contains station details! With the route sequences that follow later in the response, shown below, it looks like ( maybe ) we have what we need.
 
-```json
+```Text
     "orderedLineRoutes": [
         {
             "$type": "Tfl.Api.Presentation.Entities.OrderedRoute, Tfl.Api.Presentation.Entities",
@@ -78,7 +78,7 @@ After experimenting with this, I noticed that several stations were missing. It 
 
 Not to be put off, I carried on scrolling my way through the entire response, which felt very much like doom scrolling or whatever the cool kids do, something else made its presence felt. Thankfully not the rather spicy food I had consumed the previous evening on a night out [^3] but this
 
-```json
+```Text
     "stopPointSequences": [
         {
             "$type": "Tfl.Api.Presentation.Entities.StopPointSequence, Tfl.Api.Presentation.Entities",

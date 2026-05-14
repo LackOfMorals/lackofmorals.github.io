@@ -38,7 +38,7 @@ These are the custom claims created to share information between parties that ag
 
 Here's an example of a decoded payload from Okta that was configured as described in the Part One blog.
 
-```JSON
+```Text
 {
     "ver": 1,
     "jti": "AT.3qOFwHd-YW0gOUACNT2th5-1r7YQ3DDnug3UGOvaDcI",
@@ -91,7 +91,7 @@ Configuring the GraphQL to support JWT will allow anyone using SSO in ACME Corp 
 
 Lets modify the Type Definitions to use this
 
-```JSON
+```Text
 type JWTPayload @jwt {
             roles: [String!]! @jwtClaim(path: "scp")
             }
@@ -117,7 +117,7 @@ Here's where we can make use of `@authorization` directive combined with either 
 
 Rather than rush in, ACME Corp decides to try a few things using the Movies example graph. Here's the Type Definitions for Movies graph.
 
-```JSON
+```Text
 type JWT @jwt {
     roles: [String!]! @jwtClaim(path: "scp")
 }
@@ -185,7 +185,7 @@ There are two rules ACME can use with `@authorization` filtering and validuation
 
 The Person type contains sensitive data that we want to protect. Lets do that by restricting it to only those users with "acmeGraphQLSensitive" in their token.
 
-```JSON
+```Text
 type Person @node @authorization(filter: [ { where: { jwt: { roles: { includes: "acmeGraphQLSensitive" } } } } ])
 {
   actedInMovies: [Movie!]!
@@ -212,7 +212,7 @@ type Person @node @authorization(filter: [ { where: { jwt: { roles: { includes: 
 
 If you now run a graphQL query with the "acmeGraphQLSensitive" claim in your token the query will return what's being asked for. Without the token you just see this
 
-```JSON
+```Text
 {
     "data": {
         "people": []
@@ -224,7 +224,7 @@ But what if there are only a subset of fields that need to protected ? Well you 
 
 To do this, ACME changes its Type Def as follows
 
-```JSON
+```Text
 type Person @node
 {
   actedInMovies: [Movie!]!
@@ -251,7 +251,7 @@ type Person @node
 
 When a query is issued that does not include _born_ and the JWT does not have "acmeGraphQLSensitive" in its claims, then we still get them requested results
 
-```JSON
+```Text
 {
     "data": {
         "people": [
@@ -265,13 +265,13 @@ When a query is issued that does not include _born_ and the JWT does not have "a
 
 Instead of empty JSON documents, ACME could have an error returned by using **validation** instead of **filter**. The structure is similar
 
-```JSON
+```Text
 born: BigInt @authorization(validate: [ { where: { jwt: { roles: { includes: "acmeGraphQLSensitive" } } } } ])
 ```
 
 When requesting **born** without the required JWT claim, you now get an error like this.
 
-```JSON
+```Text
 {
     "errors": [
         {
@@ -299,7 +299,7 @@ With protection for sensitive data, ACME Corporation turns it attention to contr
 
 Staying with the Type Defs already present, we add `@authentication`, with a check for "acmeGraphQLReadWrite" in the JWT, to each node that requires protection against change like this:-
 
-```JSON
+```Text
 @authentication(operations: [CREATE, DELETE, UPDATE], jwt: { roles: { includes: "acmeGraphQLReadWrite" } } )
 ```
 
@@ -307,7 +307,7 @@ See the [list of operations](https://neo4j.com/docs/graphql/current/security/aut
 
 ACME Corps type defintions now look like this
 
-```JSON
+```Text
 type JWT @jwt {
     roles: [String!]! @jwtClaim(path: "scp")
 }
@@ -372,7 +372,7 @@ type ReviewedProperties @relationshipProperties {
 
 If someone at ACME Corp tries to make a change and lacks the necessary claim in their JWT, they get this response
 
-```JSON
+```Text
 {
     "errors": [
         {
