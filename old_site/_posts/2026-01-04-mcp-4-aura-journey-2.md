@@ -7,7 +7,7 @@ tags: Neo4j PM DevEx Go
 
 ## MCP for Aura API - List instances
 
-The work from my [first step](https://www.pm50plus.com/2025/12/16/mcp-4-aura-journey-1.html) puts me in a positon to build the first tool - list instances. This MCP tool will
+The work from my [first step](https://www.pm50plus.co.uk/2025/12/16/mcp-4-aura-journey-1.html) puts me in a positon to build the first tool - list instances. This MCP tool will
 
 - Get a list of instances
 - Obtain a summary set of data for each one

@@ -229,7 +229,7 @@ Which means we have arrived at the point to start thinking about the GraphQL que
     <h1 class="my-0! pb-2.5">Lets figure out the GraphQL for Conway Game Of Life</h1><div class="text-xs antialiased opacity-60"><time>Mar 13, 2025</time></div></header>
 
   <section><h2 id="graphql-for-conway-game-of-life">GraphQL for Conway Game Of Life</h2>
-<p>In my <a href="https://www.pm50plus.com/2025/03/01/conway-part-une.html">last post</a> I covered setting up GraphQL for AuraDB with this Schema / Type Definition</p>
+<p>In my <a href="https://www.pm50plus.co.uk/2025/03/01/conway-part-une.html">last post</a> I covered setting up GraphQL for AuraDB with this Schema / Type Definition</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Text" data-lang="Text"><span style="display:flex;"><span>type Cell @node {
 </span></span><span style="display:flex;"><span> cellsConnected: [Cell!]! @relationship(type: &#34;NEIGHBOUR_OF&#34;, direction: IN)
 </span></span><span style="display:flex;"><span> connectedCells: [Cell!]! @relationship(type: &#34;NEIGHBOUR_OF&#34;, direction: OUT)

@@ -81,7 +81,7 @@ CALL (c) {
 
 ## Shake it off
 
-The GraphQL schema was generated using the Introspect tool which I had adapted to use the GraphQL v7 library used by the GraphQL for Neo4j AuraDB. If you want to see how to modify the Introspector and build your own, see this [blog post](https://www.pm50plus.com/2025/02/25/graphql-aura-v7-library.html).
+The GraphQL schema was generated using the Introspect tool which I had adapted to use the GraphQL v7 library used by the GraphQL for Neo4j AuraDB. If you want to see how to modify the Introspector and build your own, see this [blog post](https://www.pm50plus.co.uk/2025/02/25/graphql-aura-v7-library.html).
 
 I have createad a GitHUb repo with everything already done. To use this , do the following
 

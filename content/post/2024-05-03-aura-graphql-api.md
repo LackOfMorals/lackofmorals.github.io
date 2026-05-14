@@ -26,7 +26,7 @@ I've recently embarked on learning more about React so lets take that route.  Fi
 
 ### Provisioning the GraphQL API for Aura
 
-This is performed by using of the Aura CLI, something I have written about [before](https://www.pm50plus.com/2023/11/30/cli.html).  We've extended the Aura CLI for this purpose with a new command group ( BTW it's not visible unless you're in the EAP). The command group is 'data-apis' which could be suggestive of more API types,  say REST or gRPC, as a possibility in the future but I couldn't possibly comment on that.  
+This is performed by using of the Aura CLI, something I have written about [before](https://www.pm50plus.co.uk/2023/11/30/cli.html).  We've extended the Aura CLI for this purpose with a new command group ( BTW it's not visible unless you're in the EAP). The command group is 'data-apis' which could be suggestive of more API types,  say REST or gRPC, as a possibility in the future but I couldn't possibly comment on that.  
 
 Using the Aura CLI, we provision the GraphQL API like so
 

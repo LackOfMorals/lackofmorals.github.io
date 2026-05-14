@@ -20,7 +20,7 @@
       <link>https://www.pm50plus.co.uk/post/2026-01-04-mcp-4-aura-journey-2/</link>
       <pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate>
       <guid>https://www.pm50plus.co.uk/post/2026-01-04-mcp-4-aura-journey-2/</guid>
-      <description>&lt;h2 id=&#34;mcp-for-aura-api---list-instances&#34;&gt;MCP for Aura API - List instances&lt;/h2&gt;&#xA;&lt;p&gt;The work from my &lt;a href=&#34;https://www.pm50plus.com/2025/12/16/mcp-4-aura-journey-1.html&#34;&gt;first step&lt;/a&gt; puts me in a positon to build the first tool - list instances. This MCP tool will&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Get a list of instances&lt;/li&gt;&#xA;&lt;li&gt;Obtain a summary set of data for each one&lt;/li&gt;&#xA;&lt;li&gt;Return the response as a JSON document to the LLM / Agent&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;All that is need is to write the tool handler and spec. Lets get into that&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;mcp-for-aura-api---list-instances&#34;&gt;MCP for Aura API - List instances&lt;/h2&gt;&#xA;&lt;p&gt;The work from my &lt;a href=&#34;https://www.pm50plus.co.uk/2025/12/16/mcp-4-aura-journey-1.html&#34;&gt;first step&lt;/a&gt; puts me in a positon to build the first tool - list instances. This MCP tool will&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Get a list of instances&lt;/li&gt;&#xA;&lt;li&gt;Obtain a summary set of data for each one&lt;/li&gt;&#xA;&lt;li&gt;Return the response as a JSON document to the LLM / Agent&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;All that is need is to write the tool handler and spec. Lets get into that&lt;/p&gt;</description>
     </item>
     <item>
       <title>Getting ready</title>
@@ -55,7 +55,7 @@
       <link>https://www.pm50plus.co.uk/post/2025-05-23-graphql-jwks-part-2/</link>
       <pubDate>Fri, 23 May 2025 00:00:00 +0000</pubDate>
       <guid>https://www.pm50plus.co.uk/post/2025-05-23-graphql-jwks-part-2/</guid>
-      <description>&lt;h1 id=&#34;an-introduction-to-using-jwts-with-graphql-for-auradb---part-two&#34;&gt;An introduction to using JWTs with GraphQL for AuraDB - Part Two&lt;/h1&gt;&#xA;&lt;p&gt;In &lt;a href=&#34;https://www.pm50plus.com/2025/05/16/graphql-jwks-part-1.html&#34;&gt;part one&lt;/a&gt; I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.&lt;/p&gt;&#xA;&lt;p&gt;This blog will look at using properties of a token to control access to the API and the data within.&lt;/p&gt;&#xA;&lt;p&gt;But I&amp;rsquo;m overreaching a bit as I&amp;rsquo;m assuming knowledge ( a trap so easier to stumble into when trying to convey information ) on the topic of JSON Web Token (JWT ).&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;an-introduction-to-using-jwts-with-graphql-for-auradb---part-two&#34;&gt;An introduction to using JWTs with GraphQL for AuraDB - Part Two&lt;/h1&gt;&#xA;&lt;p&gt;In &lt;a href=&#34;https://www.pm50plus.co.uk/2025/05/16/graphql-jwks-part-1.html&#34;&gt;part one&lt;/a&gt; I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.&lt;/p&gt;&#xA;&lt;p&gt;This blog will look at using properties of a token to control access to the API and the data within.&lt;/p&gt;&#xA;&lt;p&gt;But I&amp;rsquo;m overreaching a bit as I&amp;rsquo;m assuming knowledge ( a trap so easier to stumble into when trying to convey information ) on the topic of JSON Web Token (JWT ).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using token with GraphQL for AuraDB </title>

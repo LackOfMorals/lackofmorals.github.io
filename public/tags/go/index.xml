@@ -20,7 +20,7 @@
       <link>https://www.pm50plus.co.uk/post/2026-01-04-mcp-4-aura-journey-2/</link>
       <pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate>
       <guid>https://www.pm50plus.co.uk/post/2026-01-04-mcp-4-aura-journey-2/</guid>
-      <description>&lt;h2 id=&#34;mcp-for-aura-api---list-instances&#34;&gt;MCP for Aura API - List instances&lt;/h2&gt;&#xA;&lt;p&gt;The work from my &lt;a href=&#34;https://www.pm50plus.com/2025/12/16/mcp-4-aura-journey-1.html&#34;&gt;first step&lt;/a&gt; puts me in a positon to build the first tool - list instances. This MCP tool will&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Get a list of instances&lt;/li&gt;&#xA;&lt;li&gt;Obtain a summary set of data for each one&lt;/li&gt;&#xA;&lt;li&gt;Return the response as a JSON document to the LLM / Agent&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;All that is need is to write the tool handler and spec. Lets get into that&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;mcp-for-aura-api---list-instances&#34;&gt;MCP for Aura API - List instances&lt;/h2&gt;&#xA;&lt;p&gt;The work from my &lt;a href=&#34;https://www.pm50plus.co.uk/2025/12/16/mcp-4-aura-journey-1.html&#34;&gt;first step&lt;/a&gt; puts me in a positon to build the first tool - list instances. This MCP tool will&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Get a list of instances&lt;/li&gt;&#xA;&lt;li&gt;Obtain a summary set of data for each one&lt;/li&gt;&#xA;&lt;li&gt;Return the response as a JSON document to the LLM / Agent&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;All that is need is to write the tool handler and spec. Lets get into that&lt;/p&gt;</description>
     </item>
     <item>
       <title>Getting ready</title>

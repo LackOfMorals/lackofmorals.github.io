@@ -8,7 +8,7 @@ draft = false
 
 # An introduction to using JWTs with GraphQL for AuraDB - Part Two
 
-In [part one](https://www.pm50plus.com/2025/05/16/graphql-jwks-part-1.html) I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.
+In [part one](https://www.pm50plus.co.uk/2025/05/16/graphql-jwks-part-1.html) I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.
 
 This blog will look at using properties of a token to control access to the API and the data within.
 
