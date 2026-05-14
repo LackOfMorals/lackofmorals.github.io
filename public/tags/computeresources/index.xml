@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ComputeResources on Work In Progress</title>
-    <link>http://localhost:1313/tags/computeresources/</link>
+    <link>https://www.pm50plus.co.uk/tags/computeresources/</link>
     <description>Recent content in ComputeResources on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Jan 2022 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/computeresources/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/computeresources/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Cattle and Pets</title>
-      <link>http://localhost:1313/post/2022-01-06-cattle-and-pets/</link>
+      <link>https://www.pm50plus.co.uk/post/2022-01-06-cattle-and-pets/</link>
       <pubDate>Thu, 06 Jan 2022 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2022-01-06-cattle-and-pets/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2022-01-06-cattle-and-pets/</guid>
       <description>&lt;h2 id=&#34;cattle-and-pets&#34;&gt;Cattle and Pets&lt;/h2&gt;&#xA;&lt;p&gt;Cattle and Pets is a way to help think about compute resources that are involved in providing a service. The resources could be anything from a kubernetes pod to a S3 bucket. Determining which classification you assign determines how you can treat it. With most cloud service providers allowing you to tag a resource, you can use these as filters to see which resources are critical requiring care and attention and those that can be left ( almost ) alone.&lt;/p&gt;</description>
     </item>
   </channel>

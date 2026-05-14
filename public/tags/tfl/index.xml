@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tfl on Work In Progress</title>
-    <link>http://localhost:1313/tags/tfl/</link>
+    <link>https://www.pm50plus.co.uk/tags/tfl/</link>
     <description>Recent content in Tfl on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 13 Oct 2023 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/tfl/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/tfl/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Using Python and data from Tfl API</title>
-      <link>http://localhost:1313/post/2023-10-13-python-neo4j-and-the-tube/</link>
+      <link>https://www.pm50plus.co.uk/post/2023-10-13-python-neo4j-and-the-tube/</link>
       <pubDate>Fri, 13 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2023-10-13-python-neo4j-and-the-tube/</guid>
-      <description>&lt;h1 id=&#34;episode-1--back-to-school&#34;&gt;Episode 1 : Back to school&lt;/h1&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/tflTube/tflStations.png&#34; alt=&#34;London Tube Stations&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;To become more familar with the TfL API and working with Neo4j programmatically , I&amp;rsquo;m going to write some funky Python code to explore and learn more about them. In Agile terms, it&amp;rsquo;s a Spike. The vast majority of this code is likely to be thrown away - no need to make it pretty , optimised or anything like that, just functional.&lt;/p&gt;</description>
+      <guid>https://www.pm50plus.co.uk/post/2023-10-13-python-neo4j-and-the-tube/</guid>
+      <description>&lt;h1 id=&#34;episode-1--back-to-school&#34;&gt;Episode 1 : Back to school&lt;/h1&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://www.pm50plus.co.uk/img/tflTube/tflStations.png&#34; alt=&#34;London Tube Stations&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;To become more familar with the TfL API and working with Neo4j programmatically , I&amp;rsquo;m going to write some funky Python code to explore and learn more about them. In Agile terms, it&amp;rsquo;s a Spike. The vast majority of this code is likely to be thrown away - no need to make it pretty , optimised or anything like that, just functional.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Exploring London tube as a graph</title>
-      <link>http://localhost:1313/post/2023-10-03-exploring-london-tube-as-a-graph/</link>
+      <link>https://www.pm50plus.co.uk/post/2023-10-03-exploring-london-tube-as-a-graph/</link>
       <pubDate>Tue, 03 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2023-10-03-exploring-london-tube-as-a-graph/</guid>
-      <description>&lt;h1 id=&#34;exploring-london-tube-as-a-graph&#34;&gt;Exploring London tube as a graph&lt;/h1&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/tflTube/tfl.png&#34; alt=&#34;London Tube from graph database&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;When I set out to do this, I had two main goals&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Learn more about practical applications of graph databases&lt;/li&gt;&#xA;&lt;li&gt;Improve my understanding of what it is like to work with graph databases from the perspective of a developer&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;I&amp;rsquo;ll need a data source to build the graph from. I picked the London Tube Network to use as it as the people who run it, Transport For London - TFL , have a well documented API that provides a wealth of information. And it&amp;rsquo;s free for basic use. Also, looking at a map of the Tube, it&amp;rsquo;s looks like a graph.&lt;/p&gt;</description>
+      <guid>https://www.pm50plus.co.uk/post/2023-10-03-exploring-london-tube-as-a-graph/</guid>
+      <description>&lt;h1 id=&#34;exploring-london-tube-as-a-graph&#34;&gt;Exploring London tube as a graph&lt;/h1&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://www.pm50plus.co.uk/img/tflTube/tfl.png&#34; alt=&#34;London Tube from graph database&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;When I set out to do this, I had two main goals&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Learn more about practical applications of graph databases&lt;/li&gt;&#xA;&lt;li&gt;Improve my understanding of what it is like to work with graph databases from the perspective of a developer&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;I&amp;rsquo;ll need a data source to build the graph from. I picked the London Tube Network to use as it as the people who run it, Transport For London - TFL , have a well documented API that provides a wealth of information. And it&amp;rsquo;s free for basic use. Also, looking at a map of the Tube, it&amp;rsquo;s looks like a graph.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

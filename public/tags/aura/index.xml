@@ -2,95 +2,95 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Aura on Work In Progress</title>
-    <link>http://localhost:1313/tags/aura/</link>
+    <link>https://www.pm50plus.co.uk/tags/aura/</link>
     <description>Recent content in Aura on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 03 Apr 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/aura/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/aura/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Conway Game Of Life application</title>
-      <link>http://localhost:1313/post/2025-04-03-conway-react-code/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-04-03-conway-react-code/</link>
       <pubDate>Thu, 03 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-04-03-conway-react-code/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-04-03-conway-react-code/</guid>
       <description>&lt;h2 id=&#34;conway-game-of-life&#34;&gt;Conway Game Of Life&lt;/h2&gt;&#xA;&lt;p&gt;A common piece of advice on how to best learn a new development language is to build an application. For example, you often see variants on &amp;lsquo;hello world&amp;rsquo; to start with and then folks try progressively more challenging endeavours. This technique follows the well trodden path of crawl, walk, run and, maybe, matharons ( I guess the equivalent in these times of AI assistants would be taking a metaphorical taxi to speed up the journey ).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Lets figure out the GraphQL for Conway Game Of Life</title>
-      <link>http://localhost:1313/post/2025-03-13-graphql-for-conway/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-03-13-graphql-for-conway/</link>
       <pubDate>Thu, 13 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-03-13-graphql-for-conway/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-03-13-graphql-for-conway/</guid>
       <description>&lt;h2 id=&#34;graphql-for-conway-game-of-life&#34;&gt;GraphQL for Conway Game Of Life&lt;/h2&gt;&#xA;&lt;p&gt;In my &lt;a href=&#34;https://www.pm50plus.com/2025/03/01/conway-part-une.html&#34;&gt;last post&lt;/a&gt; I covered setting up GraphQL for AuraDB with this Schema / Type Definition&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-Text&#34; data-lang=&#34;Text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;type Cell @node {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; cellsConnected: [Cell!]! @relationship(type: &amp;#34;NEIGHBOUR_OF&amp;#34;, direction: IN)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; connectedCells: [Cell!]! @relationship(type: &amp;#34;NEIGHBOUR_OF&amp;#34;, direction: OUT)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; alive: Boolean!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; id: String!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; x: BigInt!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; y: BigInt!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;and checked it was all working with a very simple GraphQL Query&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-Text&#34; data-lang=&#34;Text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl --location  &amp;#39;YOUR_GRAPHQL_DATA_API_URL&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--header &amp;#39;Content-Type: application/json&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--header &amp;#39;x-api-key: YOUR_API_KEY&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--data &amp;#39;{&amp;#34;query&amp;#34;:&amp;#34;query getAllCells {\n    cells {\n      alive\n      id\n      x\n      y\n    }\n  }&amp;#34;,&amp;#34;variables&amp;#34;:{}}&amp;#39;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Which means we have arrived at the point to start thinking about the GraphQL queries and mutations that will be needed as part of the implementation of Conway Game Of Life.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Enabling introspection on the GraphQL for Aura</title>
-      <link>http://localhost:1313/post/2025-03-12-enabling-introspection-on-grapqhl-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-03-12-enabling-introspection-on-grapqhl-api/</link>
       <pubDate>Wed, 12 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-03-12-enabling-introspection-on-grapqhl-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-03-12-enabling-introspection-on-grapqhl-api/</guid>
       <description>&lt;h2 id=&#34;enabling-introspection-on-the-graphql-for-aura&#34;&gt;Enabling introspection on the GraphQL for Aura&lt;/h2&gt;&#xA;&lt;p&gt;Enabling introspection for a GraphQL API in Aura is coming shortly but you can do it today using the Aura API. If you need this, and there&amp;rsquo;s a number of steps to follow, then do this.&lt;/p&gt;&#xA;&lt;p&gt;Although we will use CURL to enable / disable introspection, we will need to use the Aura CLI to get the Instance ID and ID of the associated GraphQL API.&lt;/p&gt;</description>
     </item>
     <item>
       <title>About that Conway Game Of Life</title>
-      <link>http://localhost:1313/post/2025-03-01-conway-part-une/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-03-01-conway-part-une/</link>
       <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-03-01-conway-part-une/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-03-01-conway-part-une/</guid>
       <description>&lt;h1 id=&#34;lets-figure-out-the-graphql-for-conway---part-one&#34;&gt;Lets figure out the GraphQL for Conway - Part One&lt;/h1&gt;&#xA;&lt;p&gt;It would be advisable to grab an adult beverage before you start reading as this is a longer than usual post.&lt;/p&gt;&#xA;&lt;p&gt;Ready? Then lets begin.&lt;/p&gt;&#xA;&lt;p&gt;In his &lt;a href=&#34;https://medium.com/neo4j/a-cypher-game-of-life-53b5faf04caa/&#34;&gt;blog post&lt;/a&gt; Christoffer Bergman describes implementing Conways Game of Life in Cypher. I&amp;rsquo;m going to base my attempt at Conway Game Of Life on his work but using GraphQL instead of Cypher. To do that I&amp;rsquo;m going to need a GraphQL schema and a GraphQL service. Then I can experiment with GraphQL Queries / Mutations to figure out what is needed to implement the game.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using Neo4j GraphQL Introspector with the forthcoming v7 library</title>
-      <link>http://localhost:1313/post/2025-02-25-graphql-aura-v7-library/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-02-25-graphql-aura-v7-library/</link>
       <pubDate>Tue, 25 Feb 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-02-25-graphql-aura-v7-library/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-02-25-graphql-aura-v7-library/</guid>
       <description>&lt;h1 id=&#34;using-neo4j-graphql-introspector-with-v7-library&#34;&gt;Using Neo4j GraphQL Introspector with v7 library&lt;/h1&gt;&#xA;&lt;p&gt;In our roadmap &lt;a href=&#34;https://neo4j.com/blog/developer/neo4j-graphql-library-roadmap/&#34;&gt;blog&lt;/a&gt; we outlined what to expect in GraphQL releases across 2025. One of those items is v7 of the library that introduces several changes that will massively reduce schema size to improve server startup and query time.&lt;/p&gt;&#xA;&lt;p&gt;This also means that the v7 Libary schema is different. For example, it is required to use the @node directive to any type they wish to be considered a &amp;ldquo;node&amp;rdquo; in their database for which we should generate graphql queries and mutations&lt;/p&gt;</description>
     </item>
     <item>
       <title>GraphQL for AuraDB - A tutorial trilogy in 4 parts</title>
-      <link>http://localhost:1313/post/2025-01-31-graphql-aura-conway-intro/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-01-31-graphql-aura-conway-intro/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-01-31-graphql-aura-conway-intro/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-01-31-graphql-aura-conway-intro/</guid>
       <description>&lt;h1 id=&#34;tutorial-for-graphql-for-neo4j-auradb---the-preamble&#34;&gt;Tutorial for GraphQL for Neo4j AuraDB - The Preamble&lt;/h1&gt;&#xA;&lt;p&gt;With the launch of GraphQL for AuraDB, its seems an auspicious time to put together a tutorial. All tutorials have an outcome - seems sensible - so we&amp;rsquo;re going to show how you can build Conway Game Of Life.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Conway?&lt;/em&gt; Wait, what?&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;from-the-1970s-to-neo4j-a-journey-through-conways-game-of-life&#34;&gt;From the 1970s to Neo4j: A Journey Through Conway&amp;rsquo;s Game of Life&lt;/h3&gt;&#xA;&lt;p&gt;Cast your mind back to the 1970s (or Google it if you must)—an era of disco fever, bell-bottoms, and, in the UK, the &lt;a href=&#34;https://en.wikipedia.org/wiki/Winter_of_Discontent&#34;&gt;Winter of Discontent&lt;/a&gt;. But while the world danced and protested, a youngish John Conway was tucked away in the world of academia, blissfully unaware of it all. Instead of embracing the chaos of the decade, he was pondering something far more abstract: a cellular automaton that could generate endlessly growing patterns while making it devilishly difficult to prove whether any given pattern would do so. (Because, really, what else would a brilliant young mathematician do with his time?)&lt;/p&gt;</description>
     </item>
     <item>
       <title>A guide to the new Aura CLI</title>
-      <link>http://localhost:1313/post/2025-01-27-aura-cli-guide/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-01-27-aura-cli-guide/</link>
       <pubDate>Mon, 27 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-01-27-aura-cli-guide/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-01-27-aura-cli-guide/</guid>
       <description>&lt;h1 id=&#34;a-guide-to-the-new-aura-cli&#34;&gt;A Guide To The New Aura CLI&lt;/h1&gt;&#xA;&lt;p&gt;The new Neo4j Aura CLI is a powerful new tool designed to simplify and streamline the management of your Neo4j Aura resources directly from the command line. Whether you&amp;rsquo;re provisioning new databases or scaling existing ones, the Neo4j Aura CLI empowers developers and operations teams with greater flexibility, speed, and efficiency. Built with ease of use in mind, this CLI bridges the gap between automation and hands-on control, enabling you to integrate Neo4j Aura seamlessly into your workflows. Let&amp;rsquo;s explore how to install and use this essential addition to your Neo4j toolkit.&lt;/p&gt;</description>
     </item>
     <item>
       <title>SSL for Neo4j so the Query API can use it </title>
-      <link>http://localhost:1313/post/2024-11-08-ssl-query-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-11-08-ssl-query-api/</link>
       <pubDate>Fri, 08 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-11-08-ssl-query-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-11-08-ssl-query-api/</guid>
       <description>&lt;h1 id=&#34;a-guide-to-using-ssl-with-neo4j-query-api&#34;&gt;A guide to using SSL with Neo4j Query API&lt;/h1&gt;&#xA;&lt;p&gt;To save my fingers hammering out letters to form the words that describe why, lets just accecpt that using SSL is a good thing.&lt;/p&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re using Aura then you can skip reading my prose and do something more interesting instead as Aura only uses SSL.  For everyone else you will need to configure SSL.&lt;/p&gt;&#xA;&lt;p&gt;The following is a guide to doing this with LetsEncrypt, a free source of certificates, and an AWS EC2 running docker with Neo4j.  I run that combination on a frequent basis - it&amp;rsquo;s my goto for trying stuff out.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Moving to Neo4j Query API - Partie Un </title>
-      <link>http://localhost:1313/post/2024-11-06-moving-to-query-api-1/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-11-06-moving-to-query-api-1/</link>
       <pubDate>Wed, 06 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-11-06-moving-to-query-api-1/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-11-06-moving-to-query-api-1/</guid>
       <description>&lt;h1 id=&#34;considering-a-move-to-the-neo4j-query-api---partie-un&#34;&gt;Considering a move to the Neo4j Query API - Partie Un&lt;/h1&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re interested in transitioning to the Query API, this post will provide an overview of the key areas to consider and plan for. A follow up post post will dive deeper with a worked example. While there&amp;rsquo;s no immediate pressure to move from the HTTP API, it&amp;rsquo;s important to note that updates will be limited to critical security and defect fixes. All future development effort will be focused on the Query API.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Explicit transactions with the Neo4j Query API coming shortly </title>
-      <link>http://localhost:1313/post/2024-10-31-query-api-tx/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-10-31-query-api-tx/</link>
       <pubDate>Thu, 31 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-10-31-query-api-tx/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-10-31-query-api-tx/</guid>
       <description>&lt;h1 id=&#34;explicit-transactions-with-neo4j-query-api&#34;&gt;Explicit transactions with Neo4j Query API&lt;/h1&gt;&#xA;&lt;p&gt;Over the last few months, we&amp;rsquo;ve been working hard (well, the engineers have — I&amp;rsquo;ve just been sipping tea and eating biscuits) to add support for Explicit Transactions to the Query API. I&amp;rsquo;m excited to announce that this feature will be available real soon for our self-managed and Aura customers.&lt;/p&gt;&#xA;&lt;p&gt;Up to now you gave the Query API a Cypher statement and it managed transaction  for you -  an Implicit Transaction.  Explicit Transactions hands over control of the transaction , from start to finish, to you.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Starting out with the Aura API</title>
-      <link>http://localhost:1313/post/2023-12-19-aura-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2023-12-19-aura-api/</link>
       <pubDate>Tue, 19 Dec 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2023-12-19-aura-api/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/plane_window.png&#34; alt=&#34;Turning left when boarding&#34;&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;api&#34;&gt;API&lt;/h1&gt;&#xA;&lt;p&gt;When thinking about Application Programming Interfaces, or APIs as they are known as, you can imagine them as helpers that perform a requested, specific,  task and return a response.  They are the building blocks from which applications are composed from.  There&amp;rsquo;s many different types of APIs and in this post I&amp;rsquo;m looking at those which are called across networks - Web APIs. If you&amp;rsquo;re regular reader then you&amp;rsquo;ve seen these before where I&amp;rsquo;ve used APIs from Transport For London to obtain information about the London Tube network.&lt;/p&gt;</description>
+      <guid>https://www.pm50plus.co.uk/post/2023-12-19-aura-api/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://www.pm50plus.co.uk/img/plane_window.png&#34; alt=&#34;Turning left when boarding&#34;&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;api&#34;&gt;API&lt;/h1&gt;&#xA;&lt;p&gt;When thinking about Application Programming Interfaces, or APIs as they are known as, you can imagine them as helpers that perform a requested, specific,  task and return a response.  They are the building blocks from which applications are composed from.  There&amp;rsquo;s many different types of APIs and in this post I&amp;rsquo;m looking at those which are called across networks - Web APIs. If you&amp;rsquo;re regular reader then you&amp;rsquo;ve seen these before where I&amp;rsquo;ve used APIs from Transport For London to obtain information about the London Tube network.&lt;/p&gt;</description>
     </item>
     <item>
       <title>There is a CLI for that</title>
-      <link>http://localhost:1313/post/2023-11-30-cli/</link>
+      <link>https://www.pm50plus.co.uk/post/2023-11-30-cli/</link>
       <pubDate>Thu, 30 Nov 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2023-11-30-cli/</guid>
-      <description>&lt;h1 id=&#34;sometimes-using-a-cli-is-the-only-way&#34;&gt;Sometimes using a CLI is the only way&lt;/h1&gt;&#xA;&lt;p&gt;We&amp;rsquo;ve become sooo used to having a graphical user interface with swipy user-friendly experiences that we&amp;rsquo;ve become remarkably complacent about the shadowy figures that lurk in the background, able to unleash their power at will&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. I am, of course, describing command line interfaces whose ability to perform simple and complex actions quickly is unrivalled.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/chickens_at_a_table.png&#34; alt=&#34;Attack chickens&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Just be careful out there, with great power comes great responsibility; just ask anyone who has typed  &lt;em&gt;&amp;lsquo;rm -rf /&amp;rsquo;&lt;/em&gt; on a Unix based computer. &lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;</description>
+      <guid>https://www.pm50plus.co.uk/post/2023-11-30-cli/</guid>
+      <description>&lt;h1 id=&#34;sometimes-using-a-cli-is-the-only-way&#34;&gt;Sometimes using a CLI is the only way&lt;/h1&gt;&#xA;&lt;p&gt;We&amp;rsquo;ve become sooo used to having a graphical user interface with swipy user-friendly experiences that we&amp;rsquo;ve become remarkably complacent about the shadowy figures that lurk in the background, able to unleash their power at will&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. I am, of course, describing command line interfaces whose ability to perform simple and complex actions quickly is unrivalled.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://www.pm50plus.co.uk/img/chickens_at_a_table.png&#34; alt=&#34;Attack chickens&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Just be careful out there, with great power comes great responsibility; just ask anyone who has typed  &lt;em&gt;&amp;lsquo;rm -rf /&amp;rsquo;&lt;/em&gt; on a Unix based computer. &lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CLI on Work In Progress</title>
-    <link>http://localhost:1313/tags/cli/</link>
+    <link>https://www.pm50plus.co.uk/tags/cli/</link>
     <description>Recent content in CLI on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 27 Jan 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/cli/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/cli/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A guide to the new Aura CLI</title>
-      <link>http://localhost:1313/post/2025-01-27-aura-cli-guide/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-01-27-aura-cli-guide/</link>
       <pubDate>Mon, 27 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-01-27-aura-cli-guide/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-01-27-aura-cli-guide/</guid>
       <description>&lt;h1 id=&#34;a-guide-to-the-new-aura-cli&#34;&gt;A Guide To The New Aura CLI&lt;/h1&gt;&#xA;&lt;p&gt;The new Neo4j Aura CLI is a powerful new tool designed to simplify and streamline the management of your Neo4j Aura resources directly from the command line. Whether you&amp;rsquo;re provisioning new databases or scaling existing ones, the Neo4j Aura CLI empowers developers and operations teams with greater flexibility, speed, and efficiency. Built with ease of use in mind, this CLI bridges the gap between automation and hands-on control, enabling you to integrate Neo4j Aura seamlessly into your workflows. Let&amp;rsquo;s explore how to install and use this essential addition to your Neo4j toolkit.&lt;/p&gt;</description>
     </item>
     <item>
       <title>There is a CLI for that</title>
-      <link>http://localhost:1313/post/2023-11-30-cli/</link>
+      <link>https://www.pm50plus.co.uk/post/2023-11-30-cli/</link>
       <pubDate>Thu, 30 Nov 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2023-11-30-cli/</guid>
-      <description>&lt;h1 id=&#34;sometimes-using-a-cli-is-the-only-way&#34;&gt;Sometimes using a CLI is the only way&lt;/h1&gt;&#xA;&lt;p&gt;We&amp;rsquo;ve become sooo used to having a graphical user interface with swipy user-friendly experiences that we&amp;rsquo;ve become remarkably complacent about the shadowy figures that lurk in the background, able to unleash their power at will&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. I am, of course, describing command line interfaces whose ability to perform simple and complex actions quickly is unrivalled.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/chickens_at_a_table.png&#34; alt=&#34;Attack chickens&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Just be careful out there, with great power comes great responsibility; just ask anyone who has typed  &lt;em&gt;&amp;lsquo;rm -rf /&amp;rsquo;&lt;/em&gt; on a Unix based computer. &lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;</description>
+      <guid>https://www.pm50plus.co.uk/post/2023-11-30-cli/</guid>
+      <description>&lt;h1 id=&#34;sometimes-using-a-cli-is-the-only-way&#34;&gt;Sometimes using a CLI is the only way&lt;/h1&gt;&#xA;&lt;p&gt;We&amp;rsquo;ve become sooo used to having a graphical user interface with swipy user-friendly experiences that we&amp;rsquo;ve become remarkably complacent about the shadowy figures that lurk in the background, able to unleash their power at will&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. I am, of course, describing command line interfaces whose ability to perform simple and complex actions quickly is unrivalled.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://www.pm50plus.co.uk/img/chickens_at_a_table.png&#34; alt=&#34;Attack chickens&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Just be careful out there, with great power comes great responsibility; just ask anyone who has typed  &lt;em&gt;&amp;lsquo;rm -rf /&amp;rsquo;&lt;/em&gt; on a Unix based computer. &lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

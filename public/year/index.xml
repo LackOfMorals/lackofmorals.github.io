@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Years on Work In Progress</title>
-    <link>http://localhost:1313/year/</link>
+    <link>https://www.pm50plus.co.uk/year/</link>
     <description>Recent content in Years on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="http://localhost:1313/year/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/year/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

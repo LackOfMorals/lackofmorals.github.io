@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on Work In Progress</title>
-    <link>http://localhost:1313/tags/go/</link>
+    <link>https://www.pm50plus.co.uk/tags/go/</link>
     <description>Recent content in Go on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 04 Jan 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Aura API Go client</title>
-      <link>http://localhost:1313/post/2026-01-04-aura-go-client/</link>
+      <link>https://www.pm50plus.co.uk/post/2026-01-04-aura-go-client/</link>
       <pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2026-01-04-aura-go-client/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2026-01-04-aura-go-client/</guid>
       <description>&lt;h2 id=&#34;a-go-client-for-aura-api&#34;&gt;A Go client for Aura API&lt;/h2&gt;&#xA;&lt;p&gt;Over the last few weeks I&amp;rsquo;ve worked on creating a wrapper around the Aura API for use with Go. This is not wholly my own work; I&amp;rsquo;ve lifted the concept of using structs to model API request / responses from our Neo4j Labs Terraform Provider and embraced assistance from Claude to explore potential ideas, write tests and direct me when I got stuck.&lt;/p&gt;&#xA;&lt;p&gt;The Aura CLient ( I&amp;rsquo;m not that great with naming ) is ready for use - mostly. Did I mention that I&amp;rsquo;m a hobby coder ?&lt;/p&gt;</description>
     </item>
     <item>
       <title>MCP for Aura API - List instances</title>
-      <link>http://localhost:1313/post/2026-01-04-mcp-4-aura-journey-2/</link>
+      <link>https://www.pm50plus.co.uk/post/2026-01-04-mcp-4-aura-journey-2/</link>
       <pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2026-01-04-mcp-4-aura-journey-2/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2026-01-04-mcp-4-aura-journey-2/</guid>
       <description>&lt;h2 id=&#34;mcp-for-aura-api---list-instances&#34;&gt;MCP for Aura API - List instances&lt;/h2&gt;&#xA;&lt;p&gt;The work from my &lt;a href=&#34;https://www.pm50plus.com/2025/12/16/mcp-4-aura-journey-1.html&#34;&gt;first step&lt;/a&gt; puts me in a positon to build the first tool - list instances. This MCP tool will&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Get a list of instances&lt;/li&gt;&#xA;&lt;li&gt;Obtain a summary set of data for each one&lt;/li&gt;&#xA;&lt;li&gt;Return the response as a JSON document to the LLM / Agent&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;All that is need is to write the tool handler and spec. Lets get into that&lt;/p&gt;</description>
     </item>
     <item>
       <title>Getting ready</title>
-      <link>http://localhost:1313/post/2025-12-16-mcp-4-aura-journey-1/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-12-16-mcp-4-aura-journey-1/</link>
       <pubDate>Tue, 16 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-12-16-mcp-4-aura-journey-1/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-12-16-mcp-4-aura-journey-1/</guid>
       <description>&lt;h2 id=&#34;mcp-4-aura-api---taking-the-first-step&#34;&gt;MCP 4 Aura API - taking the first step&lt;/h2&gt;&#xA;&lt;p&gt;As mentioned in my previous post, I&amp;rsquo;m basing my MCP for Aura API on the existing MCP for Neo4j. This post is all about stripping that down to get ready to then start writing the code I actually want.&lt;/p&gt;&#xA;&lt;h2 id=&#34;declutering&#34;&gt;Declutering&lt;/h2&gt;&#xA;&lt;p&gt;After forking &lt;a href=&#34;https://github.com/neo4j/mcp&#34;&gt;MCP for Neo4j&lt;/a&gt; and looking over the code, I now have this list of features that will not be needed and can be removed&lt;/p&gt;</description>
     </item>
     <item>
       <title>PM tries to write MCP to control Aura infrastructure</title>
-      <link>http://localhost:1313/post/2025-12-12-mcp-bandwagon/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-12-12-mcp-bandwagon/</link>
       <pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-12-12-mcp-bandwagon/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-12-12-mcp-bandwagon/</guid>
       <description>&lt;h2 id=&#34;jumping-on-the-mcp-bandwagon&#34;&gt;Jumping on the MCP bandwagon&lt;/h2&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been learning Go over the last few months ( Its not a career change, just a desire to learn something new ). I&amp;rsquo;m now able do a pretty decent &amp;ldquo;Hello World&amp;rdquo;&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve also had the honour of working with some of Neo4j engineers to create and release MCP for Neo4j - which is written in Go - and proven to be popular.&lt;/p&gt;&#xA;&lt;p&gt;It&amp;rsquo;s that now would be a good moment to sup from the trough of MCP success and see if my Go is suffiicent to allow me to fork MCP for Neo4j and modify it to provide a LLM tools to manage Aura infrastructure.&lt;/p&gt;</description>
     </item>
   </channel>

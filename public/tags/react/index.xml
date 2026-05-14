@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>React on Work In Progress</title>
-    <link>http://localhost:1313/tags/react/</link>
+    <link>https://www.pm50plus.co.uk/tags/react/</link>
     <description>Recent content in React on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 06 Feb 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/react/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Amatuer developer tries building a web app</title>
-      <link>http://localhost:1313/post/2024-02-06-react/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-02-06-react/</link>
       <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-02-06-react/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-02-06-react/</guid>
       <description>&lt;h1 id=&#34;react&#34;&gt;React&lt;/h1&gt;&#xA;&lt;p&gt;During the day, and often onwards into the evening, I&amp;rsquo;m gainfully employed as a Product Manager at Neo4j.  My brief covers web services API strategy including delivery of our GraphQL libary.  Its very humbling to be able to work with a very smart collective of people on those efforts.&lt;/p&gt;&#xA;&lt;p&gt;Back in the day I had desires of being a professional software developer; even went as far as accumalating a  degree in software engineering ( it was a pass. See &amp;lsquo;Drinkers Degree&amp;rsquo; in any knowledge base ).  Turns out that was a perfect case of talent overreach but I&amp;rsquo;ve kept an interest and can produce a &amp;lsquo;Hello World&amp;rsquo; application in at least 2 languages.&lt;/p&gt;</description>
     </item>
   </channel>

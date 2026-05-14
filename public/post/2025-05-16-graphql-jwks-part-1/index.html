@@ -11,7 +11,7 @@
   style="--bg:#faf8f1"
   lang="en-us"
   dir="ltr"
-><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+><head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta
@@ -32,14 +32,14 @@ API Key
 JWT
 
 Using APIs keys are asimple, straight forward approach to control access to a GraphQL API and work really well for development environments. For production environments we recommend the use of a 3rd party indentity provider that manages tokens in the form of JWTs as these provide more flexibility when securing access to your GraphQL. Additionally, JWTs enable the use of rules within your type definitions for authentication and authorisation." />
-  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.2cc940fb3620e509b4b1d7046d611f8ee021b28252184f47699b3a855224078d.css" integrity="sha256-LMlA&#43;zYg5Qm0sdcEbWEfjuAhsoJSGE9HaZs6hVIkB40=" />
+  <meta name="author" content="Work In Progress" /><link rel="preload stylesheet" as="style" href="https://www.pm50plus.co.uk/main.min.4992f18fb1b132333b040d8e35864cbc09cbb9ebf6b4923f3dc54143bd2ccb89.css" integrity="sha256-SZLxj7GxMjM7BA2ONYZMvAnLuev2tJI/PcVBQ70sy4k=" />
 
   
-  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+  <link rel="preload" as="image" href="https://www.pm50plus.co.uk/theme.svg" />
 
   <link rel="preload" as="image" href="GRAVATAR_CDN_LINK6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
 
-  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/instagram.svg" /><link rel="preload" as="image" href="http://localhost:1313/linkedin.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+  <link rel="preload" as="image" href="https://www.pm50plus.co.uk/github.svg" /><link rel="preload" as="image" href="https://www.pm50plus.co.uk/instagram.svg" /><link rel="preload" as="image" href="https://www.pm50plus.co.uk/linkedin.svg" /><link rel="preload" as="image" href="https://www.pm50plus.co.uk/rss.svg" />
 
   <link
   rel="stylesheet"
@@ -77,14 +77,39 @@ Using APIs keys are asimple, straight forward approach to control access to a Gr
   
   <link
     rel="icon"
-    href="http://localhost:1313/favicon.ico"
+    href="https://www.pm50plus.co.uk/favicon.ico"
   />
   <link
     rel="apple-touch-icon"
-    href="http://localhost:1313/apple-touch-icon.png"
+    href="https://www.pm50plus.co.uk/apple-touch-icon.png"
   />
 
   <meta name="generator" content="Hugo 0.161.1">
+  <meta itemprop="name" content="Using token with GraphQL for AuraDB ">
+  <meta itemprop="description" content="Part one of a guide to using token with GraphQL for AuraDB">
+  <meta itemprop="datePublished" content="2025-05-16T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-05-16T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1297">
+  <meta itemprop="keywords" content="Neo4j,PM,DevEx,Token,GraphQL"><meta property="og:url" content="https://www.pm50plus.co.uk/post/2025-05-16-graphql-jwks-part-1/">
+  <meta property="og:site_name" content="Work In Progress">
+  <meta property="og:title" content="Using token with GraphQL for AuraDB ">
+  <meta property="og:description" content="Part one of a guide to using token with GraphQL for AuraDB">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-05-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-05-16T00:00:00+00:00">
+    <meta property="article:tag" content="Neo4j">
+    <meta property="article:tag" content="PM">
+    <meta property="article:tag" content="DevEx">
+    <meta property="article:tag" content="Token">
+    <meta property="article:tag" content="GraphQL">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Using token with GraphQL for AuraDB ">
+  <meta name="twitter:description" content="Part one of a guide to using token with GraphQL for AuraDB">
+
+  <link rel="canonical" href="https://www.pm50plus.co.uk/post/2025-05-16-graphql-jwks-part-1/" />
 </head>
 <body
     class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
@@ -94,7 +119,7 @@ Using APIs keys are asimple, straight forward approach to control access to a Gr
   <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
     <a
       class="-translate-y-[1px] text-2xl font-medium"
-      href="http://localhost:1313/"
+      href="https://www.pm50plus.co.uk/"
       >Work In Progress</a
     >
     <div
@@ -182,7 +207,7 @@ Using APIs keys are asimple, straight forward approach to control access to a Gr
       <a
         class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
         style="--url: url(./rss.svg)"
-        href="http://localhost:1313/index.xml"
+        href="https://www.pm50plus.co.uk/index.xml"
         target="_blank"
         rel="alternate"
       >rss</a>
@@ -470,29 +495,29 @@ Only 256Mb is availabel at time of writing</p>
 
   <footer class="mt-12 flex flex-wrap"><a
       class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
-      href="http://localhost:1313/tags/neo4j"
+      href="https://www.pm50plus.co.uk/tags/neo4j"
       >Neo4j</a
     ><a
       class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
-      href="http://localhost:1313/tags/pm"
+      href="https://www.pm50plus.co.uk/tags/pm"
       >PM</a
     ><a
       class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
-      href="http://localhost:1313/tags/devex"
+      href="https://www.pm50plus.co.uk/tags/devex"
       >DevEx</a
     ><a
       class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
-      href="http://localhost:1313/tags/token"
+      href="https://www.pm50plus.co.uk/tags/token"
       >Token</a
     ><a
       class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
-      href="http://localhost:1313/tags/graphql"
+      href="https://www.pm50plus.co.uk/tags/graphql"
       >GraphQL</a
     ></footer></article></main><footer
   class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
 >
   <div class="mr-auto">&copy;2026
-    <a class="link" href="http://localhost:1313/">Work In Progress</a></div>
+    <a class="link" href="https://www.pm50plus.co.uk/">Work In Progress</a></div>
   <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
     >powered by hugo️️</a
   >️

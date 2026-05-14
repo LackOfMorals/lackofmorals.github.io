@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Conway on Work In Progress</title>
-    <link>http://localhost:1313/tags/conway/</link>
+    <link>https://www.pm50plus.co.uk/tags/conway/</link>
     <description>Recent content in Conway on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 03 Apr 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/conway/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/conway/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Conway Game Of Life application</title>
-      <link>http://localhost:1313/post/2025-04-03-conway-react-code/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-04-03-conway-react-code/</link>
       <pubDate>Thu, 03 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-04-03-conway-react-code/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-04-03-conway-react-code/</guid>
       <description>&lt;h2 id=&#34;conway-game-of-life&#34;&gt;Conway Game Of Life&lt;/h2&gt;&#xA;&lt;p&gt;A common piece of advice on how to best learn a new development language is to build an application. For example, you often see variants on &amp;lsquo;hello world&amp;rsquo; to start with and then folks try progressively more challenging endeavours. This technique follows the well trodden path of crawl, walk, run and, maybe, matharons ( I guess the equivalent in these times of AI assistants would be taking a metaphorical taxi to speed up the journey ).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Lets figure out the GraphQL for Conway Game Of Life</title>
-      <link>http://localhost:1313/post/2025-03-13-graphql-for-conway/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-03-13-graphql-for-conway/</link>
       <pubDate>Thu, 13 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-03-13-graphql-for-conway/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-03-13-graphql-for-conway/</guid>
       <description>&lt;h2 id=&#34;graphql-for-conway-game-of-life&#34;&gt;GraphQL for Conway Game Of Life&lt;/h2&gt;&#xA;&lt;p&gt;In my &lt;a href=&#34;https://www.pm50plus.com/2025/03/01/conway-part-une.html&#34;&gt;last post&lt;/a&gt; I covered setting up GraphQL for AuraDB with this Schema / Type Definition&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-Text&#34; data-lang=&#34;Text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;type Cell @node {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; cellsConnected: [Cell!]! @relationship(type: &amp;#34;NEIGHBOUR_OF&amp;#34;, direction: IN)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; connectedCells: [Cell!]! @relationship(type: &amp;#34;NEIGHBOUR_OF&amp;#34;, direction: OUT)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; alive: Boolean!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; id: String!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; x: BigInt!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; y: BigInt!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;and checked it was all working with a very simple GraphQL Query&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-Text&#34; data-lang=&#34;Text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl --location  &amp;#39;YOUR_GRAPHQL_DATA_API_URL&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--header &amp;#39;Content-Type: application/json&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--header &amp;#39;x-api-key: YOUR_API_KEY&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--data &amp;#39;{&amp;#34;query&amp;#34;:&amp;#34;query getAllCells {\n    cells {\n      alive\n      id\n      x\n      y\n    }\n  }&amp;#34;,&amp;#34;variables&amp;#34;:{}}&amp;#39;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Which means we have arrived at the point to start thinking about the GraphQL queries and mutations that will be needed as part of the implementation of Conway Game Of Life.&lt;/p&gt;</description>
     </item>
   </channel>

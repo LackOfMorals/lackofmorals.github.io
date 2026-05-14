@@ -2,80 +2,80 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>GraphQL on Work In Progress</title>
-    <link>http://localhost:1313/tags/graphql/</link>
+    <link>https://www.pm50plus.co.uk/tags/graphql/</link>
     <description>Recent content in GraphQL on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 02 Jun 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/graphql/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/graphql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A guide to not loosing your shit over CORS</title>
-      <link>http://localhost:1313/post/2025-06-02-about-cors/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-06-02-about-cors/</link>
       <pubDate>Mon, 02 Jun 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-06-02-about-cors/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-06-02-about-cors/</guid>
       <description>&lt;h2 id=&#34;cors&#34;&gt;CORs?&lt;/h2&gt;&#xA;&lt;p&gt;Dear Reader,&lt;/p&gt;&#xA;&lt;p&gt;Take a moment and load web page in your browser. Then jump over into the browsers developer tools and look at all of the different domains that page is connecting to. This reflects the need of a web page to communicate across different domains to function properly ( although I&amp;rsquo;d bet a lot of what you can see right now is advertising or tracking ).&lt;/p&gt;&#xA;&lt;p&gt;Allowing cross domain connects can be of concern when it comes to security. But there&amp;rsquo;s something we can do about that. Enter &lt;strong&gt;CORS&lt;/strong&gt;—Cross-Origin Resource Sharing, a browser feature, that controls how and when web pages can make requests to domains other than their own.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Token for auth with GraphQL for AuraDB </title>
-      <link>http://localhost:1313/post/2025-05-23-graphql-jwks-part-2/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-05-23-graphql-jwks-part-2/</link>
       <pubDate>Fri, 23 May 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-05-23-graphql-jwks-part-2/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-05-23-graphql-jwks-part-2/</guid>
       <description>&lt;h1 id=&#34;an-introduction-to-using-jwts-with-graphql-for-auradb---part-two&#34;&gt;An introduction to using JWTs with GraphQL for AuraDB - Part Two&lt;/h1&gt;&#xA;&lt;p&gt;In &lt;a href=&#34;https://www.pm50plus.com/2025/05/16/graphql-jwks-part-1.html&#34;&gt;part one&lt;/a&gt; I covered how to set up GraphQL for AuraDB to use JWTs and the identity provider, okta, that generates them.&lt;/p&gt;&#xA;&lt;p&gt;This blog will look at using properties of a token to control access to the API and the data within.&lt;/p&gt;&#xA;&lt;p&gt;But I&amp;rsquo;m overreaching a bit as I&amp;rsquo;m assuming knowledge ( a trap so easier to stumble into when trying to convey information ) on the topic of JSON Web Token (JWT ).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using token with GraphQL for AuraDB </title>
-      <link>http://localhost:1313/post/2025-05-16-graphql-jwks-part-1/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-05-16-graphql-jwks-part-1/</link>
       <pubDate>Fri, 16 May 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-05-16-graphql-jwks-part-1/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-05-16-graphql-jwks-part-1/</guid>
       <description>&lt;h1 id=&#34;an-introduction-to-using-jwts-with-graphql-for-auradb---part-one&#34;&gt;An introduction to using JWTs with GraphQL for AuraDB - Part One&lt;/h1&gt;&#xA;&lt;p&gt;There are two options ( we&amp;rsquo;re looking at another token based approach for the future ) to control access to a GraphQL for AuraDB endpoint&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;API Key&lt;/li&gt;&#xA;&lt;li&gt;JWT&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Using APIs keys are asimple, straight forward approach to control access to a GraphQL API and work really well for development environments. For production environments we recommend the use of a 3rd party indentity provider that manages tokens in the form of JWTs as these provide more flexibility when securing access to your GraphQL. Additionally, JWTs enable the use of rules within your type definitions for authentication and authorisation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Conway Game Of Life application</title>
-      <link>http://localhost:1313/post/2025-04-03-conway-react-code/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-04-03-conway-react-code/</link>
       <pubDate>Thu, 03 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-04-03-conway-react-code/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-04-03-conway-react-code/</guid>
       <description>&lt;h2 id=&#34;conway-game-of-life&#34;&gt;Conway Game Of Life&lt;/h2&gt;&#xA;&lt;p&gt;A common piece of advice on how to best learn a new development language is to build an application. For example, you often see variants on &amp;lsquo;hello world&amp;rsquo; to start with and then folks try progressively more challenging endeavours. This technique follows the well trodden path of crawl, walk, run and, maybe, matharons ( I guess the equivalent in these times of AI assistants would be taking a metaphorical taxi to speed up the journey ).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Lets figure out the GraphQL for Conway Game Of Life</title>
-      <link>http://localhost:1313/post/2025-03-13-graphql-for-conway/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-03-13-graphql-for-conway/</link>
       <pubDate>Thu, 13 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-03-13-graphql-for-conway/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-03-13-graphql-for-conway/</guid>
       <description>&lt;h2 id=&#34;graphql-for-conway-game-of-life&#34;&gt;GraphQL for Conway Game Of Life&lt;/h2&gt;&#xA;&lt;p&gt;In my &lt;a href=&#34;https://www.pm50plus.com/2025/03/01/conway-part-une.html&#34;&gt;last post&lt;/a&gt; I covered setting up GraphQL for AuraDB with this Schema / Type Definition&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-Text&#34; data-lang=&#34;Text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;type Cell @node {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; cellsConnected: [Cell!]! @relationship(type: &amp;#34;NEIGHBOUR_OF&amp;#34;, direction: IN)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; connectedCells: [Cell!]! @relationship(type: &amp;#34;NEIGHBOUR_OF&amp;#34;, direction: OUT)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; alive: Boolean!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; id: String!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; x: BigInt!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; y: BigInt!&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;and checked it was all working with a very simple GraphQL Query&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-Text&#34; data-lang=&#34;Text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl --location  &amp;#39;YOUR_GRAPHQL_DATA_API_URL&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--header &amp;#39;Content-Type: application/json&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--header &amp;#39;x-api-key: YOUR_API_KEY&amp;#39; \&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;--data &amp;#39;{&amp;#34;query&amp;#34;:&amp;#34;query getAllCells {\n    cells {\n      alive\n      id\n      x\n      y\n    }\n  }&amp;#34;,&amp;#34;variables&amp;#34;:{}}&amp;#39;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Which means we have arrived at the point to start thinking about the GraphQL queries and mutations that will be needed as part of the implementation of Conway Game Of Life.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Enabling introspection on the GraphQL for Aura</title>
-      <link>http://localhost:1313/post/2025-03-12-enabling-introspection-on-grapqhl-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-03-12-enabling-introspection-on-grapqhl-api/</link>
       <pubDate>Wed, 12 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-03-12-enabling-introspection-on-grapqhl-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-03-12-enabling-introspection-on-grapqhl-api/</guid>
       <description>&lt;h2 id=&#34;enabling-introspection-on-the-graphql-for-aura&#34;&gt;Enabling introspection on the GraphQL for Aura&lt;/h2&gt;&#xA;&lt;p&gt;Enabling introspection for a GraphQL API in Aura is coming shortly but you can do it today using the Aura API. If you need this, and there&amp;rsquo;s a number of steps to follow, then do this.&lt;/p&gt;&#xA;&lt;p&gt;Although we will use CURL to enable / disable introspection, we will need to use the Aura CLI to get the Instance ID and ID of the associated GraphQL API.&lt;/p&gt;</description>
     </item>
     <item>
       <title>About that Conway Game Of Life</title>
-      <link>http://localhost:1313/post/2025-03-01-conway-part-une/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-03-01-conway-part-une/</link>
       <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-03-01-conway-part-une/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-03-01-conway-part-une/</guid>
       <description>&lt;h1 id=&#34;lets-figure-out-the-graphql-for-conway---part-one&#34;&gt;Lets figure out the GraphQL for Conway - Part One&lt;/h1&gt;&#xA;&lt;p&gt;It would be advisable to grab an adult beverage before you start reading as this is a longer than usual post.&lt;/p&gt;&#xA;&lt;p&gt;Ready? Then lets begin.&lt;/p&gt;&#xA;&lt;p&gt;In his &lt;a href=&#34;https://medium.com/neo4j/a-cypher-game-of-life-53b5faf04caa/&#34;&gt;blog post&lt;/a&gt; Christoffer Bergman describes implementing Conways Game of Life in Cypher. I&amp;rsquo;m going to base my attempt at Conway Game Of Life on his work but using GraphQL instead of Cypher. To do that I&amp;rsquo;m going to need a GraphQL schema and a GraphQL service. Then I can experiment with GraphQL Queries / Mutations to figure out what is needed to implement the game.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using Neo4j GraphQL Introspector with the forthcoming v7 library</title>
-      <link>http://localhost:1313/post/2025-02-25-graphql-aura-v7-library/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-02-25-graphql-aura-v7-library/</link>
       <pubDate>Tue, 25 Feb 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-02-25-graphql-aura-v7-library/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-02-25-graphql-aura-v7-library/</guid>
       <description>&lt;h1 id=&#34;using-neo4j-graphql-introspector-with-v7-library&#34;&gt;Using Neo4j GraphQL Introspector with v7 library&lt;/h1&gt;&#xA;&lt;p&gt;In our roadmap &lt;a href=&#34;https://neo4j.com/blog/developer/neo4j-graphql-library-roadmap/&#34;&gt;blog&lt;/a&gt; we outlined what to expect in GraphQL releases across 2025. One of those items is v7 of the library that introduces several changes that will massively reduce schema size to improve server startup and query time.&lt;/p&gt;&#xA;&lt;p&gt;This also means that the v7 Libary schema is different. For example, it is required to use the @node directive to any type they wish to be considered a &amp;ldquo;node&amp;rdquo; in their database for which we should generate graphql queries and mutations&lt;/p&gt;</description>
     </item>
     <item>
       <title>GraphQL for AuraDB - A tutorial trilogy in 4 parts</title>
-      <link>http://localhost:1313/post/2025-01-31-graphql-aura-conway-intro/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-01-31-graphql-aura-conway-intro/</link>
       <pubDate>Fri, 31 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-01-31-graphql-aura-conway-intro/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-01-31-graphql-aura-conway-intro/</guid>
       <description>&lt;h1 id=&#34;tutorial-for-graphql-for-neo4j-auradb---the-preamble&#34;&gt;Tutorial for GraphQL for Neo4j AuraDB - The Preamble&lt;/h1&gt;&#xA;&lt;p&gt;With the launch of GraphQL for AuraDB, its seems an auspicious time to put together a tutorial. All tutorials have an outcome - seems sensible - so we&amp;rsquo;re going to show how you can build Conway Game Of Life.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Conway?&lt;/em&gt; Wait, what?&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;from-the-1970s-to-neo4j-a-journey-through-conways-game-of-life&#34;&gt;From the 1970s to Neo4j: A Journey Through Conway&amp;rsquo;s Game of Life&lt;/h3&gt;&#xA;&lt;p&gt;Cast your mind back to the 1970s (or Google it if you must)—an era of disco fever, bell-bottoms, and, in the UK, the &lt;a href=&#34;https://en.wikipedia.org/wiki/Winter_of_Discontent&#34;&gt;Winter of Discontent&lt;/a&gt;. But while the world danced and protested, a youngish John Conway was tucked away in the world of academia, blissfully unaware of it all. Instead of embracing the chaos of the decade, he was pondering something far more abstract: a cellular automaton that could generate endlessly growing patterns while making it devilishly difficult to prove whether any given pattern would do so. (Because, really, what else would a brilliant young mathematician do with his time?)&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using the forthcoming Aura GraphQL API</title>
-      <link>http://localhost:1313/post/2024-05-03-aura-graphql-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-05-03-aura-graphql-api/</link>
       <pubDate>Fri, 03 May 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-05-03-aura-graphql-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-05-03-aura-graphql-api/</guid>
       <description>&lt;h1 id=&#34;using-the-forthcoming-aura-graphql-api&#34;&gt;Using the forthcoming Aura GraphQL API&lt;/h1&gt;&#xA;&lt;p&gt;Much later this year you&amp;rsquo;ll be able to us GraphQL API with our Aura platform - yep, you read that correctly, we&amp;rsquo;ve got the builders in to add an extension.&lt;/p&gt;&#xA;&lt;p&gt;We&amp;rsquo;ve done this as it removes the requirement for customers to provision, configure, and then maintain a graphql server for the purposes of hosting a graphQL API - we&amp;rsquo;re taking care of all of that in the Aura platform.  Additionally, it also ensures the GraphQL API is next door, figratively speaking, to the Aura instance avoiding the transist of information across the occasionally choppy waters of the internet which improves responsiveness and security.&lt;/p&gt;</description>
     </item>
   </channel>

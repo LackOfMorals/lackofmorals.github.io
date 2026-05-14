@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>SSL on Work In Progress</title>
-    <link>http://localhost:1313/tags/ssl/</link>
+    <link>https://www.pm50plus.co.uk/tags/ssl/</link>
     <description>Recent content in SSL on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 08 Nov 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/ssl/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/ssl/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SSL for Neo4j so the Query API can use it </title>
-      <link>http://localhost:1313/post/2024-11-08-ssl-query-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-11-08-ssl-query-api/</link>
       <pubDate>Fri, 08 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-11-08-ssl-query-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-11-08-ssl-query-api/</guid>
       <description>&lt;h1 id=&#34;a-guide-to-using-ssl-with-neo4j-query-api&#34;&gt;A guide to using SSL with Neo4j Query API&lt;/h1&gt;&#xA;&lt;p&gt;To save my fingers hammering out letters to form the words that describe why, lets just accecpt that using SSL is a good thing.&lt;/p&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re using Aura then you can skip reading my prose and do something more interesting instead as Aura only uses SSL.  For everyone else you will need to configure SSL.&lt;/p&gt;&#xA;&lt;p&gt;The following is a guide to doing this with LetsEncrypt, a free source of certificates, and an AWS EC2 running docker with Neo4j.  I run that combination on a frequent basis - it&amp;rsquo;s my goto for trying stuff out.&lt;/p&gt;</description>
     </item>
   </channel>

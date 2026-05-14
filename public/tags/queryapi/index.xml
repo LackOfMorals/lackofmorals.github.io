@@ -2,80 +2,80 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>QueryAPI on Work In Progress</title>
-    <link>http://localhost:1313/tags/queryapi/</link>
+    <link>https://www.pm50plus.co.uk/tags/queryapi/</link>
     <description>Recent content in QueryAPI on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 08 Nov 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/queryapi/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/queryapi/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SSL for Neo4j so the Query API can use it </title>
-      <link>http://localhost:1313/post/2024-11-08-ssl-query-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-11-08-ssl-query-api/</link>
       <pubDate>Fri, 08 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-11-08-ssl-query-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-11-08-ssl-query-api/</guid>
       <description>&lt;h1 id=&#34;a-guide-to-using-ssl-with-neo4j-query-api&#34;&gt;A guide to using SSL with Neo4j Query API&lt;/h1&gt;&#xA;&lt;p&gt;To save my fingers hammering out letters to form the words that describe why, lets just accecpt that using SSL is a good thing.&lt;/p&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re using Aura then you can skip reading my prose and do something more interesting instead as Aura only uses SSL.  For everyone else you will need to configure SSL.&lt;/p&gt;&#xA;&lt;p&gt;The following is a guide to doing this with LetsEncrypt, a free source of certificates, and an AWS EC2 running docker with Neo4j.  I run that combination on a frequent basis - it&amp;rsquo;s my goto for trying stuff out.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Moving to Neo4j Query API - Partie Un </title>
-      <link>http://localhost:1313/post/2024-11-06-moving-to-query-api-1/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-11-06-moving-to-query-api-1/</link>
       <pubDate>Wed, 06 Nov 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-11-06-moving-to-query-api-1/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-11-06-moving-to-query-api-1/</guid>
       <description>&lt;h1 id=&#34;considering-a-move-to-the-neo4j-query-api---partie-un&#34;&gt;Considering a move to the Neo4j Query API - Partie Un&lt;/h1&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re interested in transitioning to the Query API, this post will provide an overview of the key areas to consider and plan for. A follow up post post will dive deeper with a worked example. While there&amp;rsquo;s no immediate pressure to move from the HTTP API, it&amp;rsquo;s important to note that updates will be limited to critical security and defect fixes. All future development effort will be focused on the Query API.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Explicit transactions with the Neo4j Query API coming shortly </title>
-      <link>http://localhost:1313/post/2024-10-31-query-api-tx/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-10-31-query-api-tx/</link>
       <pubDate>Thu, 31 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-10-31-query-api-tx/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-10-31-query-api-tx/</guid>
       <description>&lt;h1 id=&#34;explicit-transactions-with-neo4j-query-api&#34;&gt;Explicit transactions with Neo4j Query API&lt;/h1&gt;&#xA;&lt;p&gt;Over the last few months, we&amp;rsquo;ve been working hard (well, the engineers have — I&amp;rsquo;ve just been sipping tea and eating biscuits) to add support for Explicit Transactions to the Query API. I&amp;rsquo;m excited to announce that this feature will be available real soon for our self-managed and Aura customers.&lt;/p&gt;&#xA;&lt;p&gt;Up to now you gave the Query API a Cypher statement and it managed transaction  for you -  an Implicit Transaction.  Explicit Transactions hands over control of the transaction , from start to finish, to you.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Applications, Tokens and Neo4j Query API </title>
-      <link>http://localhost:1313/post/2024-10-24-app-token-query-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-10-24-app-token-query-api/</link>
       <pubDate>Thu, 24 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-10-24-app-token-query-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-10-24-app-token-query-api/</guid>
       <description>&lt;h1 id=&#34;applications-tokens-and-neo4j-query-api&#34;&gt;Applications, Tokens and Neo4j Query API&lt;/h1&gt;&#xA;&lt;h1 id=&#34;using-tokens-with-applications-and-neo4j-query-api-for-auth&#34;&gt;Using tokens with Applications and Neo4j Query API for auth&lt;/h1&gt;&#xA;&lt;p&gt;In a previous blog post I discussed a web application obtaining and using a token with Neo4j Query API as a result of a user successfully authenticating.  This entry looks at what would be involved for an application to obtain a token and use it with Neo4j Query API.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Plot spoiler&lt;/strong&gt; - it&amp;rsquo;s very similar.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Dipping into the code from the trinity of SSO, Neo4j and a web application </title>
-      <link>http://localhost:1313/post/2024-10-17-token-query-api-the-code/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-10-17-token-query-api-the-code/</link>
       <pubDate>Thu, 17 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-10-17-token-query-api-the-code/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-10-17-token-query-api-the-code/</guid>
       <description>&lt;h1 id=&#34;commentary-on-the-web-application-code-used-in-sso-post&#34;&gt;Commentary on the web application code used in SSO post&lt;/h1&gt;&#xA;&lt;p&gt;As a follow on from my previous blog post, the trinity of SSO, Neo4j and a web application, this entry takes a deeper look at the code used for the web application to see how it all fits together.&lt;/p&gt;&#xA;&lt;p&gt;Given my JS / React knowledge is basic ( and I&amp;rsquo;m flattering myself there ) the more experienced of you are likely to be amused at my efforts.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using token with Query API - an example with SSO</title>
-      <link>http://localhost:1313/post/2024-10-16-token-query-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-10-16-token-query-api/</link>
       <pubDate>Wed, 16 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-10-16-token-query-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-10-16-token-query-api/</guid>
       <description>&lt;h1 id=&#34;the-trinity-of-sso-neo4j-and-a-web-application&#34;&gt;The trinity of SSO, Neo4j and a web application&lt;/h1&gt;&#xA;&lt;p&gt;Consider a web application that consumes data from Neo4j.   This will require the web application to authenticate and retrieve that data using credentials that are accepted by Neo4j.  If our users needed to remember one set of credentials for the web application, another set for Neo4j and then enter those at the correct moment, it&amp;rsquo;s going to be a jarring user experience.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Aura welcomes Query API</title>
-      <link>http://localhost:1313/post/2024-09-06-aura-query-api-ga/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-09-06-aura-query-api-ga/</link>
       <pubDate>Fri, 06 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-09-06-aura-query-api-ga/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-09-06-aura-query-api-ga/</guid>
       <description>&lt;h1 id=&#34;querying-your-aura-neo4j-database-via-https-again&#34;&gt;Querying your Aura Neo4j Database via HTTPS (Again)&lt;/h1&gt;&#xA;&lt;p&gt;The HTTPS based Query API is now GA for Aura and Self-managed customers&#xA;For almost 14 years you could query Neo4j via HTTP, originally with a REST API, later via Cypher, with a number of improvements (streaming, type representations etc). Since 2016 the focus has shifted to the binary Bolt protocol, advanced routing and native drivers. The existing HTTP APIs were still running for self-hosted customers but were lacking in features and because of those shortcomings, were not available in the Neo4j Aura Cloud Service. This is about to change now.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Exploring impersonating with the Neo4j Query API</title>
-      <link>http://localhost:1313/post/2024-05-29-neo4j-query-impersonateuser/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-05-29-neo4j-query-impersonateuser/</link>
       <pubDate>Wed, 29 May 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-05-29-neo4j-query-impersonateuser/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-05-29-neo4j-query-impersonateuser/</guid>
       <description>&lt;h1 id=&#34;pretending-to-be-someone-else&#34;&gt;Pretending to be someone else&lt;/h1&gt;&#xA;&lt;p&gt;I recently watched a TV broadcast where someone self-identified as the U.k Prime Minster and claimed to have a plan to solve all of countries challenges.  But there were doubts in my mind as to his credibilty. Anyone who has visited the Unitied Kingdom ( and those of us who live here ) are well aware of the high probabilty for rain and yet this individual had not considered this possibility and they got drenced whilst shouting into the void.  This makes me doubt his capability for forward planning and his claim to be the Prime Minister seems to be very far fetched indeed.  Was this a prank and was it an impersonator out in the rain that day?  We may never know.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using parameters with the Neo4j Query API</title>
-      <link>http://localhost:1313/post/2024-04-26-neo4j-query-parameters/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-04-26-neo4j-query-parameters/</link>
       <pubDate>Fri, 26 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-04-26-neo4j-query-parameters/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-04-26-neo4j-query-parameters/</guid>
       <description>&lt;h1 id=&#34;using-parameters-with-the-query-api&#34;&gt;Using parameters with the Query API&lt;/h1&gt;&#xA;&lt;p&gt;Imagine that you find yourself needing to perform bulk updates in some shape or form to Neo4j Graph database; it could be a data import, creating relationships between nodes, changing properties or anything else that requires a lot of mutations.&lt;/p&gt;&#xA;&lt;p&gt;As an example of this, consider the work from an earlier blog post where we represented the London Underground as a graph; Nodes are used for Tube stations and Relationships are the Tube lines that form the network.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Introducing the new Query API in Neo4j 5.19</title>
-      <link>http://localhost:1313/post/2024-04-15-neo4j-query-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-04-15-neo4j-query-api/</link>
       <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-04-15-neo4j-query-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-04-15-neo4j-query-api/</guid>
       <description>&lt;h1 id=&#34;we-built-a-thing&#34;&gt;We built a thing&lt;/h1&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been lucky enough to work with our Neo4j Engineers to create a new API for Neo4j that allows the execution of Cypher statements in the form of network requests without requiring a driver to be installed. There was thought given ( briefly ) to asking the Internet for a what to call this but that doesn&amp;rsquo;t &lt;a href=&#34;https://en.wikipedia.org/wiki/Boaty_McBoatface#Naming&#34;&gt;always turn out well&lt;/a&gt;. In the end we went with the simple approach of naming it after what it does and called it the &lt;strong&gt;Query API&lt;/strong&gt;. It&amp;rsquo;s available now with Neo4j 5.19 and will be coming to Aura , our cloud service, in early Summer this year.  For those of you who are using the existing HTTP API, it&amp;rsquo;s not retiring anytime soon and will be kept updated with fixes for critical defects and security vulnerabilities.  You&amp;rsquo;ll be able to choose which one to use.&lt;/p&gt;</description>
     </item>
   </channel>

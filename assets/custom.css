@@ -1,3 +1,18 @@
+/* Lora — modern serif with classical roots */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+article,
+article h1,
+article h2,
+article h3,
+article h4 {
+  font-family: 'Lora', Georgia, serif;
+}
+
+.post-title {
+  font-family: 'Lora', Georgia, serif;
+}
+
 /* Post list page layout */
 .post-list-wrap {
   display: flex;

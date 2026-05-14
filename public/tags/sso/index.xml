@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>SSO on Work In Progress</title>
-    <link>http://localhost:1313/tags/sso/</link>
+    <link>https://www.pm50plus.co.uk/tags/sso/</link>
     <description>Recent content in SSO on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 24 Oct 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/sso/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/sso/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Applications, Tokens and Neo4j Query API </title>
-      <link>http://localhost:1313/post/2024-10-24-app-token-query-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-10-24-app-token-query-api/</link>
       <pubDate>Thu, 24 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-10-24-app-token-query-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-10-24-app-token-query-api/</guid>
       <description>&lt;h1 id=&#34;applications-tokens-and-neo4j-query-api&#34;&gt;Applications, Tokens and Neo4j Query API&lt;/h1&gt;&#xA;&lt;h1 id=&#34;using-tokens-with-applications-and-neo4j-query-api-for-auth&#34;&gt;Using tokens with Applications and Neo4j Query API for auth&lt;/h1&gt;&#xA;&lt;p&gt;In a previous blog post I discussed a web application obtaining and using a token with Neo4j Query API as a result of a user successfully authenticating.  This entry looks at what would be involved for an application to obtain a token and use it with Neo4j Query API.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Plot spoiler&lt;/strong&gt; - it&amp;rsquo;s very similar.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Dipping into the code from the trinity of SSO, Neo4j and a web application </title>
-      <link>http://localhost:1313/post/2024-10-17-token-query-api-the-code/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-10-17-token-query-api-the-code/</link>
       <pubDate>Thu, 17 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-10-17-token-query-api-the-code/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-10-17-token-query-api-the-code/</guid>
       <description>&lt;h1 id=&#34;commentary-on-the-web-application-code-used-in-sso-post&#34;&gt;Commentary on the web application code used in SSO post&lt;/h1&gt;&#xA;&lt;p&gt;As a follow on from my previous blog post, the trinity of SSO, Neo4j and a web application, this entry takes a deeper look at the code used for the web application to see how it all fits together.&lt;/p&gt;&#xA;&lt;p&gt;Given my JS / React knowledge is basic ( and I&amp;rsquo;m flattering myself there ) the more experienced of you are likely to be amused at my efforts.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Using token with Query API - an example with SSO</title>
-      <link>http://localhost:1313/post/2024-10-16-token-query-api/</link>
+      <link>https://www.pm50plus.co.uk/post/2024-10-16-token-query-api/</link>
       <pubDate>Wed, 16 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2024-10-16-token-query-api/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2024-10-16-token-query-api/</guid>
       <description>&lt;h1 id=&#34;the-trinity-of-sso-neo4j-and-a-web-application&#34;&gt;The trinity of SSO, Neo4j and a web application&lt;/h1&gt;&#xA;&lt;p&gt;Consider a web application that consumes data from Neo4j.   This will require the web application to authenticate and retrieve that data using credentials that are accepted by Neo4j.  If our users needed to remember one set of credentials for the web application, another set for Neo4j and then enter those at the correct moment, it&amp;rsquo;s going to be a jarring user experience.&lt;/p&gt;</description>
     </item>
   </channel>

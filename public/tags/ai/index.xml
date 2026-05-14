@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>AI on Work In Progress</title>
-    <link>http://localhost:1313/tags/ai/</link>
+    <link>https://www.pm50plus.co.uk/tags/ai/</link>
     <description>Recent content in AI on Work In Progress</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 12 May 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.pm50plus.co.uk/tags/ai/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PM Haku</title>
-      <link>http://localhost:1313/post/2025-05-12-pm-haku/</link>
+      <link>https://www.pm50plus.co.uk/post/2025-05-12-pm-haku/</link>
       <pubDate>Mon, 12 May 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2025-05-12-pm-haku/</guid>
+      <guid>https://www.pm50plus.co.uk/post/2025-05-12-pm-haku/</guid>
       <description>&lt;h1 id=&#34;haku&#34;&gt;Haku&lt;/h1&gt;&#xA;&lt;p&gt;If you find my usual writing hard to get on with, then consider the poems I that could attempt.&lt;/p&gt;&#xA;&lt;p&gt;Your typical &lt;a href=&#34;https://hitchhikers.fandom.com/wiki/Vogon_poetry&#34;&gt;Vogon&lt;/a&gt; would consider them excessive and get back to destroying planets for much need bypasses.&lt;/p&gt;&#xA;&lt;p&gt;So I asked a AI chat bot thingy to describe Product Management in the style of a Haku&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Features lost in launch&lt;/li&gt;&#xA;&lt;li&gt;Users want what isn&amp;rsquo;t there&lt;/li&gt;&#xA;&lt;li&gt;Dreams meet reality&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;I think the AI must have been trained on Vogon prose.&lt;/p&gt;</description>
     </item>
   </channel>
