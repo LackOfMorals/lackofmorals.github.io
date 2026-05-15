@@ -33,7 +33,7 @@ I have always thought Product Managers having an understanding of Engineering is
 
 I say _could_ rather than _should_ as we need to consider the latter carefully.  For me Claude Code and other AI tools allows discovery to go deeper and further than before and not just for classics such as locating customer pain points.  I can now undertake prototyping with the goal of having better defined Asks for Engineering. As an example I recently contributed a Go SDK for the Aura API ( You can find that at [https://github.com/neo4j-contrib/aura-go-sdk](https://github.com/neo4j-contrib/aura-go-sdk) ) with the intention of exploring how Developers can use SDKs for Aura API and if they actually want to!  
 
-Would I go beyond this?  I think not. Coding is a hobby for me.  Tools like Claude Code enable be to up-level to use writing code as another PM discovery mechanism method.  
+Would I go beyond this?  I think not. Coding is a hobby for me.  Tools like Claude Code up-level my coding ability to become a useful PM discovery tool .  
 
 And that - for me anyway -  is the right placing for Product Managers.
 
