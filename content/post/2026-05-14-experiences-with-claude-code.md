@@ -23,20 +23,19 @@ I'm a Product Manager by trade and that's what I brought to the team.  But , as 
 
 What Claude Code did for me was to play to those two strengths.  I could use my PM abilities to describe a problem with desired outcomes to Claude - the What - and then be able to read the code that was written - the How. 
 
-This enabled me to effectively contribute code to the project something that would not have been possible - I wouldn't have even considered it as it would have slowed everyone down - before tooling like Claude Code existed. 
+The code areas I touched were well within my comfort zone.  And relatively minor. I was able to effectively use Claude Code to describe what was needed and then check the produced. Only the slightest of oversight from my much more talented peers was required. Anything more would have slowed us down.
 
 
 ## Product Manager Engineers? 
-Maybe. 
+I have read this title before.  There's chatter on this topic , AI enabling Engineers to be more like Product Managers and vice-a-versa.
 
-I have always thought that Product Managers understanding of Engineering is an essential part of their knowledge.  It fits in our domain toolbag nestling alongside that for what our customers need, market conditions and the other tooling that we reach for on a regular basis as PMs. AI coding allows us to change that tool and how it could be used.  
+I have always thought Product Managers having an understanding of Engineering is part of knowledge base toolkit that PMs have.  It sits comfortably alongside other tooling such as what our customers need, what our business needs, market conditions and many others. AI has the pontential to morph that Engineering PM tool and how it could be used.  
 
-I say could rather than should as we need to consider the latter carefully.  Claude Code allows me to explore possibilities - I've used it to create a Go SDK for the Aura API to explore how Developers could use such a SDK in a Go like manner.  Now I'm able to much better describe and define the Ask to Engineering.  And that's where I'm drawing the line for PM Engineering. 
+I say _could_ rather than _should_ as we need to consider the latter carefully.  For me Claude Code and other AI tools allows discovery to go deeper and further than before and not just for classics such as customer pain points.  I can now undertake prototyping with the goal of having better defined Asks for Engineering. As an example I recently contributed a Go SDK for the Aura API ( You can find that at [https://github.com/neo4j-contrib/aura-go-sdk](https://github.com/neo4j-contrib/aura-go-sdk) ) with the intention of exploring how Developers can use SDKs for Aura API and if they actually want to!  
 
-But hang on - didn't I just describe a project where I did cross that line - I pushed code, created PRs, merged into main and triggered releases.  
+Would I go beyond this?  I think not. Coding is a hobby for me.  Tools like Claude Code enable be to up-level to use writing code as another PM discovery mechanism method.  
 
-The code areas I touched were well within my comfort zone.  And relatively minor.  This made describing what was needed to Claude and then checking its code was faily straight forward. It needed only the slightest of oversight from my much more talented peers. Anything more would have slowed us down.
+And that - for me anyway -  is the right placing for Product Managers.
 
-And that experience convinced me that staying behind the line is the right place to be.
 
 
