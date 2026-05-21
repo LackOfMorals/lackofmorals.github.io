@@ -1,7 +1,6 @@
 +++
 title = "Graph in our pocket"
-description = "graphlite lets you carry a fully queryable property graph, work with it
-  offline then merge changes back to Neo4j when you reconnect."
+description = "graphlite lets you carry a fully queryable property graph, work with it offline then merge changes back to Neo4j when you reconnect."
 date = "2026-05-21"
 tags = ["Claude", "PM","Go","graphlite"]
 draft = false
