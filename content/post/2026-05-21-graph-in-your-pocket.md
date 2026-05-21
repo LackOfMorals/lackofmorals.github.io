@@ -6,9 +6,6 @@ tags = ["Claude", "PM","Go","graphlite"]
 draft = false
 +++
 
-
-# Graph in your pocket
-
 My day job is being a Product Manager. I spend time thinking about products and on the odd occasion I get to write code that helps explore those thoughts.  It was during one of those moments that I got annoyed.
 
 I've been learning about Go Interfaces and wanted to write code to land my understanding before carrying on with the book. The Go Programming Language, if you're curious — worth it
